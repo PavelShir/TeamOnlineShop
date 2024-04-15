@@ -1,21 +1,31 @@
 import UIKit
 protocol MainViewProtocol: AnyObject {}
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
 
     // MARK: - Properties
-     var presenter: MainPresenterProtocol!
+    private let presenter: MainPresenterProtocol
+    private let dataSource: MainViewCollectionDataSource
+    
+    init(presenter: MainPresenterProtocol) {
+        self.presenter = presenter
+        self.dataSource = .init(collectionView)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - UI
-    private lazy var collectionView: UICollectionView = {
+    private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 170, height: 230)
         layout.minimumInteritemSpacing = 7
         layout.minimumLineSpacing = 7
+
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(ProductsViewCell.self, forCellWithReuseIdentifier: ProductsViewCell.reuseIdentifier)
-        collectionView.dataSource = self
-        collectionView.delegate = self
         collectionView.backgroundColor =  .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -25,9 +35,13 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        collectionView.dataSource = self
+        collectionView.delegate = self
         view.backgroundColor = .white
         view.addSubview(collectionView)
         setupCollectionViewConstraints()
+        
+        dataSource.updateContent([])
     }
     
     private func setupCollectionViewConstraints() {
@@ -44,8 +58,37 @@ class MainViewController: UIViewController {
 extension MainViewController: MainViewProtocol {}
 
 // MARK: - MainViewController + UICollectionViewDataSource
-extension MainViewController: UICollectionViewDataSource {
+//extension MainViewController: UICollectionViewDataSource {
+//    
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return 4
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.reuseIdentifier, for: indexPath) as! ProductsViewCell
+//        return cell
+//    }
+//}
+
+extension MainViewController: UICollectionViewDelegate {}
+
+
+final class MainViewCollectionDataSource: NSObject {
+    private let collectionView: UICollectionView
     
+    init(_ collectionView: UICollectionView) {
+        self.collectionView = collectionView
+        super.init()
+        self.collectionView.dataSource = self
+        self.collectionView.register(ProductsViewCell.self, forCellWithReuseIdentifier: ProductsViewCell.reuseIdentifier)
+    }
+    
+    func updateContent(_ content: [String]) {
+        collectionView.reloadData()
+    }
+}
+
+extension MainViewCollectionDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 4
     }
@@ -55,5 +98,3 @@ extension MainViewController: UICollectionViewDataSource {
         return cell
     }
 }
-
-extension MainViewController: UICollectionViewDelegate {}
