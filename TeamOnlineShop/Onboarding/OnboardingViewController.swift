@@ -56,7 +56,7 @@ extension OnboardingViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let width = scrollView.frame.width
-        currentPage = Int(scrollView.contentOffset.x / width)
+//        let width = scrollView.frame.width
+//        currentPage = Int(scrollView.contentOffset.x / width)
     }
 }

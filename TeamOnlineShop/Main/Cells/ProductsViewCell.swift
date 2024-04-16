@@ -11,7 +11,7 @@ class ProductsViewCell: UICollectionViewCell {
         element.image = UIImage(named: "CellImage")
         element.contentMode = .scaleAspectFit
         element.clipsToBounds = true
-        element.tintColor = UIColor(named: "TintColor")
+        element.tintColor = UIColor(named: Colors.blackLight)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -20,8 +20,8 @@ class ProductsViewCell: UICollectionViewCell {
         let element = UILabel()
         element.text = "Monitor LG 22”inc 4K 120Fps"
         element.numberOfLines = 1
-        element.font = UIFont(name: "Inter-Regular", size: 12)
-        element.tintColor = UIColor(named: "TintColor")
+        element.font = UIFont.TextFont.Screens.MainScreen.categoryTitle
+        element.tintColor = UIColor(named: Colors.blackLight)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -29,7 +29,7 @@ class ProductsViewCell: UICollectionViewCell {
     private lazy var priceLabel: UILabel = {
         let element = UILabel()
         element.text = "$199.99"
-        element.font = UIFont(name: "Inter-SemiBold", size: 14)
+        element.font = UIFont.TextFont.Screens.ShopCartItem.title
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -38,9 +38,9 @@ class ProductsViewCell: UICollectionViewCell {
         let element = UIButton(type: .system)
 
         element.setTitle("Add to cart", for: .normal)
-        element.titleLabel?.font = UIFont(name: "Inter-Regular", size: 12)
+        element.titleLabel?.font = UIFont.TextFont.Screens.ShopCartItem.price
         element.setTitleColor(.white, for: .normal)
-        element.backgroundColor = UIColor(named: "ButtonColor")
+        element.backgroundColor = UIColor(named: Colors.greenPrimary)
         element.layer.cornerRadius = 4
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
@@ -79,7 +79,7 @@ class ProductsViewCell: UICollectionViewCell {
          addToCartButton
         ].forEach { VStack.addArrangedSubview($0)}
         
-        contentView.backgroundColor = UIColor(named: "ButtonBackground")
+        contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 15
     }
     
