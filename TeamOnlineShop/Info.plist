@@ -4,13 +4,8 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Inter-Bold.ttf</string>
-		<string>Inter-Medium.ttf</string>
-		<string>Inter-Regular.ttf</string>
+		<string>iInter-Regular.ttf</string>
 		<string>Inter-SemiBold.ttf</string>
-		<string>PlusJakartaSans-Bold.ttf</string>
-		<string>PlusJakartaSans-Medium.ttf</string>
-		<string>PlusJakartaSans-SemiBold.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
@@ -25,8 +20,6 @@
 					<string>Default Configuration</string>
 					<key>UISceneDelegateClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
-					<key>UISceneStoryboardFile</key>
-					<string>Main</string>
 				</dict>
 			</array>
 		</dict>
