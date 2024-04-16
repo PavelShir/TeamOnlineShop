@@ -15,7 +15,7 @@ final class TermsAndConditionsView: UIView {
     
     weak var delegate: TermsAndConditionsViewDelegate?
     
-    private let title : UILabel = {
+    private let title: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = UIColor(named: Colors.blackPrimary)
@@ -72,23 +72,30 @@ final class TermsAndConditionsView: UIView {
     }
     
     func layoutViews() {
-        self.translatesAutoresizingMaskIntoConstraints = false 
-        title.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-        title.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            title.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+            title.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        ])
 
-        backButton.topAnchor.constraint(equalTo: title.topAnchor).isActive = true
-        backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        NSLayoutConstraint.activate([
+            backButton.topAnchor.constraint(equalTo: title.topAnchor),
+            backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            backButton.widthAnchor.constraint(equalToConstant: 20),
+            backButton.heightAnchor.constraint(equalToConstant: 20)
+        ])
 
-        termsText.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 20).isActive = true
-        termsText.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        termsText.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16).isActive = true
-        termsText.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            termsText.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 20),
+            termsText.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            termsText.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            termsText.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
     
     private func setUpViews(){
-        title.text = "Terms and Conditions"
+        title.text = "Terms & Conditions"
         termsText.text = """
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pellentesque lectus enim, ut tristique orci eleifend vitae. Ut sed urna dolor. Maecenas nunc nisi, tristique cursus facilisis eget, ultrices et felis. Nam auctor felis nunc, luctus egestas magna finibus at. Mauris eu laoreet risus, et scelerisque ex. Vivamus pulvinar eros eget posuere eleifend. Cras velit mi, tristique ut nisl ut, suscipit pulvinar ipsum. Nulla porta, tellus et venenatis porta, quam ligula malesuada erat, a viverra nulla neque ornare nunc. Nulla at felis semper, rutrum ipsum quis, egestas leo. Integer mi risus, lacinia id lorem in, gravida luctus sem. Fusce at metus ut odio tristique vulputate eu maximus mi.
 
