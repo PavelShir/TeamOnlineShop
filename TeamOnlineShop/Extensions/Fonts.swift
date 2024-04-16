@@ -103,6 +103,7 @@ extension UIFont {
         enum Screens {
             
             static let title = InterFont.Medium.size(of: 16)
+            static let text = InterFont.Regular.size(of: 14)
             
             enum SearchScreen {
                 static let lastSearchText = InterFont.Medium.size(of: 16)
