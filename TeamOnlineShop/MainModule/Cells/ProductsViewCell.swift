@@ -6,7 +6,7 @@ class ProductsViewCell: UICollectionViewCell {
     static var reuseIdentifier: String {"\(Self.self)"}
     
     // MARK: - UI
-    private lazy var imageView: UIImageView = {
+    private let imageView: UIImageView = {
         let element = UIImageView()
         element.image = UIImage(named: "CellImage")
         element.contentMode = .scaleAspectFit
