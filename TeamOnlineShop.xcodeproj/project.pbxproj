@@ -12,6 +12,9 @@
 		310D02782BCC7B5500048312 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310D02772BCC7B5500048312 /* ViewController.swift */; };
 		310D027D2BCC7B5600048312 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 310D027C2BCC7B5600048312 /* Assets.xcassets */; };
 		310D02802BCC7B5600048312 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 310D027E2BCC7B5600048312 /* LaunchScreen.storyboard */; };
+		31910D172BCDF95B00655CB3 /* OnboardingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31910D162BCDF95B00655CB3 /* OnboardingModel.swift */; };
+		31910D192BCDF98500655CB3 /* OnboardingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31910D182BCDF98500655CB3 /* OnboardingCell.swift */; };
+		31910D1B2BCDF9E400655CB3 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31910D1A2BCDF9E400655CB3 /* OnboardingViewController.swift */; };
 		D9B96DCC2BCDBAC300F9C529 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9B96DC52BCDBAC300F9C529 /* Inter-SemiBold.ttf */; };
 		D9B96DCD2BCDBAC300F9C529 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9B96DC62BCDBAC300F9C529 /* Inter-Bold.ttf */; };
 		D9B96DCE2BCDBAC300F9C529 /* PlusJakartaSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9B96DC72BCDBAC300F9C529 /* PlusJakartaSans-Medium.ttf */; };
@@ -32,6 +35,9 @@
 		310D027C2BCC7B5600048312 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		310D027F2BCC7B5600048312 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		310D02812BCC7B5600048312 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		31910D162BCDF95B00655CB3 /* OnboardingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModel.swift; sourceTree = "<group>"; };
+		31910D182BCDF98500655CB3 /* OnboardingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCell.swift; sourceTree = "<group>"; };
+		31910D1A2BCDF9E400655CB3 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		D9B96DC52BCDBAC300F9C529 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		D9B96DC62BCDBAC300F9C529 /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
 		D9B96DC72BCDBAC300F9C529 /* PlusJakartaSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-Medium.ttf"; sourceTree = "<group>"; };
@@ -76,6 +82,7 @@
 			children = (
 				310D02732BCC7B5500048312 /* AppDelegate.swift */,
 				310D02752BCC7B5500048312 /* SceneDelegate.swift */,
+				31910D1C2BCDF9F200655CB3 /* Onboarding */,
 				D9B96DD32BCDC85000F9C529 /* Extensions */,
 				310D02772BCC7B5500048312 /* ViewController.swift */,
 				310D027E2BCC7B5600048312 /* LaunchScreen.storyboard */,
@@ -83,6 +90,16 @@
 				D92594092BCDB4B8001DAA35 /* Resources */,
 			);
 			path = TeamOnlineShop;
+			sourceTree = "<group>";
+		};
+		31910D1C2BCDF9F200655CB3 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				31910D162BCDF95B00655CB3 /* OnboardingModel.swift */,
+				31910D182BCDF98500655CB3 /* OnboardingCell.swift */,
+				31910D1A2BCDF9E400655CB3 /* OnboardingViewController.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		D92594092BCDB4B8001DAA35 /* Resources */ = {
@@ -205,9 +222,12 @@
 			files = (
 				310D02782BCC7B5500048312 /* ViewController.swift in Sources */,
 				D9B96DD92BCDC8FA00F9C529 /* Images.swift in Sources */,
+				31910D192BCDF98500655CB3 /* OnboardingCell.swift in Sources */,
 				D9B96DD82BCDC8FA00F9C529 /* Fonts.swift in Sources */,
 				D9B96DD72BCDC8FA00F9C529 /* Colors.swift in Sources */,
+				31910D172BCDF95B00655CB3 /* OnboardingModel.swift in Sources */,
 				310D02742BCC7B5500048312 /* AppDelegate.swift in Sources */,
+				31910D1B2BCDF9E400655CB3 /* OnboardingViewController.swift in Sources */,
 				310D02762BCC7B5500048312 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
