@@ -10,6 +10,7 @@ import UIKit
 protocol ProfileViewDelegate: AnyObject {
     func signOutButtonTapped()
     func termsAndConditionsButtonTapped()
+    func changeProfileImage()
 }
 
 class ProfileView: UIView {
@@ -26,12 +27,7 @@ class ProfileView: UIView {
         return label
     }()
     
-    private let separator: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(named: Colors.greyLighter)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    private let separator = Separator()
     
     private let profileName: UILabel = {
         let label = UILabel()
@@ -207,6 +203,7 @@ class ProfileView: UIView {
     private func setUpViews(){
         title.text = "Profile"
         profileImage.image = UIImage.Icons.userAvatar
+        makeProfileImageTappable()
         
         profileName.text = "Dev P"
         profileEmail.text = "dev@test.com"
@@ -217,11 +214,39 @@ class ProfileView: UIView {
         signOutButton.addTarget(nil, action: #selector(signOutButtonTapped), for: .touchUpInside)
     }
     
+    private func makeProfileImageTappable() {
+        if profileImage.gestureRecognizers != nil {
+            profileImage.gestureRecognizers?.removeAll()
+        }
+        
+        let tapRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(profileImageTapped)
+        )
+        
+        profileImage.isUserInteractionEnabled = true
+        profileImage.addGestureRecognizer(tapRecognizer)
+    }
+    
+    func updateProfileImage(_ image: UIImage? = nil) {
+        guard let safeImage = image else {
+            profileImage.image = UIImage.Icons.userAvatar
+            return
+        }
+        
+        profileImage.image = safeImage
+    }
+    
     @objc private func signOutButtonTapped(){
         delegate?.signOutButtonTapped()
     }
     
     @objc private func termsAndConditionsButtonTapped(){
         delegate?.termsAndConditionsButtonTapped()
+    }
+    
+    
+    @objc private func profileImageTapped(_ gesture: UITapGestureRecognizer) {
+        delegate?.changeProfileImage()
     }
 }

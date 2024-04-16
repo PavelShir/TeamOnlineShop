@@ -15,6 +15,8 @@
 		31910D172BCDF95B00655CB3 /* OnboardingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31910D162BCDF95B00655CB3 /* OnboardingModel.swift */; };
 		31910D192BCDF98500655CB3 /* OnboardingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31910D182BCDF98500655CB3 /* OnboardingCell.swift */; };
 		31910D1B2BCDF9E400655CB3 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31910D1A2BCDF9E400655CB3 /* OnboardingViewController.swift */; };
+		D91360AB2BCF2A1000AB6F80 /* PhotoSelectionMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91360AA2BCF2A1000AB6F80 /* PhotoSelectionMenuButton.swift */; };
+		D91360AF2BCF2C2C00AB6F80 /* Separator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D91360AE2BCF2C2C00AB6F80 /* Separator.swift */; };
 		D94DA3AD2BCEE2B800746127 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94DA3A32BCEE2B800746127 /* ProfilePresenter.swift */; };
 		D94DA3AE2BCEE2B800746127 /* ProfileBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94DA3A52BCEE2B800746127 /* ProfileBuilder.swift */; };
 		D94DA3AF2BCEE2B800746127 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94DA3A72BCEE2B800746127 /* ProfileViewController.swift */; };
@@ -26,6 +28,7 @@
 		D94DA3C02BCEE31300746127 /* TermsAndConditionsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94DA3B82BCEE31300746127 /* TermsAndConditionsRouter.swift */; };
 		D94DA3C12BCEE31300746127 /* TermsAndConditionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94DA3BA2BCEE31300746127 /* TermsAndConditionsView.swift */; };
 		D94DA3C32BCEFFE900746127 /* ProfileButtonWithRightIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94DA3C22BCEFFE900746127 /* ProfileButtonWithRightIcon.swift */; };
+		D9972AEA2BCF2D71000F613D /* PhotoSelectionMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9972AE92BCF2D71000F613D /* PhotoSelectionMenuView.swift */; };
 		D9B96DCC2BCDBAC300F9C529 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9B96DC52BCDBAC300F9C529 /* Inter-SemiBold.ttf */; };
 		D9B96DCD2BCDBAC300F9C529 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9B96DC62BCDBAC300F9C529 /* Inter-Bold.ttf */; };
 		D9B96DCE2BCDBAC300F9C529 /* PlusJakartaSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9B96DC72BCDBAC300F9C529 /* PlusJakartaSans-Medium.ttf */; };
@@ -49,6 +52,8 @@
 		31910D162BCDF95B00655CB3 /* OnboardingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModel.swift; sourceTree = "<group>"; };
 		31910D182BCDF98500655CB3 /* OnboardingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCell.swift; sourceTree = "<group>"; };
 		31910D1A2BCDF9E400655CB3 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		D91360AA2BCF2A1000AB6F80 /* PhotoSelectionMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSelectionMenuButton.swift; sourceTree = "<group>"; };
+		D91360AE2BCF2C2C00AB6F80 /* Separator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Separator.swift; sourceTree = "<group>"; };
 		D94DA3A32BCEE2B800746127 /* ProfilePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
 		D94DA3A52BCEE2B800746127 /* ProfileBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileBuilder.swift; sourceTree = "<group>"; };
 		D94DA3A72BCEE2B800746127 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -60,6 +65,7 @@
 		D94DA3B82BCEE31300746127 /* TermsAndConditionsRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsRouter.swift; sourceTree = "<group>"; };
 		D94DA3BA2BCEE31300746127 /* TermsAndConditionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsView.swift; sourceTree = "<group>"; };
 		D94DA3C22BCEFFE900746127 /* ProfileButtonWithRightIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileButtonWithRightIcon.swift; sourceTree = "<group>"; };
+		D9972AE92BCF2D71000F613D /* PhotoSelectionMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectionMenuView.swift; sourceTree = "<group>"; };
 		D9B96DC52BCDBAC300F9C529 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		D9B96DC62BCDBAC300F9C529 /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
 		D9B96DC72BCDBAC300F9C529 /* PlusJakartaSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-Medium.ttf"; sourceTree = "<group>"; };
@@ -123,6 +129,24 @@
 				31910D1A2BCDF9E400655CB3 /* OnboardingViewController.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		D91360A92BCF29DA00AB6F80 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D9972AE92BCF2D71000F613D /* PhotoSelectionMenuView.swift */,
+				D94DA3C22BCEFFE900746127 /* ProfileButtonWithRightIcon.swift */,
+				D91360AA2BCF2A1000AB6F80 /* PhotoSelectionMenuButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		D91360AD2BCF2BC300AB6F80 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D91360AE2BCF2C2C00AB6F80 /* Separator.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		D92594092BCDB4B8001DAA35 /* Resources */ = {
@@ -195,7 +219,7 @@
 		D94DA3AA2BCEE2B800746127 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D94DA3C22BCEFFE900746127 /* ProfileButtonWithRightIcon.swift */,
+				D91360A92BCF29DA00AB6F80 /* Components */,
 				D94DA3A92BCEE2B800746127 /* ProfileView.swift */,
 			);
 			path = View;
@@ -264,6 +288,7 @@
 		D9B96DD32BCDC85000F9C529 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D91360AD2BCF2BC300AB6F80 /* Components */,
 				D9B96DD42BCDC8FA00F9C529 /* Colors.swift */,
 				D9B96DD52BCDC8FA00F9C529 /* Fonts.swift */,
 				D9B96DD62BCDC8FA00F9C529 /* Images.swift */,
@@ -366,9 +391,12 @@
 				31910D192BCDF98500655CB3 /* OnboardingCell.swift in Sources */,
 				D94DA3AE2BCEE2B800746127 /* ProfileBuilder.swift in Sources */,
 				D9B96DD82BCDC8FA00F9C529 /* Fonts.swift in Sources */,
+				D91360AF2BCF2C2C00AB6F80 /* Separator.swift in Sources */,
 				D94DA3B12BCEE2B800746127 /* ProfileRouter.swift in Sources */,
+				D9972AEA2BCF2D71000F613D /* PhotoSelectionMenuView.swift in Sources */,
 				D9B96DD72BCDC8FA00F9C529 /* Colors.swift in Sources */,
 				D94DA3BE2BCEE31300746127 /* TermsAndConditionsViewController.swift in Sources */,
+				D91360AB2BCF2A1000AB6F80 /* PhotoSelectionMenuButton.swift in Sources */,
 				D94DA3AF2BCEE2B800746127 /* ProfileViewController.swift in Sources */,
 				31910D172BCDF95B00655CB3 /* OnboardingModel.swift in Sources */,
 				310D02742BCC7B5500048312 /* AppDelegate.swift in Sources */,

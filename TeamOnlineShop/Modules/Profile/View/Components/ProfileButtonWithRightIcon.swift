@@ -69,16 +69,6 @@ class ProfileButtonWithRightIcon: UIButton {
             buttonIcon.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
         ])
     }
-    
-    func changeState(icon: UIImage?, backgroundColor: String, contenColor: String) {
-        buttonLabel.textColor = UIColor(named: contenColor)
-        if icon != nil {
-            buttonIcon.image = icon
-            buttonIcon.tintColor = UIColor(named: contenColor)
-        }
-        
-        self.backgroundColor = UIColor(named: backgroundColor)
-    }
 }
 
 

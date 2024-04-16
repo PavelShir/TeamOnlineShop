@@ -12,6 +12,11 @@ final class ProfileViewController: UIViewController {
     var presenter: ProfilePresenterProtocol?
     private let customView = ProfileView()
     
+    private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+    private let photoSelectionMenuView =  PhotoSelectionMenuView()
+    
+    private let imagePicker = UIImagePickerController()
+    
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -24,6 +29,8 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCustomView()
+        setupPhotoSelectionMenu()
+        imagePicker.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -32,7 +39,7 @@ final class ProfileViewController: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
-    private func setupCustomView(){
+    private func setupCustomView() {
         view.addSubview(customView)
         NSLayoutConstraint.activate([
             customView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -41,6 +48,17 @@ final class ProfileViewController: UIViewController {
             customView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         customView.delegate = self
+    }
+    
+    private func setupPhotoSelectionMenu() {
+        photoSelectionMenuView.delegate = self
+        photoSelectionMenuView.center = view.center
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapOutsideMenu))
+                view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func handleTapOutsideMenu() {
+        hidePhotoSelectionMenu()
     }
 }
 
@@ -55,11 +73,63 @@ extension ProfileViewController: ProfileViewDelegate {
     }
     
     func changeProfileImage() {
-        showImagePicker()
+        showPhotoSelectionMenu()
     }
     
+    func showPhotoSelectionMenu() {
+        blurEffectView.frame = view.bounds
+        view.addSubview(blurEffectView)
+        view.addSubview(photoSelectionMenuView)
+    }
+    
+    func hidePhotoSelectionMenu() {
+        blurEffectView.removeFromSuperview()
+        photoSelectionMenuView.removeFromSuperview()
+    }
 }
 
 extension ProfileViewController: ProfilePresenterViewProtocol {
     
+}
+
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let selectedImage = info[.originalImage] as? UIImage else {
+            print("Не удалось получить выбранное изображение")
+            picker.dismiss(animated: true, completion: nil)
+            return
+        }
+        
+        customView.updateProfileImage(selectedImage)
+        hidePhotoSelectionMenu()
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+}
+
+extension ProfileViewController: PhotoSelectionMenuDelegate {
+    func cameraButtonTapped() {
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            print("Камера недоступна")
+            return
+        }
+        
+        imagePicker.sourceType = .camera
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func galleryButtonTapped() {
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func deleteButtonTapped() {
+        customView.updateProfileImage()
+        hidePhotoSelectionMenu()
+    }
 }
