@@ -9,7 +9,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-    var presenter: ProfilePresenterProtocol?
+    var presenter: ProfilePresenterProtocol
     private let customView = ProfileView()
     
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -17,7 +17,8 @@ final class ProfileViewController: UIViewController {
     
     private let imagePicker = UIImagePickerController()
     
-    init() {
+    init(presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -69,7 +70,7 @@ extension ProfileViewController: ProfileViewDelegate {
     }
     
     func termsAndConditionsButtonTapped() {
-        self.presenter?.goToTermsAndConditionsVC()
+        self.presenter.goToTermsAndConditionsVC()
     }
     
     func changeProfileImage() {

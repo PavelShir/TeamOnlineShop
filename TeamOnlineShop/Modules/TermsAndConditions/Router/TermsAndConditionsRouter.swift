@@ -15,7 +15,7 @@ protocol TermsAndConditionsRouterProtocol: AnyObject {
     
 }
 
-class TermsAndConditionsRouter: TermsAndConditionsRouterProtocol {
+final class TermsAndConditionsRouter: TermsAndConditionsRouterProtocol {
 
     weak var navigationVC: UINavigationController?
     

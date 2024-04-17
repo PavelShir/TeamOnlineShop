@@ -16,7 +16,7 @@ protocol ProfileRouterProtocol: AnyObject {
     
 }
 
-class ProfileRouter: ProfileRouterProtocol {
+final class ProfileRouter: ProfileRouterProtocol {
     
     weak var navigationVC: UINavigationController?
     

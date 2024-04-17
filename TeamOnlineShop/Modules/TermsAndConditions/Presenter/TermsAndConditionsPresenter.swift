@@ -20,7 +20,7 @@ protocol TermsAndConditionsPresenterProtocol: AnyObject {
 }
 
 
-class TermsAndConditionsPresenter: TermsAndConditionsPresenterProtocol {
+final class TermsAndConditionsPresenter: TermsAndConditionsPresenterProtocol {
    
     weak var view: TermsAndConditionsPresenterViewProtocol?
     var router: TermsAndConditionsRouterProtocol?

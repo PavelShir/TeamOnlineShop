@@ -13,7 +13,7 @@ protocol TermsAndConditionsBuilderProtocol: AnyObject {
     func buildTermsAndConditionsVC() -> UIViewController?
 }
 
-class TermsAndConditionsBuilder: TermsAndConditionsBuilderProtocol {
+final class TermsAndConditionsBuilder: TermsAndConditionsBuilderProtocol {
     
     weak var navigationVC: UINavigationController?
     

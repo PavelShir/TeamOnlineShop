@@ -13,17 +13,19 @@ protocol ProfileBuilderProtocol: AnyObject {
     
 }
 
-class ProfileBuilder: ProfileBuilderProtocol {
+final class ProfileBuilder: ProfileBuilderProtocol {
+    
+    let navigationController = UINavigationController()
+    
 
     func buildProfileView() -> UIViewController {
-        let vc = ProfileViewController()
-        let navigationController = UINavigationController(rootViewController: vc)
         let router = ProfileRouter(navigationVC: navigationController)
         let presenter = ProfilePresenter(
             router: router
         )
-        vc.presenter = presenter
+        let vc = ProfileViewController(presenter: presenter)
         
+        navigationController.viewControllers = [vc]
         return navigationController
     }
 }

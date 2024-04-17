@@ -20,7 +20,7 @@ protocol ProfilePresenterProtocol: AnyObject {
 }
 
 
-class ProfilePresenter: ProfilePresenterProtocol {
+final class ProfilePresenter: ProfilePresenterProtocol {
     weak var view: ProfilePresenterViewProtocol?
     var router: ProfileRouterProtocol?
     

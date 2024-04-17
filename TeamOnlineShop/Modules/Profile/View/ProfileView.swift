@@ -13,7 +13,7 @@ protocol ProfileViewDelegate: AnyObject {
     func changeProfileImage()
 }
 
-class ProfileView: UIView {
+final class ProfileView: UIView {
     weak var delegate: ProfileViewDelegate?
     
     private let title: UILabel = {
