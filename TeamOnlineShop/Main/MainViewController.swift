@@ -21,8 +21,7 @@ final class MainViewController: UIViewController {
     
     // MARK: - UI
     private let collectionView: UICollectionView = {
-        let layout = createLayout()
-        
+        let layout = CollectionViewCompLayout.createLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor =  .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -42,56 +41,11 @@ final class MainViewController: UIViewController {
         dataSource.updateContent([])
     }
     // MARK: - Private funcs
-    private static func createLayout() -> UICollectionViewCompositionalLayout {
-        
-        return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
-            
-            if sectionNumber == 0 {
-                let item = NSCollectionLayoutItem(
-                    layoutSize:
-                            .init(
-                                widthDimension: .fractionalWidth(1),
-                                heightDimension: .fractionalHeight(1)))
-                item.contentInsets.trailing = 16
-                item.contentInsets.leading = 16
-                
-                
-                let group = NSCollectionLayoutGroup.horizontal(
-                    layoutSize:
-                            .init(
-                                widthDimension: .fractionalWidth(0.4),
-                                heightDimension: .absolute(200)
-                            ), subitems: [item])
-                
-                let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .groupPagingCentered
-                return section
-                
-            } else {
-                
-                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(300)))
-                item.contentInsets.bottom = 16
-                item.contentInsets.trailing = 16
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(1000)), subitems: [item])
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = .init(top: 5, leading: 16, bottom: 0, trailing: 15)
-                section.boundarySupplementaryItems = [.init(
-                    layoutSize: .init(
-                        widthDimension: .fractionalWidth(1),
-                        heightDimension: .absolute(50)),
-                    elementKind: categoryHeaderId,
-                    alignment: .topLeading)]
-                return section
-            }
-        }
-    }
-    
-    static let categoryHeaderId = "categoryHeaderId"
     private func setupCollectionViewConstraints() {
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -15),
-            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,constant: 30),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,constant: 15),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,constant: -15)
         ])
     }

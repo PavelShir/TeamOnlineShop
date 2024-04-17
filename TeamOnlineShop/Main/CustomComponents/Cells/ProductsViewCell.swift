@@ -79,7 +79,7 @@ class ProductsViewCell: UICollectionViewCell {
          addToCartButton
         ].forEach { VStack.addArrangedSubview($0)}
         
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = UIColor(named: "white-primary")
         contentView.layer.cornerRadius = 15
     }
     
@@ -94,7 +94,7 @@ class ProductsViewCell: UICollectionViewCell {
             
             VStack.topAnchor.constraint(
                 equalTo: imageView.bottomAnchor,
-                constant: 13
+                constant: 2
             ),
             VStack.bottomAnchor.constraint(
                 equalTo: contentView.bottomAnchor,
@@ -108,9 +108,7 @@ class ProductsViewCell: UICollectionViewCell {
                 constant: -13
             ),
             
-            
-            addToCartButton.heightAnchor.constraint(equalToConstant: 31),
-            addToCartButton.widthAnchor.constraint(equalToConstant: 144)
+            addToCartButton.heightAnchor.constraint(equalToConstant: 31)
         ])
     }
 }
