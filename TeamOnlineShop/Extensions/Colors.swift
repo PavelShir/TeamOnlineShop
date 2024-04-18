@@ -2,7 +2,7 @@
 //  Colors.swift
 //  NewsToDayApp
 //
-//  Created by Polina on 18.03.2024.
+//  Created by Maksim Stogniy on 14.04.2024.
 //
 
 import Foundation

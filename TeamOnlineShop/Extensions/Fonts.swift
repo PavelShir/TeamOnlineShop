@@ -98,11 +98,17 @@ extension UIFont {
                 static let label = InterFont.Regular.size(of: 10)
                 static let address = InterFont.Medium.size(of: 12)
             }
+            
+            enum AvatarActionsModal {
+                static let label = PlusJakartaSansFont.SemiBold.size(of: 20)
+                static let actionItem = PlusJakartaSansFont.Bold.size(of: 14)
+            }
         }
         
         enum Screens {
             
             static let title = InterFont.Medium.size(of: 16)
+            static let text = InterFont.Regular.size(of: 14)
             
             enum SearchScreen {
                 static let lastSearchText = InterFont.Medium.size(of: 16)

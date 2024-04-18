@@ -106,6 +106,18 @@ extension UIImage {
             return UIImage(systemName: "arrow.forward.circle")
         }
         
+        static var camera: UIImage? {
+            return UIImage(systemName: "camera")
+        }
+        
+        static var galery: UIImage? {
+            return UIImage(systemName: "photo.on.rectangle.angled")
+        }
+        
+        static var folder: UIImage? {
+            return UIImage(systemName: "folder")
+        }
+        
     }
     
     enum Images {
