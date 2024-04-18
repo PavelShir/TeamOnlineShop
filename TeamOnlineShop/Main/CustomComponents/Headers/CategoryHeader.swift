@@ -15,21 +15,19 @@ final class CategoryHeader: UICollectionReusableView, UISearchBarDelegate, Searc
 
     private let searchBar = SearchBarView()
     
-    private let DeliveryTitle: UILabel = {
-        let label = UILabel()
-        label.text = "Salatiga City, Central Java"
-        label.font = UIFont.TextFont.Element.Location.label
-        label.tintColor = UIColor(named:Colors.greyLight)
-        return label
-    }()
+    private let deliveryAddressLabel: UILabel = {
+          let label = UILabel()
+          label.text = "Delivery address: Salatiga City, Central Java"
+          label.font = UIFont.systemFont(ofSize: 14)
+          return label
+      }()
     
-    private let addressLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Delivery address: Salatiga City, Central Java"
-        label.font = UIFont.TextFont.Element.Location.address
-        label.tintColor = UIColor(named:Colors.blackLight)
-        return label
-    }()
+    private let subtitleLabel: UILabel = {
+          let label = UILabel()
+          label.text = "Salatiga City, Central Java"
+          label.font = UIFont.systemFont(ofSize: 14)
+          return label
+      }()
     
     private let bellIconImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage.Icons.bell)
@@ -56,44 +54,43 @@ final class CategoryHeader: UICollectionReusableView, UISearchBarDelegate, Searc
     
     //MARK: -> Function
     private func setViews() {
-        addSubviews(addressLabel,
-                    DeliveryTitle,
+        addSubviews(deliveryAddressLabel,
+                    subtitleLabel,
                     cartIconImageView,
                     bellIconImageView,
                     searchBar)
         
         bellIconImageView.translatesAutoresizingMaskIntoConstraints = false
-        addressLabel.translatesAutoresizingMaskIntoConstraints = false
-        DeliveryTitle.translatesAutoresizingMaskIntoConstraints = false
+        deliveryAddressLabel.translatesAutoresizingMaskIntoConstraints = false
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         bellIconImageView.translatesAutoresizingMaskIntoConstraints = false
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         cartIconImageView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            DeliveryTitle.topAnchor.constraint(equalTo: topAnchor),
-            DeliveryTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            DeliveryTitle.trailingAnchor.constraint(lessThanOrEqualTo: bellIconImageView.leadingAnchor, constant: -8),
-            DeliveryTitle.heightAnchor.constraint(equalToConstant: 15),
+            deliveryAddressLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            deliveryAddressLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            deliveryAddressLabel.trailingAnchor.constraint(lessThanOrEqualTo: bellIconImageView.leadingAnchor, constant: -8),
             
-            addressLabel.topAnchor.constraint(equalTo: DeliveryTitle.bottomAnchor, constant: 1),
-            addressLabel.leadingAnchor.constraint(equalTo: DeliveryTitle.leadingAnchor),
-            addressLabel.trailingAnchor.constraint(lessThanOrEqualTo: bellIconImageView.leadingAnchor, constant: -8),
-            
-            bellIconImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            bellIconImageView.trailingAnchor.constraint(equalTo: cartIconImageView.leadingAnchor, constant: -16),
-            bellIconImageView.heightAnchor.constraint(equalToConstant: 28),
-            bellIconImageView.widthAnchor.constraint(equalToConstant: 28),
+            deliveryAddressLabel.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 2),
+            subtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            subtitleLabel.trailingAnchor.constraint(lessThanOrEqualTo: bellIconImageView.leadingAnchor, constant: -8),
             
             cartIconImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             cartIconImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            cartIconImageView.heightAnchor.constraint(equalToConstant: 28),
-            cartIconImageView.widthAnchor.constraint(equalToConstant: 28),
+            cartIconImageView.heightAnchor.constraint(equalToConstant: 24),
+            cartIconImageView.widthAnchor.constraint(equalToConstant: 24),
             
-            searchBar.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: 15),
-            searchBar.leadingAnchor.constraint(equalTo: leadingAnchor),
-            searchBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            searchBar.heightAnchor.constraint(equalToConstant: 40),
-            searchBar.bottomAnchor.constraint(equalTo: bottomAnchor)
+            bellIconImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            bellIconImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            bellIconImageView.heightAnchor.constraint(equalToConstant: 24), // Размер можно изменить по необходимости
+            bellIconImageView.widthAnchor.constraint(equalToConstant: 24), // Размер можно изменить по необходимости
+            
+            searchBar.topAnchor.constraint(equalTo: deliveryAddressLabel.bottomAnchor, constant: 8),
+            searchBar.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            searchBar.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            searchBar.heightAnchor.constraint(equalToConstant: 44),
+            searchBar.bottomAnchor.constraint(equalTo: bottomAnchor) // Последний элемент, который прижимаем к низу хедера
         ])
     }
 
