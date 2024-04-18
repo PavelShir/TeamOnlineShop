@@ -103,7 +103,7 @@ extension UIImage {
         }
         
         static var nextSlide: UIImage? {
-            return UIImage(systemName: "arrow.forward.circle")
+            return UIImage(systemName: "arrow.right")
         }
         
         static var camera: UIImage? {
