@@ -140,6 +140,8 @@
 				D57210172BCECF93003D3246 /* DetailViewController.swift */,
 			);
 			path = DetailView;
+			sourceTree = "<group>";
+		};
 		D91360A92BCF29DA00AB6F80 /* Components */ = {
 			isa = PBXGroup;
 			children = (
