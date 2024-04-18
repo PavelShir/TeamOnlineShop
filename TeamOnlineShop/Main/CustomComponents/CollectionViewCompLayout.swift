@@ -1,36 +1,37 @@
 import UIKit
 
-public final class CollectionViewCompLayout {
-    static let headerID = "headerID"
-    static let categoryHeaderId = "categoryHeaderId"
+final class CollectionViewCompLayout {
     
-     static func createLayout() -> UICollectionViewCompositionalLayout {
+    
+    static func createLayout() -> UICollectionViewCompositionalLayout {
         
         return UICollectionViewCompositionalLayout { (sectionNumber, env) -> NSCollectionLayoutSection? in
             
-            if sectionNumber == 0 {
+            guard let sectionType = Section(rawValue: sectionNumber) else { return nil }
+            
+            switch sectionType {
+            case .categories:
                 let item = NSCollectionLayoutItem(
-                    layoutSize:
-                            .init(
-                                widthDimension: .fractionalWidth(1),
-                                heightDimension: .fractionalHeight(1)))
-                item.contentInsets.trailing = 10
-                item.contentInsets.leading = 10
+                    layoutSize: .init(
+                        widthDimension: .fractionalWidth(1),
+                        heightDimension: .fractionalHeight(1)))
+                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
                 
                 let group = NSCollectionLayoutGroup.horizontal(
-                    layoutSize:
-                            .init(
-                                widthDimension: .fractionalWidth(0.22),
-                                heightDimension: .absolute(65)
-                            ), subitems: [item])
-                
+                    layoutSize: .init(
+                        widthDimension: .fractionalWidth(0.22),
+                        heightDimension: .absolute(65)),
+                    subitems: [item])
+                           
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuous
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(200))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading)
+                section.boundarySupplementaryItems = [header]
                 return section
                 
-            } else {
-                let categoryHeaderId = "categoryHeaderId"
-                
+            case .products:
+                 
                 let item = NSCollectionLayoutItem(
                     layoutSize:
                             .init(
@@ -51,15 +52,12 @@ public final class CollectionViewCompLayout {
                     leading: 10,
                     bottom: 0,
                     trailing: 10)
-                section.boundarySupplementaryItems = [.init(
-                    layoutSize: .init(
-                        widthDimension: .fractionalWidth(1),
-                        heightDimension: .absolute(50)),
-                    elementKind: categoryHeaderId,
-                    alignment: .topLeading)]
-                return section
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
+                let productsHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading)
+                            section.boundarySupplementaryItems = [productsHeader]
+                            return section
             }
         }
     }
-    
 }

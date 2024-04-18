@@ -25,7 +25,7 @@ final class MainViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor =  .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .red
+//        collectionView.backgroundColor = .red
         return collectionView
     }()
     
@@ -43,10 +43,10 @@ final class MainViewController: UIViewController {
     // MARK: - Private funcs
     private func setupCollectionViewConstraints() {
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -15),
-            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,constant: 15),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,constant: -15)
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 15),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -15),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 15),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -15)
         ])
     }
 }

@@ -1,9 +1,9 @@
 import UIKit
 
-class CategoriesViewCell: UICollectionViewCell {
+final class CategoriesViewCell: UICollectionViewCell {
     
     // MARK: - Properties
-    static var reuseIdentifier: String {"\(Self.self)"}
+    static let reuseIdentifier = CategoriesViewCell.description()
     
     // MARK: - UI
     private lazy var imageView: UIImageView = {

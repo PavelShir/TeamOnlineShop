@@ -1,7 +1,8 @@
 import UIKit
 
-class Header: UICollectionReusableView {
+final class ProductsHeader: UICollectionReusableView {
     let label = UILabel()
+    static let reuseIdentifier = ProductsHeader.description()
     override init(frame: CGRect) {
         super.init(frame: frame)
         

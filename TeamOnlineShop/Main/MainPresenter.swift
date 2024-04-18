@@ -2,7 +2,7 @@ import Foundation
 
 protocol MainPresenterProtocol {}
 
-class MainPresenter {
+final class MainPresenter {
     
     // MARK: - Properties
     weak var view: MainViewProtocol?

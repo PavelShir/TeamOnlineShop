@@ -1,9 +1,15 @@
 import UIKit
 
-class ProductsViewCell: UICollectionViewCell {
+extension UIView {
+    func addSubviews(_ views: UIView...) {
+        views.forEach(self.addSubview(_:))
+    }
+}
+
+final class ProductsViewCell: UICollectionViewCell {
     
     // MARK: - Properties
-    static var reuseIdentifier: String {"\(Self.self)"}
+    static let reuseIdentifier = ProductsViewCell.description()
     
     // MARK: - UI
     private lazy var imageView: UIImageView = {
@@ -68,11 +74,15 @@ class ProductsViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+    }
+    
     // MARK: - Private funcs
     private func setupView(){
         
-        contentView.addSubview(imageView)
-        contentView.addSubview(VStack)
+        contentView.addSubviews(imageView,VStack)
         
         [productNameLabel,
          priceLabel,
@@ -90,7 +100,6 @@ class ProductsViewCell: UICollectionViewCell {
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
             
             VStack.topAnchor.constraint(
                 equalTo: imageView.bottomAnchor,

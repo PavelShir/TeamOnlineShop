@@ -1,6 +1,6 @@
 import UIKit
 
-class MainModuleBuilder {
+final class MainModuleBuilder {
     
     static func build() -> MainViewController {
         
