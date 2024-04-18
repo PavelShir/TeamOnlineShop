@@ -8,9 +8,11 @@ final class CategoriesViewCell: UICollectionViewCell {
     // MARK: - UI
     private lazy var imageView: UIImageView = {
         let element = UIImageView()
-        element.image = UIImage(named: "qNOjJje")
+        element.image =  UIImage.Icons.allCategories
+        element.backgroundColor = UIColor(named: "green-primary")
         element.contentMode = .scaleAspectFit
         element.clipsToBounds = true
+        element.layer.cornerRadius = 5
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -19,8 +21,7 @@ final class CategoriesViewCell: UICollectionViewCell {
         let element = UILabel()
         element.text = "Category"
         element.font = UIFont.TextFont.Screens.MainScreen.categoryTitle
-        element.textColor = UIColor(named: "grey-primary")
-        element.backgroundColor = .green
+        element.textColor = UIColor(named: Colors.greyPrimary)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
