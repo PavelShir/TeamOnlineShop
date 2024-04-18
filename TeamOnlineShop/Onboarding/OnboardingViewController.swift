@@ -32,7 +32,7 @@ class OnboardingViewController: UIViewController {
         nextBtn.addTarget(self, action: #selector(nextBtnTapped), for: .touchUpInside)
         nextBtn.translatesAutoresizingMaskIntoConstraints = false
         nextBtn.imageView?.contentMode = .center
-        nextBtn.layer.cornerRadius = 35
+        nextBtn.layer.cornerRadius = 30
         
         return nextBtn
     }()
@@ -74,13 +74,13 @@ class OnboardingViewController: UIViewController {
             
             // Констрейнты для pageControl
             pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -55),
+            pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60),
             
             // Констрейнты для nextBtn
-            nextBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            nextBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -25),
-            nextBtn.widthAnchor.constraint(equalToConstant: 70),
-            nextBtn.heightAnchor.constraint(equalToConstant: 70)
+            nextBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            nextBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
+            nextBtn.widthAnchor.constraint(equalToConstant: 60),
+            nextBtn.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
     
@@ -95,6 +95,7 @@ class OnboardingViewController: UIViewController {
             currentPage += 1
             let indexPath = IndexPath(item: currentPage, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            pageControl.currentPage = currentPage
         }
         print("Next button tapped!")
     }
