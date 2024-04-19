@@ -47,9 +47,6 @@ final class SearchBarView: UIView {
     private func setView() {
         addSubview(searchBar)
         searchBar.addSubview(searchButton)
-        searchBar.backgroundImage = UIImage()
-        
-        
     }
 
     private func setupConstraints() {
