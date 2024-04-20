@@ -1,15 +1,15 @@
 import Foundation
 
-protocol MainPresenterProtocol {}
+protocol MainPresenterImplementation {}
 
 final class MainPresenter {
     
     // MARK: - Properties
-    weak var view: MainViewProtocol?
+    weak var view: MainViewImplementation?
     
     // MARK: - Init
     
     
 }
 // MARK: - MainPresenter + MainPresenterProtocol
-extension MainPresenter: MainPresenterProtocol {}
+extension MainPresenter: MainPresenterImplementation {}

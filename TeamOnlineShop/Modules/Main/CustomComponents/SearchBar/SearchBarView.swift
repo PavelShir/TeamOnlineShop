@@ -16,11 +16,11 @@ final class SearchBarView: UIView {
         search.setImage(image, for: .search, state: .normal)
         search.delegate = self
         search.barTintColor = nil
-        search.tintColor = .gray
+        search.tintColor = UIColor(named: Colors.greyPrimary)
         search.searchTextPositionAdjustment = UIOffset(horizontal: 5, vertical: 0)
-        search.searchTextField.placeholder = "Search"
-        search.searchTextField.textColor = .gray
-        search.backgroundColor = .clear
+        search.searchTextField.placeholder = "Search here"
+        search.searchTextField.textColor = UIColor(named: Colors.greyLight)
+        search.backgroundColor = UIColor(named: Colors.whitePrimary)
         return search
     }()
 

@@ -9,15 +9,14 @@ final class CategoryHeader: UICollectionReusableView, UISearchBarDelegate, Searc
 
     var delegate: CategoryHeaderDelegate?
 
-    //MARK: -> Properties
+    //MARK: Properties
     static let reuseIdentifier = CategoryHeader.description()
-
 
     private let searchBar = SearchBarView()
     
     private let DeliveryTitle: UILabel = {
         let label = UILabel()
-        label.text = "Salatiga City, Central Java"
+        label.text = "Delivery address"
         label.font = UIFont.TextFont.Element.Location.label
         label.tintColor = UIColor(named:Colors.greyLight)
         return label
@@ -25,10 +24,19 @@ final class CategoryHeader: UICollectionReusableView, UISearchBarDelegate, Searc
     
     private let addressLabel: UILabel = {
         let label = UILabel()
-        label.text = "Delivery address: Salatiga City, Central Java"
+        label.text = "Salatiga City, Central Java"
+        label.numberOfLines = 0
         label.font = UIFont.TextFont.Element.Location.address
         label.tintColor = UIColor(named:Colors.blackLight)
         return label
+    }()
+    
+    private let downArrowButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage.Icons.chevronDown, for: .normal)
+        button.tintColor = UIColor(named: Colors.blackLight)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     private let bellIconImageView: UIImageView = {
@@ -43,7 +51,7 @@ final class CategoryHeader: UICollectionReusableView, UISearchBarDelegate, Searc
             return imageView
         }()
 
-    //MARK: -> init
+    //MARK: Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setViews()
@@ -58,6 +66,7 @@ final class CategoryHeader: UICollectionReusableView, UISearchBarDelegate, Searc
     private func setViews() {
         addSubviews(addressLabel,
                     DeliveryTitle,
+                    downArrowButton,
                     cartIconImageView,
                     bellIconImageView,
                     searchBar)
@@ -78,16 +87,21 @@ final class CategoryHeader: UICollectionReusableView, UISearchBarDelegate, Searc
             addressLabel.topAnchor.constraint(equalTo: DeliveryTitle.bottomAnchor, constant: 1),
             addressLabel.leadingAnchor.constraint(equalTo: DeliveryTitle.leadingAnchor),
             addressLabel.trailingAnchor.constraint(lessThanOrEqualTo: bellIconImageView.leadingAnchor, constant: -8),
+
+            downArrowButton.centerYAnchor.constraint(equalTo: DeliveryTitle.centerYAnchor),
+            downArrowButton.leadingAnchor.constraint(equalTo: DeliveryTitle.trailingAnchor, constant: 8),
+            downArrowButton.widthAnchor.constraint(equalToConstant: 10),
+            downArrowButton.heightAnchor.constraint(equalToConstant: 10),
             
-            bellIconImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            bellIconImageView.centerYAnchor.constraint(equalTo: addressLabel.centerYAnchor),
             bellIconImageView.trailingAnchor.constraint(equalTo: cartIconImageView.leadingAnchor, constant: -16),
             bellIconImageView.heightAnchor.constraint(equalToConstant: 28),
             bellIconImageView.widthAnchor.constraint(equalToConstant: 28),
             
             cartIconImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             cartIconImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            cartIconImageView.heightAnchor.constraint(equalToConstant: 28),
-            cartIconImageView.widthAnchor.constraint(equalToConstant: 28),
+            cartIconImageView.heightAnchor.constraint(equalToConstant: 30),
+            cartIconImageView.widthAnchor.constraint(equalToConstant: 30),
             
             searchBar.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: 15),
             searchBar.leadingAnchor.constraint(equalTo: leadingAnchor),

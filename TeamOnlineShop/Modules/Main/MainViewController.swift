@@ -1,14 +1,15 @@
 import UIKit
 
-protocol MainViewProtocol: AnyObject {}
+protocol MainViewImplementation: AnyObject {}
 
 final class MainViewController: UIViewController {
     
     // MARK: - Properties
-    private let presenter: MainPresenterProtocol
+    private let presenter: MainPresenterImplementation
     private let dataSource: MainViewCollectionDataSource
+    private var isExpanded = false
     
-    init(presenter: MainPresenterProtocol) {
+    init(presenter: MainPresenterImplementation) {
         self.presenter = presenter
         self.dataSource = .init(collectionView)
         super.init(nibName: nil, bundle: nil)
@@ -25,18 +26,21 @@ final class MainViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor =  .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-//        collectionView.backgroundColor = .red
         return collectionView
     }()
     
     // MARK: - Lifecycle
+    override func loadView() {
+        
+        super.loadView()
+        view.addSubview(collectionView)
+        setupCollectionViewConstraints()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
         collectionView.delegate = self
         view.backgroundColor = .white
-        view.addSubview(collectionView)
-        setupCollectionViewConstraints()
         
         dataSource.updateContent([])
     }
@@ -49,22 +53,37 @@ final class MainViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
+    
     // MARK: - Private funcs
     private func setupCollectionViewConstraints() {
+            
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 15),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -15),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 15),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -15)
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 35),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -10),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 10),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -10)
         ])
     }
 }
 
 // MARK: - MainViewController + MainViewProtocol
-extension MainViewController: MainViewProtocol {}
+extension MainViewController: MainViewImplementation {}
 
-extension MainViewController: UICollectionViewDelegate {}
-
+extension MainViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let section = Section(rawValue: indexPath.section),
+              section == .categories,
+              indexPath.item == 3
+        else {
+            return
+        }
+        
+        isExpanded.toggle()
+        dataSource.isExpanded = isExpanded
+        collectionView.reloadData()
+    }
+}
 
 // MARK: - Preview
 import SwiftUI

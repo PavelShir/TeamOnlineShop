@@ -21,7 +21,7 @@ class DetailViewController: UIViewController {
     private lazy var backButton: UIBarButtonItem = {
         let element = UIBarButtonItem()
         element.image = .Icons.arrowLeft
-        element.tintColor = .blackLight
+//        element.tintColor = .blackLight
         element.action = #selector(backButtonTapped)
         element.target = self
         return element
@@ -30,7 +30,7 @@ class DetailViewController: UIViewController {
     private lazy var cartButton: UIBarButtonItem = {
         let element = UIBarButtonItem()
         element.image = .Icons.cart
-        element.tintColor = .blackLight
+//        element.tintColor = .blackLight
         element.action = #selector(cartButtonTapped)
         return element
     }()
@@ -166,7 +166,7 @@ class DetailViewController: UIViewController {
         element.setTitle("Add to Cart", for: .normal)
         element.titleLabel?.font = UIFont.InterFont.Regular.size(of: 14)
         element.tintColor = UIColor(named: Colors.whitePrimary)
-        element.backgroundColor = .greenPrimary
+//        element.backgroundColor = .greenPrimary
         element.layer.cornerRadius = 4
         element.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)
         element.translatesAutoresizingMaskIntoConstraints = false
