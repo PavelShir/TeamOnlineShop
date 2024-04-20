@@ -12,7 +12,7 @@ struct CategoriesResponse: Codable {
 }
 
 struct Category: Codable {
-    let id: Int
+    let id: Int?
     let name: String
     let image: String
     
@@ -27,5 +27,17 @@ struct Category: Codable {
         id = try container.decode(Int.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         image = try container.decode(String.self, forKey: .image)
+    }
+    
+    init(name: String, image: String) {
+        self.id = nil
+        self.name = name
+        self.image = image
+    }
+    
+    init(id: Int, name: String, image: String) {
+        self.id = id
+        self.name = name
+        self.image = image
     }
 }

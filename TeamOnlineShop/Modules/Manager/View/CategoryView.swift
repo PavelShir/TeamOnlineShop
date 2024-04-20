@@ -8,12 +8,14 @@
 import UIKit
 
 protocol CategoryViewDelegate: AnyObject {
-   func saveTapped()
-   func tappedBackButton()
+    func saveTapped(category: Category)
+    func tappedBackButton()
 }
 
 final class CategoryView:  UIView {
     weak var delegate: CategoryViewDelegate?
+    
+    private var category: Category?
     
     private let title: UILabel =  LabelFactory.makeScreenTitle()
     
@@ -29,31 +31,21 @@ final class CategoryView:  UIView {
     
     private let separator = Separator()
     
-    private let actionsStack: UIStackView = {
+    private let fieldsStack: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        stackView.spacing = 25
+        stackView.distribution = .fill
+        stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
-    private let textFieldTitle: UITextField = {
-            let textField = UITextField()
-            textField.placeholder = "Title"
-            textField.borderStyle = .roundedRect
-            textField.translatesAutoresizingMaskIntoConstraints = false
-            return textField
-        }()
+    private let searchBar = CustomSearchBarView()
+    
+    private let textFieldTitle: LabeledInputView = LabeledInputView(labelText: "Title", placeholder: "Enter category title")
         
-    private let textFieldImage: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Image URL"
-        textField.borderStyle = .roundedRect
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
+    private let textFieldImage: LabeledInputView = LabeledInputView(labelText: "Image URL", placeholder: "Enter category image URL")
     
     private let actionButton: UIButton = CustomButton(label: "", size: .normal, type: .primary)
     
@@ -72,12 +64,18 @@ final class CategoryView:  UIView {
     func setViews() {
         setUpViews()
         self.backgroundColor = UIColor(named: Colors.whitePrimary)
-        [textFieldTitle, textFieldImage].forEach { actionsStack.addArrangedSubview($0) }
+        [
+            searchBar,
+            textFieldTitle,
+            textFieldImage
+        ].forEach { fieldsStack.addArrangedSubview($0) }
+        
         [
             title,
             backButton,
             separator,
-            actionsStack
+            fieldsStack,
+            actionButton
         ].forEach { addSubview($0) }
     }
     
@@ -88,14 +86,12 @@ final class CategoryView:  UIView {
             title.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 28),
             title.centerXAnchor.constraint(equalTo: self.centerXAnchor)
         ])
-        
         NSLayoutConstraint.activate([
             backButton.topAnchor.constraint(equalTo: title.topAnchor),
             backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             backButton.widthAnchor.constraint(equalToConstant: 20),
             backButton.heightAnchor.constraint(equalToConstant: 20)
         ])
-        
         NSLayoutConstraint.activate([
             separator.heightAnchor.constraint(equalToConstant: 1),
             separator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
@@ -104,9 +100,15 @@ final class CategoryView:  UIView {
         ])
         
         NSLayoutConstraint.activate([
-            actionsStack.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 20),
-            actionsStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            actionsStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+            fieldsStack.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 10),
+            fieldsStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            fieldsStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+        ])
+        NSLayoutConstraint.activate([
+            actionButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
+            actionButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            actionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            actionButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
 
@@ -121,7 +123,7 @@ final class CategoryView:  UIView {
     }
     
     @objc private func actionTapped(){
-        delegate?.saveTapped()
+        delegate?.saveTapped(category: makeCategory())
     }
     
     func setTitle(_ title: String) {
@@ -132,24 +134,30 @@ final class CategoryView:  UIView {
         switch action {
             case .add:
                 actionButton.setTitle("Add", for: .normal)
-//                searchField.isHidden = true
-//                cancelButton.isHidden = true
+                searchBar.isHidden = true
             case .update:
                 actionButton.setTitle("Save changes", for: .normal)
-//                searchField.isHidden = false
-//                cancelButton.isHidden = false
-                // Show or hide elements based on searchField's text
-//                if searchField.text?.isEmpty == false {
-//                    textFieldTitle.isHidden = false
-//                    textFieldImage.isHidden = false
-//                } else {
-//                    textFieldTitle.isHidden = true
-//                    textFieldImage.isHidden = true
-//                    // Show some message or view to indicate "use search to find category to edit"
-//                }
-        case .delete: break
-        
+                searchBar.isHidden = false
+            case .delete:
+                actionButton.setTitle("Delete", for: .normal)
+                searchBar.isHidden = false
+                textFieldTitle.isHidden = true
+                textFieldImage.isHidden = true
+            }
+    }
+    
+    func makeCategory() -> Category {
+        let title = textFieldTitle.text ?? ""
+        let imageUrl = textFieldImage.text ?? ""
+        if let categorySafe = category, let id = categorySafe.id  {
+            return Category(id: id, name: title, image: imageUrl)
         }
+        
+        return Category(name: title, image: imageUrl)
+    }
+    
+    func setSearchBarDelegate(vc: CategoryViewController) {
+        searchBar.delegate = vc
     }
     
 }

@@ -32,6 +32,7 @@ final class CategoryViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationItem.setHidesBackButton(true, animated: false)
         navigationController?.navigationBar.isHidden = true
+        self.tabBarController?.tabBar.isHidden = true
     }
     
     private func setupCustomView() {
@@ -44,12 +45,13 @@ final class CategoryViewController: UIViewController {
             customView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         customView.delegate = self
+        customView.setSearchBarDelegate(vc: self)
     }
 }
 
 extension CategoryViewController: CategoryViewDelegate {
-    func saveTapped() {
-        print("save")
+    func saveTapped(category: Category) {
+        print("save \(category)")
     }
     
     func tappedBackButton() {
@@ -59,4 +61,20 @@ extension CategoryViewController: CategoryViewDelegate {
 
 extension CategoryViewController: CategoryPresenterViewProtocol {
     
+}
+
+extension CategoryViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+        print("search for \(searchText)")
+        // send to presenter
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
 }
