@@ -47,33 +47,28 @@ final class ManagerViewController: UIViewController {
 
 //MARK: - ManagerViewDelegate
 extension ManagerViewController: ManagerViewDelegate {
-    func addCategoryTapped() {
-        print("add cat")
+    func addCategoryTapped(label: String) {
+        self.presenter.goToAddCategory(label: label)
     }
     
-    func updateCategoryTapped() {
-        print("upd cat")
-        
+    func updateCategoryTapped(label: String) {
+        self.presenter.goToUpdateCategory(label: label)
     }
     
-    func deleteCategoryTapped() {
-        print("del cat")
-        
+    func deleteCategoryTapped(label: String) {
+        self.presenter.goToDeleteCategory(label: label)
     }
     
-    func addProductTapped() {
-        print("add pro")
-        
+    func addProductTapped(label: String) {
+        self.presenter.goToAddProduct(label: label)
     }
     
-    func updateProductTapped() {
-        print("upd pro")
-        
+    func updateProductTapped(label: String) {
+        self.presenter.goToUpdateProduct(label: label)
     }
     
-    func deleteProductTapped() {
-        print("del pro")
-        
+    func deleteProductTapped(label: String) {
+        self.presenter.goToDeleteProduct(label: label)
     }
 }
 

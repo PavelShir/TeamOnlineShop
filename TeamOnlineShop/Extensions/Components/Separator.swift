@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Separator: UIView {
+final class Separator: UIView {
     init() {
         super.init(frame: .zero)
         

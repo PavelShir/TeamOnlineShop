@@ -8,28 +8,19 @@
 import UIKit
 
 protocol ManagerViewDelegate: AnyObject {
-    func addCategoryTapped()
-    func updateCategoryTapped()
-    func deleteCategoryTapped()
+    func addCategoryTapped(label: String)
+    func updateCategoryTapped(label: String)
+    func deleteCategoryTapped(label: String)
     
-    func addProductTapped()
-    func updateProductTapped()
-    func deleteProductTapped()
+    func addProductTapped(label: String)
+    func updateProductTapped(label: String)
+    func deleteProductTapped(label: String)
 }
 
 final class ManagerView: UIView {
     weak var delegate: ManagerViewDelegate?
     
-    private let title: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor(named: Colors.blackPrimary)
-        label.numberOfLines = 1
-        label.font = UIFont.TextFont.Screens.title
-        label.lineBreakMode = .byTruncatingTail
-        label.sizeToFit()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let title: UILabel = LabelFactory.makeScreenTitle()
     
     private let separator = Separator()
     
@@ -117,42 +108,27 @@ final class ManagerView: UIView {
         deleteProductBtn.addTarget(nil, action: #selector(deleteProductTapped), for: .touchUpInside)
     }
     
-    @objc private func addCategoryTapped(){
-        delegate?.addCategoryTapped()
+    @objc private func addCategoryTapped(_ sender: CustomButton){
+        delegate?.addCategoryTapped(label: sender.titleLabel?.text ?? "")
     }
     
-    @objc private func updateCategoryTapped(){
-        delegate?.updateCategoryTapped()
+    @objc private func updateCategoryTapped(_ sender: CustomButton){
+        delegate?.updateCategoryTapped(label: sender.titleLabel?.text ?? "")
     }
     
-    @objc private func deleteCategoryTapped(){
-        delegate?.deleteCategoryTapped()
+    @objc private func deleteCategoryTapped(_ sender: CustomButton){
+        delegate?.deleteCategoryTapped(label: sender.titleLabel?.text ?? "")
     }
     
-    @objc private func addProductTapped(){
-        delegate?.addProductTapped()
+    @objc private func addProductTapped(_ sender: CustomButton){
+        delegate?.addProductTapped(label: sender.titleLabel?.text ?? "")
     }
     
-    @objc private func updateProductTapped(){
-        delegate?.updateProductTapped()
+    @objc private func updateProductTapped(_ sender: CustomButton){
+        delegate?.updateProductTapped(label: sender.titleLabel?.text ?? "")
     }
     
-    @objc private func deleteProductTapped(){
-        delegate?.deleteProductTapped()
-    }
-}
-
-extension ManagerView {
-    private func makeButton(with label: String) -> UIButton {
-        let button = UIButton()
-        
-        button.setTitle(label, for: .normal)
-        button.titleLabel?.font = UIFont.TextFont.Element.Button.normal
-        button.setTitleColor(UIColor(named: Colors.whitePrimary), for: .normal)
-        button.backgroundColor = UIColor(named: Colors.greenPrimary)
-        button.layer.cornerRadius = 4
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        return button
+    @objc private func deleteProductTapped(_ sender: CustomButton){
+        delegate?.deleteProductTapped(label: sender.titleLabel?.text ?? "")
     }
 }

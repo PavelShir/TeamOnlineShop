@@ -9,7 +9,7 @@ import UIKit
 
 
 
-class CustomButton: UIButton {
+final class CustomButton: UIButton {
     enum Size {
        case small
        case normal

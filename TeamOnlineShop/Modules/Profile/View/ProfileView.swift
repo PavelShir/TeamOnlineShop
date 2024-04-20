@@ -16,16 +16,7 @@ protocol ProfileViewDelegate: AnyObject {
 final class ProfileView: UIView {
     weak var delegate: ProfileViewDelegate?
     
-    private let title: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor(named: Colors.blackPrimary)
-        label.numberOfLines = 1
-        label.font = UIFont.TextFont.Screens.title
-        label.lineBreakMode = .byTruncatingTail
-        label.sizeToFit()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let title: UILabel =  LabelFactory.makeScreenTitle()
     
     private let separator = Separator()
     
