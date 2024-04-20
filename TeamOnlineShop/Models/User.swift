@@ -11,6 +11,12 @@ enum UserType: String, Codable {
     case user
     case manager
 }
+enum Location: String {
+    case America
+    case Europe
+    case Russia
+    case Other
+}
 
 struct User {
     let id: String
@@ -20,6 +26,7 @@ struct User {
     var type: String = UserType.user.rawValue
     var cart: [Product] = []
     var wishList: [Product] = []
+    var location: String = Location.America.rawValue
     
 }
 
@@ -32,6 +39,8 @@ extension User: Codable {
         image = try container.decode(String.self, forKey: .image)
         cart = try container.decode([Product].self, forKey: .cart)
         wishList = try container.decode([Product].self, forKey: .wishList)
+        location = try container.decode(String.self, forKey: .location)
+        type = try container.decode(String.self, forKey: .type)
     }
 }
 
@@ -40,3 +49,5 @@ extension User {
         return try JSONEncoder().encode(self)
     }
 }
+
+
