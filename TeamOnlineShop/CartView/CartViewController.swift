@@ -22,25 +22,38 @@ class CartViewController: UIViewController {
         return element
     }()
     
-    private lazy var cartButton: UIBarButtonItem = {
-        let element = UIBarButtonItem()
-        element.image = .Icons.cart
-        element.tintColor = .blackLight
-//        element.action = #selector(cartButtonTapped)
+    private lazy var badgeCount: UILabel = {
+        let element = UILabel(frame: CGRect(x: 22, y: -03, width: 14, height: 14))
+        element.layer.borderColor = UIColor.clear.cgColor
+        element.layer.borderWidth = 2
+        element.layer.cornerRadius = element.bounds.size.height / 2
+        element.textAlignment = .center
+        element.layer.masksToBounds = true
+        element.textColor = .white
+        element.font = UIFont.TextFont.Element.TabBar.label
+        element.backgroundColor = .redLight
+        element.text = "3"
         return element
     }()
-    
-    private lazy var countCart: UILabel = {
-        let element = UILabel()
 
-        element.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var cartButton: UIButton = {
+        let element = UIButton(frame: CGRect(x: 0, y: 0, width: 35, height: 30))
+        element.setBackgroundImage(UIImage(systemName: "cart"), for: .normal)
+        element.tintColor = .black
+//        element.addTarget(self, action: #selector(self.onBtnNotification), for: .touchUpInside)
+        element.addSubview(badgeCount)
+        return element
+    }()
+
+    private lazy var cartButtonWithBadge: UIBarButtonItem = {
+        let element = UIBarButtonItem(customView: cartButton)
         return element
     }()
     
     private func setNavigationBar() {
         title = "Your Cart"
         navigationItem.leftBarButtonItem = backButton
-        navigationItem.rightBarButtonItem = cartButton
+        navigationItem.rightBarButtonItem = cartButtonWithBadge
 
     }
     
