@@ -8,77 +8,87 @@
 import UIKit
 
 class LoginViewController: UIViewController {
+    
+    let loginTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "login"
+        textField.layer.borderWidth = 1.0
+        textField.layer.borderColor = UIColor.darkGray.cgColor
+        textField.layer.cornerRadius = 15
+        let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
+        textField.leftView = leftPaddingView
+        textField.leftViewMode = .always
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    
+    let passwordTextField: UITextField = {
+        let textField = UITextField(picName: "eye", isSecure: true)
+        textField.placeholder = "password"
+        textField.isSecureTextEntry = true
+        textField.layer.borderWidth = 1.0
+        textField.layer.borderColor = UIColor.darkGray.cgColor
+        textField.translatesAutoresizingMaskIntoConstraints = false
         
-        let loginTextField: UITextField = {
-            let textField = UITextField()
-            textField.placeholder = "login"
-            textField.layer.borderWidth = 1.0
-            textField.layer.borderColor = UIColor.darkGray.cgColor
-            textField.layer.cornerRadius = 15
-            let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
-            textField.leftView = leftPaddingView
-            textField.leftViewMode = .always
-            textField.translatesAutoresizingMaskIntoConstraints = false
-            return textField
-        }()
-        
-        let passwordTextField: UITextField = {
-            let textField = UITextField(picName: "eye", isSecure: true)
-            textField.placeholder = "password"
-            textField.isSecureTextEntry = true
-            textField.layer.borderWidth = 1.0
-            textField.layer.borderColor = UIColor.darkGray.cgColor
-            textField.translatesAutoresizingMaskIntoConstraints = false
-            
-            return textField
-        }()
-        
-        
-        
-        let loginButton: UIButton = {
-            let button = UIButton(type: .system)
-            button.setTitle("Войти", for: .normal)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            return button
-        }()
-        
-        let registerButton: UIButton = {
-            let button = UIButton(type: .system)
-            button.setTitle("Зарегистрироваться", for: .normal)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            return button
-        }()
+        return textField
+    }()
+    
+    
+    
+    let loginButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Войти", for: .normal)
+        button.backgroundColor = UIColor(named: Colors.greenPrimary)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.layer.cornerRadius = 30
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    let registerButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Зарегистрироваться", for: .normal)
+        button.setTitleColor(UIColor(named: Colors.greenPrimary), for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
     let loginLabel: UILabel = {
-            let label = UILabel()
-            label.text = "Введите логин"
-            label.translatesAutoresizingMaskIntoConstraints = false
-            return label
-        }()
-        
-        let passwordLabel: UILabel = {
-            let label = UILabel()
-            label.text = "Пароль"
-            label.translatesAutoresizingMaskIntoConstraints = false
-            return label
-        }()
-        
-        let registerLabel: UILabel = {
-            let label = UILabel()
-            label.text = "У вас еще нет аккаунта?"
-            label.translatesAutoresizingMaskIntoConstraints = false
-            return label
-        }()
-        
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            view.backgroundColor = .white
-            setViewsHierarchie()
-            
-            setViewsLayouts()
+        let label = UILabel()
+        label.text = "Введите логин"
+        label.textColor = .gray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
-            registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
-        }
+    let passwordLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Пароль"
+        label.textColor = .gray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let registerLabel: UILabel = {
+        let label = UILabel()
+        label.text = "У вас еще нет аккаунта?"
+        label.textColor = .gray
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+        
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        setViewsHierarchie()
+        
+        setViewsLayouts()
+        
+        registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
+    }
         
     func setViewsHierarchie() {
        
@@ -103,21 +113,22 @@ class LoginViewController: UIViewController {
             loginTextField.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 5),
             loginTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             loginTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            loginTextField.heightAnchor.constraint(equalToConstant: 50),
             
-            passwordLabel.topAnchor.constraint(equalTo: loginTextField.bottomAnchor, constant: 20),
+            passwordLabel.topAnchor.constraint(equalTo: loginTextField.bottomAnchor, constant: 10),
             passwordLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
             passwordTextField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 5),
             passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-
-            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
+            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 30),
             loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            loginButton.heightAnchor.constraint(equalToConstant: 60),
             
             registerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            registerLabel.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 20),
+            registerLabel.bottomAnchor.constraint(equalTo: registerButton.topAnchor, constant: 5),
             
             registerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             registerButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
