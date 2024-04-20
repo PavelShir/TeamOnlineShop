@@ -36,6 +36,7 @@
 		D92F92F02BD408A200EF7B59 /* ManagerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92F92E52BD408A200EF7B59 /* ManagerBuilder.swift */; };
 		D92F92F12BD408A200EF7B59 /* ManagerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92F92E72BD408A200EF7B59 /* ManagerRouter.swift */; };
 		D92F92F22BD408A200EF7B59 /* ManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92F92E92BD408A200EF7B59 /* ManagerViewController.swift */; };
+		D92F92F42BD4207F00EF7B59 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92F92F32BD4207F00EF7B59 /* CustomButton.swift */; };
 		D94DA3AD2BCEE2B800746127 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94DA3A32BCEE2B800746127 /* ProfilePresenter.swift */; };
 		D94DA3AE2BCEE2B800746127 /* ProfileBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94DA3A52BCEE2B800746127 /* ProfileBuilder.swift */; };
 		D94DA3AF2BCEE2B800746127 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94DA3A72BCEE2B800746127 /* ProfileViewController.swift */; };
@@ -92,6 +93,7 @@
 		D92F92E52BD408A200EF7B59 /* ManagerBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerBuilder.swift; sourceTree = "<group>"; };
 		D92F92E72BD408A200EF7B59 /* ManagerRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerRouter.swift; sourceTree = "<group>"; };
 		D92F92E92BD408A200EF7B59 /* ManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerViewController.swift; sourceTree = "<group>"; };
+		D92F92F32BD4207F00EF7B59 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		D94DA3A32BCEE2B800746127 /* ProfilePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
 		D94DA3A52BCEE2B800746127 /* ProfileBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileBuilder.swift; sourceTree = "<group>"; };
 		D94DA3A72BCEE2B800746127 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				D91360AE2BCF2C2C00AB6F80 /* Separator.swift */,
+				D92F92F32BD4207F00EF7B59 /* CustomButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -293,6 +296,14 @@
 			children = (
 			);
 			path = images;
+			sourceTree = "<group>";
+		};
+		D92F92CB2BD3E8F300EF7B59 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				D92F92CC2BD3E90900EF7B59 /* TabBarController.swift */,
+			);
+			path = TabBar;
 			sourceTree = "<group>";
 		};
 		D92F92DC2BD4037200EF7B59 /* Manager */ = {
@@ -345,14 +356,6 @@
 				D92F92E92BD408A200EF7B59 /* ManagerViewController.swift */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		D92F92CB2BD3E8F300EF7B59 /* TabBar */ = {
-			isa = PBXGroup;
-			children = (
-				D92F92CC2BD3E90900EF7B59 /* TabBarController.swift */,
-			);
-			path = TabBar;
 			sourceTree = "<group>";
 		};
 		D94DA3A22BCEE04A00746127 /* Profile */ = {
@@ -599,6 +602,7 @@
 				31910D1F2BCF2CE500655CB3 /* LoginViewController.swift in Sources */,
 				D94DA3C02BCEE31300746127 /* TermsAndConditionsRouter.swift in Sources */,
 				D94DA3AD2BCEE2B800746127 /* ProfilePresenter.swift in Sources */,
+				D92F92F42BD4207F00EF7B59 /* CustomButton.swift in Sources */,
 				D94DA3BD2BCEE31300746127 /* TermsAndConditionsBuilder.swift in Sources */,
 				310D02762BCC7B5500048312 /* SceneDelegate.swift in Sources */,
 				B65CEDC62BCE771F00EA373A /* MainViewController.swift in Sources */,

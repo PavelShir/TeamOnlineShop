@@ -48,27 +48,32 @@ final class ManagerViewController: UIViewController {
 //MARK: - ManagerViewDelegate
 extension ManagerViewController: ManagerViewDelegate {
     func addCategoryTapped() {
-        <#code#>
+        print("add cat")
     }
     
     func updateCategoryTapped() {
-        <#code#>
+        print("upd cat")
+        
     }
     
     func deleteCategoryTapped() {
-        <#code#>
+        print("del cat")
+        
     }
     
     func addProductTapped() {
-        <#code#>
+        print("add pro")
+        
     }
     
     func updateProductTapped() {
-        <#code#>
+        print("upd pro")
+        
     }
     
     func deleteProductTapped() {
-        <#code#>
+        print("del pro")
+        
     }
 }
 
