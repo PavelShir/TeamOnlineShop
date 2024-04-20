@@ -67,7 +67,7 @@ class OnboardingViewController: UIViewController {
     func setupViewLayaut() {
         NSLayoutConstraint.activate([
             // Констрейнты для collectionView
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.8),
