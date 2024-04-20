@@ -79,19 +79,19 @@ class LoginViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setViewsHierarchie()
-        
         setViewsLayouts()
         
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
     }
-        
+    
     func setViewsHierarchie() {
-       
+        
         view.addSubview(loginLabel)
         view.addSubview(loginTextField)
         view.addSubview(passwordLabel)
@@ -99,8 +99,6 @@ class LoginViewController: UIViewController {
         view.addSubview(loginButton)
         view.addSubview(registerLabel)
         view.addSubview(registerButton)
-        
-        
     }
     
     func setViewsLayouts() {
@@ -132,14 +130,18 @@ class LoginViewController: UIViewController {
             
             registerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             registerButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
-            
         ])
     }
     
     @objc func registerButtonTapped() {
         // Код для перехода на экран регистрации
     }
-
+    
+    @objc func loginButtonTapped() {
+        let tabBarVC = TabBarController()
+        tabBarVC.modalPresentationStyle = .fullScreen
+        present(tabBarVC, animated: true)
+    }
 }
 
 extension UITextField {
