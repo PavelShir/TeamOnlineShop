@@ -78,6 +78,10 @@ extension UIImage {
             return UIImage(systemName: "plus.circle")
         }
         
+        static var trashCircle: UIImage? {
+            return UIImage(systemName: "trash.circle")
+        }
+        
         static var edit: UIImage? {
             return UIImage(systemName: "pencil.circle")
         }

@@ -10,7 +10,7 @@ import UIKit
 class DetailViewController: UIViewController {
     
     //Временные значения
-    let imageName = "airPodsMaximage"
+    let imageName = "CellImage"
     let name = "Air pods max by Apple"
     let price = "$ 1999,99"
     let nameDescription = "Description of product"
@@ -96,10 +96,10 @@ class DetailViewController: UIViewController {
         return element
     }()
     
-    private lazy var nameLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let element = UILabel()
         element.text = name
-        element.font = UIFont.InterFont.Regular.size(of: 16)
+        element.font = UIFont.TextFont.Screens.ProductDetail.title
         element.tintColor = UIColor(named: Colors.blackLight)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
@@ -108,7 +108,7 @@ class DetailViewController: UIViewController {
     private lazy var priceLabel: UILabel = {
         let element = UILabel()
         element.text = price
-        element.font = UIFont.InterFont.Regular.size(of: 18)
+        element.font = UIFont.TextFont.Screens.ProductDetail.price
         element.tintColor = UIColor(named: Colors.blackLight)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
@@ -128,7 +128,7 @@ class DetailViewController: UIViewController {
     private lazy var nameDescriptionLabel: UILabel = {
         let element = UILabel()
         element.text = nameDescription
-        element.font = UIFont.InterFont.Regular.size(of: 16)
+        element.font = UIFont.TextFont.Screens.ProductDetail.descriptionLabel
         element.tintColor = UIColor(named: Colors.blackLight)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
@@ -138,7 +138,7 @@ class DetailViewController: UIViewController {
         let element = UILabel()
         element.text = text
         element.numberOfLines = 0
-        element.font = UIFont.InterFont.Regular.size(of: 12)
+        element.font = UIFont.TextFont.Screens.ProductDetail.descriptionText
         element.tintColor = UIColor(named: Colors.blackLight)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
@@ -164,7 +164,7 @@ class DetailViewController: UIViewController {
     private lazy var addToCartButton: UIButton = {
         let element = UIButton(type: .system)
         element.setTitle("Add to Cart", for: .normal)
-        element.titleLabel?.font = UIFont.InterFont.Regular.size(of: 14)
+        element.titleLabel?.font = UIFont.TextFont.Element.Button.normal
         element.tintColor = UIColor(named: Colors.whitePrimary)
 //        element.backgroundColor = .greenPrimary
         element.layer.cornerRadius = 4
@@ -176,7 +176,7 @@ class DetailViewController: UIViewController {
     private lazy var buyNowButton: UIButton = {
         let element = UIButton(type: .system)
         element.setTitle("Buy Now", for: .normal)
-        element.titleLabel?.font = UIFont.InterFont.Regular.size(of: 14)
+        element.titleLabel?.font = UIFont.TextFont.Element.Button.normal
         element.tintColor = UIColor(named: Colors.blackLight)
         element.tintColor = .black
         element.backgroundColor = UIColor(named: Colors.greyLighter)
@@ -218,7 +218,7 @@ class DetailViewController: UIViewController {
         horizontalStack.addArrangedSubview(verticalStack)
         horizontalStack.addArrangedSubview(wishListButton)
         
-        verticalStack.addArrangedSubview(nameLabel)
+        verticalStack.addArrangedSubview(titleLabel)
         verticalStack.addArrangedSubview(priceLabel)
         
         contentView.addSubview(nameDescriptionLabel)
