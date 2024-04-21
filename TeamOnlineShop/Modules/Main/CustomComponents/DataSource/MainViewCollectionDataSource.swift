@@ -4,7 +4,7 @@ final class MainViewCollectionDataSource: NSObject {
     
     // MARK: - Properties
     private let collectionView: UICollectionView
-    var isExpanded = false 
+    var isExpanded = false
    
     // MARK: - Init
     init(_ collectionView: UICollectionView) {
@@ -44,7 +44,7 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
         
         switch sectionType {
         case .categories:
-            return isExpanded ? 8 : 4
+            return isExpanded ? 20 : 5
         case .products:
             return 10
         }

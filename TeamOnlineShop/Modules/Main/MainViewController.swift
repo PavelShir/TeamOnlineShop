@@ -22,7 +22,7 @@ final class MainViewController: UIViewController {
     
     // MARK: - UI
     private let collectionView: UICollectionView = {
-        let layout = CollectionViewCompLayout.createLayout()
+        let layout = CollectionViewCompLayout.createLayout(isExpanded: false)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor =  .white
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -72,19 +72,21 @@ extension MainViewController: MainViewImplementation {}
 extension MainViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let section = Section(rawValue: indexPath.section),
-              section == .categories,
-              indexPath.item == 3
-        else {
-            return
-        }
         
-        isExpanded.toggle()
-        dataSource.isExpanded = isExpanded
-        collectionView.reloadData()
+        if indexPath.section == Section.categories.rawValue && indexPath.item == 4 {
+            
+            isExpanded.toggle()
+            dataSource.isExpanded = isExpanded 
+            collectionView.setCollectionViewLayout(
+                CollectionViewCompLayout.createLayout(isExpanded: isExpanded),
+                animated: true)
+            collectionView.performBatchUpdates({
+                let indexSet = IndexSet(integer: indexPath.section)
+                collectionView.reloadSections(indexSet)
+            }, completion: nil)
+        }
     }
 }
-
 // MARK: - Preview
 import SwiftUI
 

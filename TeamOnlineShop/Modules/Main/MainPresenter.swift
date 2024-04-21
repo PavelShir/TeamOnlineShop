@@ -7,9 +7,11 @@ final class MainPresenter {
     // MARK: - Properties
     weak var view: MainViewImplementation?
     
-    // MARK: - Init
-    
-    
+    var categoriesArray = [ProductCategory]()
+
 }
 // MARK: - MainPresenter + MainPresenterProtocol
-extension MainPresenter: MainPresenterImplementation {}
+extension MainPresenter: MainPresenterImplementation {
+    
+    func 
+}
