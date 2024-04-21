@@ -11,7 +11,7 @@ struct CategoriesResponse: Codable {
     var results: [Category]
 }
 
-struct Category: Codable {
+struct Category: Codable, Equatable {
     let id: Int?
     let name: String
     let image: String

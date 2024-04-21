@@ -54,7 +54,7 @@ final class ProductView:  UIView {
         
     private let textFieldPrice: LabeledInputView = LabeledInputView(labelText: "Price", placeholder: "Enter product price")
     
-    private lazy var textFieldCategory: LabeledPickerView = LabeledPickerView(labelText: "Category", options: categories)
+    private lazy var textFieldCategory: LabeledDropdownView = LabeledDropdownView(labelText: "Category", options: categories)
         
     private let textFieldDescription: LabeledTextView = LabeledTextView(labelText: "Description", placeholder: "Enter product description")
     private let textFieldImage: LabeledTextView = LabeledTextView(labelText: "Images", placeholder: "Enter product images URL")

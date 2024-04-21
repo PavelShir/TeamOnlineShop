@@ -39,6 +39,14 @@ class LabeledTextView: UIView {
         return input
     }()
     
+    private let clearButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "multiply.circle.fill"), for: .normal)
+        button.tintColor = UIColor(named: Colors.greyPrimary)?.withAlphaComponent(0.5)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let hStack: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -62,6 +70,7 @@ class LabeledTextView: UIView {
         set {
             textView.text = newValue
             placeholderLabel.isHidden = !textView.text.isEmpty
+            clearButton.isHidden = textView.text.isEmpty
         }
     }
     
@@ -87,6 +96,13 @@ class LabeledTextView: UIView {
     
     @objc private func textViewDidChange(_ notification: Notification) {
         placeholderLabel.isHidden = !textView.text.isEmpty
+        clearButton.isHidden = textView.text.isEmpty
+    }
+    
+    @objc private func clearText() {
+        textView.text = ""
+        placeholderLabel.isHidden = false
+        clearButton.isHidden = true
     }
     
     private func setupLabel(text: String) {
@@ -95,14 +111,21 @@ class LabeledTextView: UIView {
     
     private func setupTextView(placeholder: String) {
         textView.addSubview(placeholderLabel)
+        textView.addSubview(clearButton)
         placeholderLabel.text = placeholder
         placeholderLabel.numberOfLines = 0
         placeholderLabel.font = textView.font
+        clearButton.addTarget(self, action: #selector(clearText), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor, constant: 10),
             placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor, constant: 10),
-            placeholderLabel.trailingAnchor.constraint(equalTo: textView.trailingAnchor, constant: -5)
+            
+            // Кнопка не отображается
+            clearButton.topAnchor.constraint(equalTo: textView.topAnchor, constant: 10),
+            clearButton.trailingAnchor.constraint(equalTo: textView.trailingAnchor, constant: -10),
+            clearButton.widthAnchor.constraint(equalToConstant: 15),
+            clearButton.heightAnchor.constraint(equalToConstant: 15)
         ])
     }
     

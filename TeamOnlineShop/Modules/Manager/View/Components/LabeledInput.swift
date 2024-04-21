@@ -24,6 +24,7 @@ class LabeledInputView: UIView {
     private let textField: UITextField = {
         let input = UITextField()
         input.borderStyle = .roundedRect
+        input.clearButtonMode = .always
         input.textColor = UIColor(named: Colors.blackPrimary)
         input.font =  UIFont.TextFont.Screens.ManagerScreen.propertyValue
         input.translatesAutoresizingMaskIntoConstraints = false
