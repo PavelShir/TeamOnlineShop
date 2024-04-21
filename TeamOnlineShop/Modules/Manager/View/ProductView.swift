@@ -1,5 +1,5 @@
 //
-//  CategoryView.swift
+//  ProductView.swift
 //  TeamOnlineShop
 //
 //  Created by  Maksim Stogniy on 20.04.2024.
@@ -7,15 +7,22 @@
 
 import UIKit
 
-protocol CategoryViewDelegate: AnyObject {
-    func saveTapped(category: Category)
+protocol ProductViewDelegate: AnyObject {
+    func saveTapped(product: Product)
     func tappedBackButton()
 }
 
-final class CategoryView:  UIView {
-    weak var delegate: CategoryViewDelegate?
+final class ProductView:  UIView {
+    weak var delegate: ProductViewDelegate?
     
-    private var category: Category?
+    private var product: Product?
+    
+    // Replace it with real categories
+    private var categories: [Category] = [
+        Category(id: 1, name: "cat 1", image: ""),
+        Category(id: 2, name: "cat 2", image: ""),
+        Category(id: 3, name: "cat 3", image: "")
+    ]
     
     private let title: UILabel =  LabelFactory.makeScreenTitle()
     
@@ -43,9 +50,14 @@ final class CategoryView:  UIView {
     
     private let searchBar = CustomSearchBarView()
     
-    private let textFieldTitle: LabeledInputView = LabeledInputView(labelText: "Title", placeholder: "Enter category title")
+    private let textFieldTitle: LabeledInputView = LabeledInputView(labelText: "Title", placeholder: "Enter product title")
         
-    private let textFieldImage: LabeledInputView = LabeledInputView(labelText: "Image URL", placeholder: "Enter category image URL")
+    private let textFieldPrice: LabeledInputView = LabeledInputView(labelText: "Price", placeholder: "Enter product price")
+    
+    private lazy var textFieldCategory: LabeledPickerView = LabeledPickerView(labelText: "Category", options: categories)
+        
+    private let textFieldDescription: LabeledTextView = LabeledTextView(labelText: "Description", placeholder: "Enter product description")
+    private let textFieldImage: LabeledTextView = LabeledTextView(labelText: "Images", placeholder: "Enter product images URL")
     
     private let actionButton: UIButton = CustomButton(label: "", size: .normal, type: .primary)
     
@@ -67,6 +79,9 @@ final class CategoryView:  UIView {
         [
             searchBar,
             textFieldTitle,
+            textFieldPrice,
+            textFieldCategory,
+            textFieldDescription,
             textFieldImage
         ].forEach { fieldsStack.addArrangedSubview($0) }
         
@@ -123,20 +138,27 @@ final class CategoryView:  UIView {
     }
     
     @objc private func actionTapped(){
-        delegate?.saveTapped(category: makeCategory())
+        delegate?.saveTapped(product: makeProduct())
     }
     
     func setTitle(_ title: String) {
         self.title.text = title
     }
     
-    func setCategory(_ value: Category) {
-        category = value
-        textFieldTitle.text = category?.name
-        textFieldImage.text = category?.image ?? ""
+    func setCategories(_ value: [Category]) {
+        self.categories = value
     }
     
-    func configure(by action: ManagerActions.Category) {
+    func setProduct(_ value: Product) {
+        product = value
+        textFieldTitle.text = product?.title
+        textFieldPrice.text = String(describing: product?.price)
+        textFieldCategory.selectedItem = product?.category
+        textFieldDescription.text = product?.description
+        textFieldImage.text = product?.images.joined(separator: ",\n") ?? ""
+    }
+    
+    func configure(by action: ManagerActions.Product) {
         switch action {
             case .add:
                 actionButton.setTitle("Add", for: .normal)
@@ -148,21 +170,27 @@ final class CategoryView:  UIView {
                 actionButton.setTitle("Delete", for: .normal)
                 searchBar.isHidden = false
                 textFieldTitle.isHidden = true
+                textFieldPrice.isHidden = true
+                textFieldCategory.isHidden = true
+                textFieldDescription.isHidden = true
                 textFieldImage.isHidden = true
             }
     }
     
-    func makeCategory() -> Category {
+    func makeProduct() -> Product {
         let title = textFieldTitle.text ?? ""
-        let imageUrl = textFieldImage.text ?? ""
-        if let categorySafe = category, let id = categorySafe.id  {
-            return Category(id: id, name: title, image: imageUrl)
+        let price = textFieldPrice.text ?? ""
+        let category = textFieldCategory.selectedItem
+        let description = textFieldDescription.text ?? ""
+        let imagesUrl = textFieldImage.text ?? ""
+        if let productSafe = product, let id = productSafe.id, let categorySafe = category {
+            return Product(id: id, title: title, price: Int(price) ?? 0, description: description, images: [imagesUrl], category: categorySafe, categoryId: 0)
         }
         
-        return Category(name: title, image: imageUrl)
+        return Product(title: title, price: Int(price) ?? 0, description: description, images: [imagesUrl], categoryId: category?.id ?? 0)
     }
     
-    func setSearchBarDelegate(vc: CategoryViewController) {
+    func setSearchBarDelegate(vc: ProductViewController) {
         searchBar.delegate = vc
     }
     

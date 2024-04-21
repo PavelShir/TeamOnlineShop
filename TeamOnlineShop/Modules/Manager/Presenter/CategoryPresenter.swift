@@ -23,6 +23,7 @@ final class CategoryPresenter: CategoryPresenterProtocol {
     weak var view: CategoryPresenterViewProtocol?
     var router: CategoryRouterProtocol?
     var action: ManagerActions.Category
+    var category: Category?
     
     required init(router: CategoryRouterProtocol, action: ManagerActions.Category) {
         self.router = router

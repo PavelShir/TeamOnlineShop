@@ -41,3 +41,7 @@ struct Category: Codable {
         self.image = image
     }
 }
+
+extension Category: PickerViewRepresentable {
+    var pickerViewTitle: String { return name }
+}

@@ -32,14 +32,8 @@ final class ManagerRouter: ManagerRouterProtocol {
     }
     
     func pushToProduct(label: String, action: ManagerActions.Product) {
-        
-    }
-    
-    func pushToUpdateProduct(label: String, action: ManagerActions.Product) {
-        
-    }
-    
-    func pushToDeleteProduct(label: String, action: ManagerActions.Product) {
-        
+        guard let navigationVC = navigationVC else { return }
+        let categoryVC = ProductBuilder(navigationVC: navigationVC).buildProductVC(label: label, action: action)
+        navigationVC.pushViewController(categoryVC!, animated: true)
     }
 }
