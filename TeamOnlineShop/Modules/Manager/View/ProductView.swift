@@ -24,6 +24,13 @@ final class ProductView:  UIView {
         Category(id: 3, name: "cat 3", image: "")
     ]
     
+    
+    var products: [Product] = [] {
+        didSet {
+            productsTableView.reloadData()
+        }
+    }
+    
     private let title: UILabel =  LabelFactory.makeScreenTitle()
     
     private let backButton: UIButton = {
@@ -59,6 +66,13 @@ final class ProductView:  UIView {
     private let textFieldDescription: LabeledTextView = LabeledTextView(labelText: "Description", placeholder: "Enter product description")
     private let textFieldImage: LabeledTextView = LabeledTextView(labelText: "Images", placeholder: "Enter product images URL")
     
+    private let productsTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.isHidden = true
+        return tableView
+    }()
+    
     private let actionButton: UIButton = CustomButton(label: "", size: .normal, type: .primary)
     
     override init(frame: CGRect) {
@@ -90,6 +104,7 @@ final class ProductView:  UIView {
             backButton,
             separator,
             fieldsStack,
+            productsTableView,
             actionButton
         ].forEach { addSubview($0) }
     }
@@ -119,6 +134,14 @@ final class ProductView:  UIView {
             fieldsStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             fieldsStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
         ])
+        
+        NSLayoutConstraint.activate([
+            productsTableView.topAnchor.constraint(equalTo: fieldsStack.bottomAnchor, constant: 10),
+            productsTableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            productsTableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            productsTableView.bottomAnchor.constraint(lessThanOrEqualTo: actionButton.topAnchor, constant: -20),
+            productsTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: 100)
+        ])
         NSLayoutConstraint.activate([
             actionButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
             actionButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
@@ -131,6 +154,9 @@ final class ProductView:  UIView {
     private func setUpViews(){
         backButton.addTarget(nil, action: #selector(backTapped), for: .touchUpInside)
         actionButton.addTarget(nil, action: #selector(actionTapped), for: .touchUpInside)
+        productsTableView.dataSource = self
+        productsTableView.delegate = self
+        productsTableView.register(UITableViewCell.self, forCellReuseIdentifier: "ProductCell")
     }
     
     @objc private func backTapped(){
@@ -174,6 +200,7 @@ final class ProductView:  UIView {
                 textFieldCategory.isHidden = true
                 textFieldDescription.isHidden = true
                 textFieldImage.isHidden = true
+                productsTableView.isHidden = false
             }
     }
     
@@ -194,4 +221,23 @@ final class ProductView:  UIView {
         searchBar.delegate = vc
     }
     
+}
+
+extension ProductView: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return products.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for: indexPath)
+        let product = products[indexPath.row]
+        cell.textLabel?.text = product.title
+        return cell
+    }
+}
+
+extension ProductView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        product = products[indexPath.row]
+    }
 }

@@ -17,6 +17,12 @@ final class CategoryView:  UIView {
     
     private var category: Category?
     
+    var categories: [Category] = [] {
+        didSet {
+            categoriesTableView.reloadData()
+        }
+    }
+    
     private let title: UILabel =  LabelFactory.makeScreenTitle()
     
     private let backButton: UIButton = {
@@ -47,6 +53,13 @@ final class CategoryView:  UIView {
         
     private let textFieldImage: LabeledInputView = LabeledInputView(labelText: "Image URL", placeholder: "Enter category image URL")
     
+    private let categoriesTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.isHidden = true
+        return tableView
+    }()
+    
     private let actionButton: UIButton = CustomButton(label: "", size: .normal, type: .primary)
     
     override init(frame: CGRect) {
@@ -75,6 +88,7 @@ final class CategoryView:  UIView {
             backButton,
             separator,
             fieldsStack,
+            categoriesTableView,
             actionButton
         ].forEach { addSubview($0) }
     }
@@ -104,6 +118,15 @@ final class CategoryView:  UIView {
             fieldsStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             fieldsStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
         ])
+        
+        NSLayoutConstraint.activate([
+            categoriesTableView.topAnchor.constraint(equalTo: fieldsStack.bottomAnchor, constant: 10),
+            categoriesTableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            categoriesTableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            categoriesTableView.bottomAnchor.constraint(lessThanOrEqualTo: actionButton.topAnchor, constant: -20),
+            categoriesTableView.heightAnchor.constraint(greaterThanOrEqualToConstant: 100)
+        ])
+        
         NSLayoutConstraint.activate([
             actionButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
             actionButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
@@ -116,6 +139,9 @@ final class CategoryView:  UIView {
     private func setUpViews(){
         backButton.addTarget(nil, action: #selector(backTapped), for: .touchUpInside)
         actionButton.addTarget(nil, action: #selector(actionTapped), for: .touchUpInside)
+        categoriesTableView.dataSource = self
+        categoriesTableView.delegate = self
+        categoriesTableView.register(UITableViewCell.self, forCellReuseIdentifier: "CategoryCell")
     }
     
     @objc private func backTapped(){
@@ -141,14 +167,17 @@ final class CategoryView:  UIView {
             case .add:
                 actionButton.setTitle("Add", for: .normal)
                 searchBar.isHidden = true
+                categoriesTableView.isHidden = true
             case .update:
                 actionButton.setTitle("Save changes", for: .normal)
                 searchBar.isHidden = false
+                categoriesTableView.isHidden = true
             case .delete:
                 actionButton.setTitle("Delete", for: .normal)
                 searchBar.isHidden = false
                 textFieldTitle.isHidden = true
                 textFieldImage.isHidden = true
+                categoriesTableView.isHidden = false
             }
     }
     
@@ -166,4 +195,23 @@ final class CategoryView:  UIView {
         searchBar.delegate = vc
     }
     
+}
+
+extension CategoryView: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return categories.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        let category = categories[indexPath.row]
+        cell.textLabel?.text = category.name
+        return cell
+    }
+}
+
+extension CategoryView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        category = categories[indexPath.row]
+    }
 }

@@ -51,7 +51,7 @@ final class CategoryViewController: UIViewController {
 
 extension CategoryViewController: CategoryViewDelegate {
     func saveTapped(category: Category) {
-        print("save \(category)")
+        presenter.saveChanges(category: category)
     }
     
     func tappedBackButton() {
@@ -66,8 +66,7 @@ extension CategoryViewController: CategoryPresenterViewProtocol {
 extension CategoryViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchText = searchBar.text, !searchText.isEmpty else { return }
-        print("search for \(searchText)")
-        // send to presenter
+        presenter.searchCategories(query: searchText)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

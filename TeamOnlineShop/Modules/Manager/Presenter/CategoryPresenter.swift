@@ -17,6 +17,8 @@ protocol CategoryPresenterProtocol: AnyObject {
     
     init(router: CategoryRouterProtocol, action: ManagerActions.Category)
     func dismissCategoryVC()
+    func saveChanges(category: Category)
+    func searchCategories(query: String)
 }
 
 final class CategoryPresenter: CategoryPresenterProtocol {
@@ -32,5 +34,16 @@ final class CategoryPresenter: CategoryPresenterProtocol {
     
     func dismissCategoryVC() {
         router?.dismissCategoryVC()
+    }
+    
+    func saveChanges(category: Category) {
+        // call here network method with category and action
+    }
+    
+    func searchCategories(query: String) {
+        // call here network method with query to find categories
+        // after set products to view base on action
+        // if update - get first element from array
+        // if delete - all found elements
     }
 }

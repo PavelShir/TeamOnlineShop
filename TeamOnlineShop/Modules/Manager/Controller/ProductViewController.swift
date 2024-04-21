@@ -36,6 +36,7 @@ final class ProductViewController: UIViewController {
     }
     
     private func setupCustomView() {
+        // all current categories array also needed here
         customView.configure(by: presenter.action)
         view.addSubview(customView)
         NSLayoutConstraint.activate([
@@ -51,7 +52,7 @@ final class ProductViewController: UIViewController {
 
 extension ProductViewController: ProductViewDelegate {
     func saveTapped(product: Product) {
-        print("save \(product)")
+        presenter.saveChanges(product: product)
     }
     
     func tappedBackButton() {
@@ -66,8 +67,7 @@ extension ProductViewController: ProductPresenterViewProtocol {
 extension ProductViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchText = searchBar.text, !searchText.isEmpty else { return }
-        print("search for \(searchText)")
-        // send to presenter
+        presenter.searchProducts(query: searchText)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

@@ -17,6 +17,8 @@ protocol ProductPresenterProtocol: AnyObject {
     
     init(router: ProductRouterProtocol, action: ManagerActions.Product)
     func dismissProductVC()
+    func saveChanges(product: Product)
+    func searchProducts(query: String)
 }
 
 final class ProductPresenter: ProductPresenterProtocol {
@@ -32,5 +34,16 @@ final class ProductPresenter: ProductPresenterProtocol {
     
     func dismissProductVC() {
         router?.dismissProductVC()
+    }
+    
+    func saveChanges(product: Product) {
+        // call here network method with product and action
+    }
+    
+    func searchProducts(query: String) {
+        // call here network method with query to find products
+        // after set products to view base on action
+        // if update - get first element from array
+        // if delete - all found elements
     }
 }
