@@ -21,13 +21,4 @@ enum Section: Int, CaseIterable {
             return CategoryHeader.reuseIdentifier
         }
     }
-    
-    var columnCount: Int {
-        switch self {
-        case .categories:
-            return 4
-        case .products:
-            return 2
-        }
-    }
 }

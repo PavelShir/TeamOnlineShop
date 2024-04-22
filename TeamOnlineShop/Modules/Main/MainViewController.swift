@@ -1,17 +1,19 @@
 import UIKit
 
-protocol MainViewImplementation: AnyObject {}
+protocol MainViewImplementation: AnyObject {
+    func render(model: Model)
+}
 
 final class MainViewController: UIViewController {
     
     // MARK: - Properties
     private let presenter: MainPresenterImplementation
     private let dataSource: MainViewCollectionDataSource
-    private var isExpanded = false
+    var isExpanded = false
     
     init(presenter: MainPresenterImplementation) {
         self.presenter = presenter
-        self.dataSource = .init(collectionView)
+        self.dataSource = .init(collectionView, presenter: presenter)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -36,6 +38,7 @@ final class MainViewController: UIViewController {
         view.addSubview(collectionView)
         setupCollectionViewConstraints()
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,6 +46,7 @@ final class MainViewController: UIViewController {
         view.backgroundColor = .white
         
         dataSource.updateContent([])
+        presenter.fetchModel()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -56,7 +60,7 @@ final class MainViewController: UIViewController {
     
     // MARK: - Private funcs
     private func setupCollectionViewConstraints() {
-            
+        
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 35),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -10),
@@ -67,41 +71,61 @@ final class MainViewController: UIViewController {
 }
 
 // MARK: - MainViewController + MainViewProtocol
-extension MainViewController: MainViewImplementation {}
-
-extension MainViewController: UICollectionViewDelegate {
+extension MainViewController: MainViewImplementation {
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        if indexPath.section == Section.categories.rawValue && indexPath.item == 4 {
-            
-            isExpanded.toggle()
-            dataSource.isExpanded = isExpanded 
-            collectionView.setCollectionViewLayout(
-                CollectionViewCompLayout.createLayout(isExpanded: isExpanded),
-                animated: true)
-            collectionView.performBatchUpdates({
-                let indexSet = IndexSet(integer: indexPath.section)
-                collectionView.reloadSections(indexSet)
-            }, completion: nil)
-        }
+    func render(model: Model) {
+        dataSource.setRenderModel(
+            products: model.productsArray,
+            categories: model.productCategory,
+            isExpanded: model.isExpanded
+        )
+        collectionView.reloadData()
     }
 }
-// MARK: - Preview
-import SwiftUI
-
-struct MainViewControllerPreview: PreviewProvider {
-    static var previews: some View {
-        MainViewControllerContainer().edgesIgnoringSafeArea(.all)
+    
+    
+    extension MainViewController: UICollectionViewDelegate {
+        
+        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            if indexPath.section == Section.categories.rawValue {
+                let count = presenter.getCategoryArrayCount()
+                
+                let isSpecialCell = indexPath.item == (isExpanded ? count : 9)
+                
+                if isSpecialCell {
+                    isExpanded.toggle()
+                    dataSource.isExpanded = isExpanded
+                    print("Тогл сработал \(isExpanded)")
+                    
+                    collectionView.setCollectionViewLayout(
+                        CollectionViewCompLayout.createLayout(isExpanded: isExpanded),
+                        animated: true
+                    )
+                    
+                    collectionView.performBatchUpdates({
+                        collectionView.reloadSections(IndexSet(integer: indexPath.section))
+                    },  completion: { finished in
+                        print("Collection view updated. Layout is now \(self.isExpanded ? "expanded" : "collapsed").")
+                    })
+                }
+            }
+        }
     }
     
-    struct MainViewControllerContainer: UIViewControllerRepresentable {
-        func makeUIViewController(context: Context) -> MainViewController {
-            MainViewController(presenter: MainPresenter())
-        }
-        
-        func updateUIViewController(_ uiViewController: MainViewController, context: Context) {
-        }
-    }
-}
-
+    // MARK: - Preview
+//    import SwiftUI
+//
+//    struct MainViewControllerPreview: PreviewProvider {
+//        static var previews: some View {
+//            MainViewControllerContainer().edgesIgnoringSafeArea(.all)
+//        }
+//
+//        struct MainViewControllerContainer: UIViewControllerRepresentable {
+//            func makeUIViewController(context: Context) -> MainViewController {
+//                MainViewController(presenter: MainPresenter(router: <#MainRouter#>ro))
+//            }
+//
+//            func updateUIViewController(_ uiViewController: MainViewController, context: Context) {
+//            }
+//        }
+    

@@ -18,7 +18,7 @@ class PaymentsViewController: UIViewController {
     private lazy var closeButton: UIButton = {
         let element = UIButton(type: .system)
         element.setImage(UIImage.Icons.remove, for: .normal)
-        element.tintColor = .blackLight
+//        element.tintColor = .blackLight
         element.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
@@ -27,7 +27,7 @@ class PaymentsViewController: UIViewController {
     private lazy var checkImageView: UIImageView = {
         let element = UIImageView()
         element.image = UIImage(systemName: "checkmark.seal.fill")
-        element.tintColor = .greenPrimary
+//        element.tintColor = .greenPrimary
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -65,7 +65,7 @@ class PaymentsViewController: UIViewController {
         element.setTitle("Continue", for: .normal)
         element.titleLabel?.font = UIFont.TextFont.Element.Button.normal
         element.tintColor = UIColor(named: Colors.whitePrimary)
-        element.backgroundColor = .greenPrimary
+//        element.backgroundColor = .greenPrimary
         element.layer.cornerRadius = 4
         element.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         element.translatesAutoresizingMaskIntoConstraints = false

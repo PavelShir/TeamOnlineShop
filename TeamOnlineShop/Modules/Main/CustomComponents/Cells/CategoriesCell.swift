@@ -14,7 +14,7 @@ final class CategoriesViewCell: UICollectionViewCell {
         return view
     }()
     
-    private let imageView: UIImageView = {
+     let imageView: UIImageView = {
         let element = UIImageView()
         element.image = UIImage.Icons.allCategories
         element.contentMode = .scaleAspectFit
@@ -23,7 +23,7 @@ final class CategoriesViewCell: UICollectionViewCell {
         return element
     }()
     
-    private let categoryNameLabel: UILabel = {
+   let categoryNameLabel: UILabel = {
         let element = UILabel()
         element.text = "Сategory"
         element.font = UIFont.TextFont.Screens.MainScreen.categoryTitle
@@ -60,9 +60,12 @@ final class CategoriesViewCell: UICollectionViewCell {
         iconBackgroundView.addSubview(imageView)
         vStack.addArrangedSubviews(iconBackgroundView,categoryNameLabel)
         contentView.backgroundColor = UIColor(named: Colors.whitePrimary)
-        
     }
     
+     func configureCell(name: String, image: UIImage) {
+            categoryNameLabel.text = name
+            imageView.image = image
+    }
     private func setupConstraints(){
         NSLayoutConstraint.activate([
             iconBackgroundView.heightAnchor.constraint(equalToConstant: 40),
