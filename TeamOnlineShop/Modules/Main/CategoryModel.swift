@@ -19,7 +19,7 @@ struct ProductCategory {
 struct Model{
     let isExpanded: Bool
     let productCategory: [ProductCategory]
-    let productsArray: [ProductModel]
+    let productsArray: [PlatziFakeStore.Product]
     let query: String
     let address: String
 }

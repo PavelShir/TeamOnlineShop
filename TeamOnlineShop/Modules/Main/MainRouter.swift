@@ -18,5 +18,10 @@ final class MainRouter {
         let mainVC = MainModuleBuilder.build(router: self)
         navigationVC.viewControllers = [mainVC]
     }
+    
+    func showSearch(data: [Product]) {
+        let vc = SearchModuleBuilder.build(products: data)
+        navigationVC.pushViewController(vc, animated: true)
+    }
 }
 

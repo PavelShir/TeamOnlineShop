@@ -12,7 +12,7 @@ final class MainPresenter {
     // MARK: - Properties
     weak var view: MainViewImplementation?
     let router: MainRouter
-//    private let platziFakeStore: PlatziFakeStore
+//    private let platziFakeStore: PlatziStore?
     
     var categoriesArray = [ProductCategory]()
     init(router: MainRouter) {
@@ -30,39 +30,31 @@ extension MainPresenter: MainPresenterImplementation {
         MockData.mockItems
     }
     
+    
     func fetchModel() {
-          
-           let model = Model(
-               isExpanded: false,
-               productCategory: MockData.mockItems,
-               productsArray: MockData.mockProducts,
-               query: "Search",
-               address: "Delivery address"
-           )
-           view?.render(model: model)
-       }
+        
+        PlatziStore.shared.productList(limit: 20, offset: 0, completion: {
+            result in
+            switch result {
+            case .success(let products):
+                
+                let model = Model(
+                    isExpanded: false,
+                    productCategory: MockData.mockItems,
+                    productsArray: products,
+                    query: "Search",
+                    address: "Delivery address"
+                )
+                
+                DispatchQueue.main.async {
+                    self.view?.render(model: model)
+                }
+            case .failure(let error):
+                
+                print("Error fetching products: \(error)")
+                
+            }
+        })
+    }
 }
-//
-//func fetchModel() {
-//    platziFakeStore.productList { result in
-//        switch result {
-//        case .success(let products):
-//
-//            let model = Model(
-//                isExpanded: false,
-//                productCategory: MockData.mockItems,
-//                productsArray: products,
-//                query: "Search",
-//                address: "Delivery address"
-//            )
-//
-//            DispatchQueue.main.async {
-//                self.view?.render(model: model)
-//            }
-//        case .failure(let error):
-//
-//            print("Error fetching products: \(error)")
-//
-//        }
-//    }
-//}
+                                           

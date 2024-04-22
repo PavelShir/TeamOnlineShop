@@ -78,6 +78,7 @@ extension MainViewController: MainViewImplementation {
             products: model.productsArray,
             categories: model.productCategory
         )
+        
         collectionView.reloadData()
     }
 }

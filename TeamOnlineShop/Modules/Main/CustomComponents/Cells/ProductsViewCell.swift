@@ -1,19 +1,21 @@
 import UIKit
+import AsyncImageView
+import PlatziFakeStore
 
 final class ProductsViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     static let reuseIdentifier = ProductsViewCell.description()
     
+    
     // MARK: - UI
-    private let imageView: UIImageView = {
-        let element = UIImageView()
-        element.image = UIImage(named: "CellImage")
-        element.contentMode = .scaleAspectFill
-        element.clipsToBounds = true
-        element.tintColor = UIColor(named: Colors.blackLight)
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
+    private var imageView: AsyncImageView = {
+        let imageView = AsyncImageView(frame: .zero)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.tintColor = UIColor(named: Colors.blackLight)
+        return imageView
     }()
     
     private let productNameLabel: UILabel = {
@@ -28,7 +30,6 @@ final class ProductsViewCell: UICollectionViewCell {
     
     private let priceLabel: UILabel = {
         let element = UILabel()
-        element.text = "$199.99"
         element.font = UIFont.TextFont.Screens.ShopCartItem.title
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
@@ -76,12 +77,20 @@ final class ProductsViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        imageView.prepareForReuse()
+        productNameLabel.text = nil
+        priceLabel.text = nil
     }
     
     // MARK: - Global funcs
-    func configure(model: ProductModel) {
+    func configure(model: PlatziFakeStore.Product) {
         productNameLabel.text = model.title
-        priceLabel.text = model.price
+        priceLabel.text = "$\(model.price)"
+        if let firstImageUrl = model.images.first {
+               imageView.setImage(from: firstImageUrl)
+           } else {
+               imageView.image = UIImage(systemName: "photo")
+           }
     }
     
     // MARK: - Private funcs
