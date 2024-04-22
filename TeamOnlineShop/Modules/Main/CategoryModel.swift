@@ -18,7 +18,7 @@ struct ProductCategory {
 
 struct Model{
     let isExpanded: Bool
-    let productCategory: [ProductCategory]
+    let productCategory: [PlatziFakeStore.Category]
     let productsArray: [PlatziFakeStore.Product]
     let query: String
     let address: String

@@ -4,7 +4,7 @@ import PlatziFakeStore
 final class MainViewCollectionDataSource: NSObject {
     
     private var products = [PlatziFakeStore.Product]()
-    private var categories = [ProductCategory]()
+    private var categories = [PlatziFakeStore.Category]()
     var isExpanded = false
     
     // MARK: - Properties
@@ -20,7 +20,7 @@ final class MainViewCollectionDataSource: NSObject {
     
     func setRenderModel(
         products: [PlatziFakeStore.Product],
-        categories: [ProductCategory]) {
+        categories: [PlatziFakeStore.Category]) {
         self.products = products
         self.categories = categories
     }
@@ -83,11 +83,12 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
             
             if isSpecialCell {
                 let title = isExpanded ? "Hide" : "All Categories"
-                categoryCell.configureCell(name: title, image: UIImage(named: "allCategoriesIcon") ?? UIImage())
+                categoryCell.configureSpecialCell(name: title, image: UIImage(named: "allCategoriesIcon") ?? UIImage())
             } else {
                 if indexPath.item < categories.count {
                            let category = categories[indexPath.item]
-                           categoryCell.configureCell(name: category.name, image: category.image ?? UIImage())
+                           categoryCell.configure(model: category)
+//                    (name: category.name, image: category.image ?? UIImage())
                        }
             }
             

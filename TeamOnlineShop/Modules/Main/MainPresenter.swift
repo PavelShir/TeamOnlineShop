@@ -12,9 +12,10 @@ final class MainPresenter {
     // MARK: - Properties
     weak var view: MainViewImplementation?
     let router: MainRouter
-//    private let platziFakeStore: PlatziStore?
     
-    var categoriesArray = [ProductCategory]()
+    private var categoriesArray = [PlatziFakeStore.Category]()
+    private var productsArray = [PlatziFakeStore.Product]()
+    
     init(router: MainRouter) {
         self.router = router
     }
@@ -32,29 +33,42 @@ extension MainPresenter: MainPresenterImplementation {
     
     
     func fetchModel() {
-        
-        PlatziStore.shared.productList(limit: 20, offset: 0, completion: {
-            result in
-            switch result {
-            case .success(let products):
-                
-                let model = Model(
-                    isExpanded: false,
-                    productCategory: MockData.mockItems,
-                    productsArray: products,
-                    query: "Search",
-                    address: "Delivery address"
-                )
-                
-                DispatchQueue.main.async {
-                    self.view?.render(model: model)
-                }
-            case .failure(let error):
-                
-                print("Error fetching products: \(error)")
-                
-            }
-        })
+        let dispatchGroup = DispatchGroup()
+             
+             dispatchGroup.enter()
+             PlatziStore.shared.categoryList(limit: 20) { [weak self] result in
+                 defer { dispatchGroup.leave() }
+                 switch result {
+                 case .success(let categories):
+                     self?.categoriesArray = categories
+                 case .failure(let error):
+                     print("Error fetching categories: \(error)")
+                 }
+             }
+             
+             dispatchGroup.enter()
+             PlatziStore.shared.productList(limit: 20, offset: 0) { [weak self] result in
+                 defer { dispatchGroup.leave() }
+                 switch result {
+                 case .success(let products):
+                     self?.productsArray = products
+                 case .failure(let error):
+                     print("Error fetching products: \(error)")
+                 }
+             }
+             
+             dispatchGroup.notify(queue: .main) { [weak self] in
+                 guard let self = self else { return }
+                 let model = Model(
+                     isExpanded: false,
+                     productCategory: self.categoriesArray,
+                     productsArray: self.productsArray,
+                     query: "Search",
+                     address: "Delivery address"
+                 )
+                 self.view?.render(model: model)
+             }
+         }
     }
-}
+
                                            
