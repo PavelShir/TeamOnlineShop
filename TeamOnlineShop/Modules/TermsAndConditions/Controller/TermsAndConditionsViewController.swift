@@ -33,6 +33,7 @@ final class TermsAndConditionsViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationItem.setHidesBackButton(true, animated: false)
         navigationController?.navigationBar.isHidden = true
+        self.tabBarController?.tabBar.isHidden = true
     }
     
     private func setupCustomView() {

@@ -22,8 +22,11 @@ final class TabBarController: UITabBarController {
         
         tabBar.tintColor = UIColor(named: Colors.greenPrimary)
         // If user.type == 'manager' add manager controller
+        let managerVC = ManagerBuilder().buildManagerView()
+        managerVC.tabBarItem = UITabBarItem(title: "Manager", image: UIImage.Icons.manager ?? UIImage(), selectedImage: nil)
+        
         // Add wishlist here
-        viewControllers = [mainVC, profileVC]
+        viewControllers = [mainVC, managerVC, profileVC]
         
     }
     

@@ -15,17 +15,7 @@ final class TermsAndConditionsView: UIView {
     
     weak var delegate: TermsAndConditionsViewDelegate?
     
-    private let title: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = UIColor(named: Colors.blackPrimary)
-        label.numberOfLines = 1
-        label.font = UIFont.TextFont.Screens.title
-        label.lineBreakMode = .byTruncatingTail
-        label.sizeToFit()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let title: UILabel =  LabelFactory.makeScreenTitle()
     
     private lazy var termsText: UITextView = {
         let textView = UITextView()
