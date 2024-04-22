@@ -11,8 +11,8 @@ struct CategoriesResponse: Codable {
     var results: [Category]
 }
 
-struct Category: Codable {
-    let id: Int
+struct Category: Codable, Equatable {
+    let id: Int?
     let name: String
     let image: String
     
@@ -28,4 +28,20 @@ struct Category: Codable {
         name = try container.decode(String.self, forKey: .name)
         image = try container.decode(String.self, forKey: .image)
     }
+    
+    init(name: String, image: String) {
+        self.id = nil
+        self.name = name
+        self.image = image
+    }
+    
+    init(id: Int, name: String, image: String) {
+        self.id = id
+        self.name = name
+        self.image = image
+    }
+}
+
+extension Category: PickerViewRepresentable {
+    var pickerViewTitle: String { return name }
 }
