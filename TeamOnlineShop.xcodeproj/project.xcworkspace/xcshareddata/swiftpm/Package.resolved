@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "platzifakestore",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ShapovalovIlya/PlatziFakeStore.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "950f6cece12de3719a6ad05676af966e680979eb"
+      }
+    },
+    {
+      "identity" : "swiftfp",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ShapovalovIlya/SwiftFP.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "cc781b2cd420f76222901d2aaf12fe210866bc36"
+      }
+    }
+  ],
+  "version" : 2
+}

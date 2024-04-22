@@ -89,7 +89,7 @@ extension MainViewController: UICollectionViewDelegate {
         let categories = presenter.getCategoryData()
         
             if indexPath.section == Section.categories.rawValue && indexPath.item == (isExpanded ? categories.count : 9) {
-                // Переключаем состояние isExpanded
+                
                 isExpanded.toggle()
                 dataSource.isExpanded = isExpanded
                 
