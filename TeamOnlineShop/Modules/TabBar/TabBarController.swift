@@ -11,12 +11,13 @@ final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupControllers()
-        
     }
     
     private func setupControllers() {
-        let mainVC = MainModuleBuilder.build()
-        mainVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage.Icons.home ?? UIImage(), selectedImage: nil)
+        let navigationController = UINavigationController()
+        let mainRouter = MainRouter(navigationVC: navigationController)
+        mainRouter.prepareMainVC()
+        navigationController.tabBarItem = UITabBarItem(title: "Home", image: UIImage.Icons.home ?? UIImage(), selectedImage: nil)
         let profileVC = ProfileBuilder().buildProfileView()
         profileVC.tabBarItem = UITabBarItem(title: "Account", image: UIImage.Icons.user ?? UIImage(), selectedImage: nil)
         
@@ -26,7 +27,7 @@ final class TabBarController: UITabBarController {
         managerVC.tabBarItem = UITabBarItem(title: "Manager", image: UIImage.Icons.manager ?? UIImage(), selectedImage: nil)
         
         // Add wishlist here
-        viewControllers = [mainVC, managerVC, profileVC]
+        viewControllers = [navigationController, managerVC, profileVC]
         
     }
     

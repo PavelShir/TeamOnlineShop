@@ -15,12 +15,14 @@ enum Colors {
     static let redPrimary = "red-primary"
     
     static let whitePrimary = "white-primary"
+    static let whiteCell = "white-cell"
     
     static let greyDarker = "grey-darker"
     static let greyLight = "grey-light"
     static let greyLighter = "grey-lighter"
     static let greyLightest = "grey-lightest"
     static let greyPrimary = "grey-primary"
+    static let greyBorders = "grey-borders"
     
     static let purplePrimary = "purple-primary"
     

@@ -94,6 +94,11 @@ extension UIImage {
             return UIImage(systemName: "line.3.horizontal.decrease.circle")
         }
         
+        static var filter2: UIImage? {
+            return UIImage(systemName: "slider.horizontal.3")
+        }
+        
+        
         static var filterFill: UIImage? {
             return UIImage(systemName: "line.3.horizontal.decrease.circle.fill")
         }

@@ -16,7 +16,7 @@ class CartViewController: UIViewController {
     private lazy var backButton: UIBarButtonItem = {
         let element = UIBarButtonItem()
         element.image = .Icons.arrowLeft
-        element.tintColor = .blackLight
+//        element.tintColor = .blackLight
         element.action = #selector(backButtonTapped)
         element.target = self
         return element
@@ -31,7 +31,7 @@ class CartViewController: UIViewController {
         element.layer.masksToBounds = true
         element.textColor = .white
         element.font = UIFont.TextFont.Element.TabBar.label
-        element.backgroundColor = .redLight
+//        element.backgroundColor = .redLight
         element.text = "3"
         return element
     }()
@@ -105,7 +105,7 @@ class CartViewController: UIViewController {
         let element = UILabel()
         element.text = "Order Summary"
         element.font = UIFont.TextFont.Screens.ShopCartItem.title
-        element.tintColor = .blackLight
+//        element.tintColor = .blackLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -122,7 +122,7 @@ class CartViewController: UIViewController {
         let element = UILabel()
         element.text = "Totals"
         element.font = UIFont.TextFont.Screens.ShopCartItem.title
-        element.tintColor = .blackLight
+//        element.tintColor = .blackLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -131,7 +131,7 @@ class CartViewController: UIViewController {
         let element = UILabel()
         element.text = "$ 2499,97"
         element.font = UIFont.TextFont.Screens.ShopCartItem.title
-        element.tintColor = .blackLight
+//        element.tintColor = .blackLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -141,7 +141,7 @@ class CartViewController: UIViewController {
         element.setTitle("Pay", for: .normal)
         element.titleLabel?.font = UIFont.TextFont.Element.Button.normal
         element.tintColor = UIColor(named: Colors.whitePrimary)
-        element.backgroundColor = .greenPrimary
+//        element.backgroundColor = .greenPrimary
         element.layer.cornerRadius = 4
         element.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         element.translatesAutoresizingMaskIntoConstraints = false
