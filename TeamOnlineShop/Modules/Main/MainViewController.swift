@@ -76,41 +76,32 @@ extension MainViewController: MainViewImplementation {
     func render(model: Model) {
         dataSource.setRenderModel(
             products: model.productsArray,
-            categories: model.productCategory,
-            isExpanded: model.isExpanded
+            categories: model.productCategory
         )
         collectionView.reloadData()
     }
 }
-    
-    
-    extension MainViewController: UICollectionViewDelegate {
+
+
+extension MainViewController: UICollectionViewDelegate {
+    // TODO: Presenter переделать
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let categories = presenter.getCategoryData()
         
-        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            if indexPath.section == Section.categories.rawValue {
-                let count = presenter.getCategoryArrayCount()
+            if indexPath.section == Section.categories.rawValue && indexPath.item == (isExpanded ? categories.count : 9) {
+                // Переключаем состояние isExpanded
+                isExpanded.toggle()
+                dataSource.isExpanded = isExpanded
                 
-                let isSpecialCell = indexPath.item == (isExpanded ? count : 9)
+                collectionView.setCollectionViewLayout(CollectionViewCompLayout.createLayout(isExpanded: isExpanded), animated: true)
                 
-                if isSpecialCell {
-                    isExpanded.toggle()
-                    dataSource.isExpanded = isExpanded
-                    print("Тогл сработал \(isExpanded)")
-                    
-                    collectionView.setCollectionViewLayout(
-                        CollectionViewCompLayout.createLayout(isExpanded: isExpanded),
-                        animated: true
-                    )
-                    
-                    collectionView.performBatchUpdates({
-                        collectionView.reloadSections(IndexSet(integer: indexPath.section))
-                    },  completion: { finished in
-                        print("Collection view updated. Layout is now \(self.isExpanded ? "expanded" : "collapsed").")
-                    })
-                }
+                collectionView.performBatchUpdates({
+                    collectionView.reloadSections(IndexSet(integer: indexPath.section))
+                }, completion: nil)
             }
         }
     }
+
     
     // MARK: - Preview
 //    import SwiftUI

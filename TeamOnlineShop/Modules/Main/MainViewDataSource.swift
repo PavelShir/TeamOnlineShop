@@ -19,11 +19,9 @@ final class MainViewCollectionDataSource: NSObject {
     
     func setRenderModel(
         products: [ProductModel],
-        categories: [ProductCategory],
-        isExpanded: Bool) {
+        categories: [ProductCategory]) {
         self.products = products
         self.categories = categories
-        self.isExpanded = isExpanded
     }
     
     private func registerElement() {
@@ -60,7 +58,7 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
         
         switch sectionType {
         case .categories:
-            return isExpanded ? categories.count : min(categories.count, 9)
+            return isExpanded ? categories.count + 1 : 10
         case .products:
             return products.count
         }
@@ -77,20 +75,25 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
         
         switch section {
         case .categories:
+            
             guard let categoryCell = cell as? CategoriesViewCell else { return cell }
-            if indexPath.item < categories.count {
+            
+            let isSpecialCell = (isExpanded && indexPath.item == categories.count) || (!isExpanded && indexPath.item == 9)
+            
+            if isSpecialCell {
+                let title = isExpanded ? "Hide" : "All Categories"
+                categoryCell.configureCell(name: title, image: UIImage(named: "allCategoriesIcon") ?? UIImage())
+            } else {
                 let category = categories[indexPath.item]
                 categoryCell.configureCell(name: category.name, image: category.image ?? UIImage())
-            } else if indexPath.item == categories.count && isExpanded {
-                categoryCell.configureCell(name: "All Categories", image: UIImage(named: "allCategoriesIcon") ?? UIImage())
             }
+            
             return categoryCell
             
         case .products:
-            guard let productCell = cell as? CategoriesViewCell else { return cell }
-            return  cell
+            guard let productCell = cell as? ProductsViewCell else { return cell }
+            return  productCell
         }
-        
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {

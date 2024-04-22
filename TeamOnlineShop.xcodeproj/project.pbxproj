@@ -33,6 +33,8 @@
 		B6C81FC82BD5364F00AECDA6 /* AllCategoriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C81FC72BD5364F00AECDA6 /* AllCategoriesCell.swift */; };
 		B6C81FCA2BD540DE00AECDA6 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C81FC92BD540DE00AECDA6 /* MainRouter.swift */; };
 		B6C81FCD2BD5527000AECDA6 /* AllCategoriesFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C81FCC2BD5527000AECDA6 /* AllCategoriesFooterView.swift */; };
+		B6C81FD32BD67D8500AECDA6 /* AsyncImageView in Frameworks */ = {isa = PBXBuildFile; productRef = B6C81FD22BD67D8500AECDA6 /* AsyncImageView */; };
+		B6C81FD52BD67D8500AECDA6 /* PlatziFakeStore in Frameworks */ = {isa = PBXBuildFile; productRef = B6C81FD42BD67D8500AECDA6 /* PlatziFakeStore */; };
 		D57210182BCECF93003D3246 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57210172BCECF93003D3246 /* DetailViewController.swift */; };
 		D598FEB62BD3A8E700E45E8C /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D598FEB52BD3A8E700E45E8C /* CartViewController.swift */; };
 		D598FEB92BD3A97200E45E8C /* CartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D598FEB82BD3A97200E45E8C /* CartCell.swift */; };
@@ -143,6 +145,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6C81FD32BD67D8500AECDA6 /* AsyncImageView in Frameworks */,
+				B6C81FD52BD67D8500AECDA6 /* PlatziFakeStore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				B65CEDC02BCE769F00EA373A /* MainViewController.swift */,
+				B6C81FC32BD4FD6700AECDA6 /* MainViewDataSource.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -233,11 +238,11 @@
 			isa = PBXGroup;
 			children = (
 				B6C81FCE2BD665E700AECDA6 /* Router */,
-				B64FD72F2BD41D5B00C05917 /* Presenter */,
+				B6C81FD02BD6782500AECDA6 /* Model */,
 				B64FD7312BD41D8E00C05917 /* Controller */,
+				B64FD72F2BD41D5B00C05917 /* Presenter */,
 				B64FD7302BD41D6A00C05917 /* Builder */,
 				B65CEDD12BCEE05A00EA373A /* CustomComponents */,
-				B64FD72D2BD2AEF800C05917 /* CategoryModel.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -255,13 +260,11 @@
 		B65CEDD12BCEE05A00EA373A /* CustomComponents */ = {
 			isa = PBXGroup;
 			children = (
-				B67022C72BD0573A00CE1AC1 /* SearchBar */,
+				B65CEDBE2BCE769F00EA373A /* Cells */,
+				B6C81FCF2BD6780F00AECDA6 /* Layout */,
 				B6C81FCB2BD5524900AECDA6 /* Footers */,
 				B67022C42BD0483B00CE1AC1 /* Headers */,
-				B65CEDBE2BCE769F00EA373A /* Cells */,
-				B6C81FC12BD4FD2200AECDA6 /* CustomCompLayout.swift */,
-				B67022C22BD03E3300CE1AC1 /* Section.swift */,
-				B6C81FC32BD4FD6700AECDA6 /* MainViewDataSource.swift */,
+				B67022C72BD0573A00CE1AC1 /* SearchBar */,
 			);
 			path = CustomComponents;
 			sourceTree = "<group>";
@@ -297,6 +300,23 @@
 				B6C81FC92BD540DE00AECDA6 /* MainRouter.swift */,
 			);
 			name = Router;
+			sourceTree = "<group>";
+		};
+		B6C81FCF2BD6780F00AECDA6 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				B6C81FC12BD4FD2200AECDA6 /* CustomCompLayout.swift */,
+				B67022C22BD03E3300CE1AC1 /* Section.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		B6C81FD02BD6782500AECDA6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B64FD72D2BD2AEF800C05917 /* CategoryModel.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		D57210192BCECF9A003D3246 /* DetailView */ = {
@@ -547,6 +567,10 @@
 			dependencies = (
 			);
 			name = TeamOnlineShop;
+			packageProductDependencies = (
+				B6C81FD22BD67D8500AECDA6 /* AsyncImageView */,
+				B6C81FD42BD67D8500AECDA6 /* PlatziFakeStore */,
+			);
 			productName = TeamOnlineShop;
 			productReference = 310D02702BCC7B5500048312 /* TeamOnlineShop.app */;
 			productType = "com.apple.product-type.application";
@@ -575,6 +599,9 @@
 				Base,
 			);
 			mainGroup = 310D02672BCC7B5500048312;
+			packageReferences = (
+				B6C81FD12BD67D8500AECDA6 /* XCRemoteSwiftPackageReference "PlatziFakeStore" */,
+			);
 			productRefGroup = 310D02712BCC7B5500048312 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -884,6 +911,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B6C81FD12BD67D8500AECDA6 /* XCRemoteSwiftPackageReference "PlatziFakeStore" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ShapovalovIlya/PlatziFakeStore.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B6C81FD22BD67D8500AECDA6 /* AsyncImageView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6C81FD12BD67D8500AECDA6 /* XCRemoteSwiftPackageReference "PlatziFakeStore" */;
+			productName = AsyncImageView;
+		};
+		B6C81FD42BD67D8500AECDA6 /* PlatziFakeStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6C81FD12BD67D8500AECDA6 /* XCRemoteSwiftPackageReference "PlatziFakeStore" */;
+			productName = PlatziFakeStore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 310D02682BCC7B5500048312 /* Project object */;
 }
