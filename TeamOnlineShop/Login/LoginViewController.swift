@@ -33,8 +33,6 @@ class LoginViewController: UIViewController {
         return textField
     }()
     
-    
-    
     let loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Войти", for: .normal)
@@ -83,6 +81,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        
         setViewsHierarchie()
         setViewsLayouts()
         
@@ -134,7 +133,21 @@ class LoginViewController: UIViewController {
     }
     
     @objc func registerButtonTapped() {
-        // Код для перехода на экран регистрации
+        let rootVC = RegisterViewController()
+        let navigationVC = UINavigationController(rootViewController: rootVC)
+        navigationVC.modalPresentationStyle = .fullScreen
+        navigationVC.navigationBar.backgroundColor = .white
+        
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "arrow.left.circle.fill"),
+                                         style: .done,
+                                         target: self,
+                                         action: #selector(backButtonTapped))
+        rootVC.navigationItem.leftBarButtonItem = backButton
+        present(navigationVC, animated: true)
+    }
+    
+    @objc func backButtonTapped() {
+        dismiss(animated: true, completion: nil) 
     }
     
     @objc func loginButtonTapped() {
