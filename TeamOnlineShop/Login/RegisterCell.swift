@@ -20,8 +20,6 @@ class RegisterCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         layer.cornerRadius = 20
-       // layer.borderWidth = 1
-        //layer.borderColor = UIColor.black.cgColor
         self.backgroundColor = UIColor.greyLightest
         
         contentView.addSubview(textField)

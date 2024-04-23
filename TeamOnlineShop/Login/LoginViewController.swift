@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuth
 
 class LoginViewController: UIViewController {
     
@@ -151,9 +153,18 @@ class LoginViewController: UIViewController {
     }
     
     @objc func loginButtonTapped() {
-        let tabBarVC = TabBarController()
-        tabBarVC.modalPresentationStyle = .fullScreen
-        present(tabBarVC, animated: true)
+        
+        if let login = loginTextField.text, let password = passwordTextField.text {
+            Auth.auth().signIn(withEmail: login, password: password) { [weak self] authResult, error in
+                if let error = error {
+                    print (error.localizedDescription)
+                } else {
+                    let tabBarVC = TabBarController()
+                    tabBarVC.modalPresentationStyle = .fullScreen
+                    self?.present(tabBarVC, animated: true)
+                }
+            }
+        }
     }
 }
 

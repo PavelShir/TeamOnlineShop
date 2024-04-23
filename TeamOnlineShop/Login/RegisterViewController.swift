@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuth
 
 class RegisterViewController: UIViewController {
     
@@ -67,6 +69,7 @@ class RegisterViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
     }
+// MARK: - Кнопки
     
     @objc func loginButtonTapped() {
         dismiss(animated: true, completion: nil)
@@ -74,7 +77,18 @@ class RegisterViewController: UIViewController {
     
     @objc func registerButtonTapped() {
         
+        /*    if let email = emailTextfield.text, let password = passwordTextfield.text {
+            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                if let error = error {
+                    print (error.localizedDescription)
+                } else {
+                    self.performSegue(withIdentifier: K.registerSegue, sender: self)
+                }
+            }
+        } */
     }
+    
+// MARK: - Констрейнты
     
     private func setLayout() {
         tableView.separatorStyle = .none
@@ -107,6 +121,8 @@ class RegisterViewController: UIViewController {
     }
 }
 
+// MARK: - дополнение для TableView
+
 extension RegisterViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -131,5 +147,36 @@ extension RegisterViewController: UITableViewDataSource, UITableViewDelegate {
         return 15
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            // Обработка нажатия на ячейку с именем
+            break
+        case 1:
+            // Обработка нажатия на ячейку с логином
+            break
+        case 2:
+            // Обработка нажатия на ячейку с паролем
+            break
+        case 3:
+            // Обработка нажатия на ячейку с повтором пароля
+            break
+        default:
+            break
+        }
+    }
 }
 
+// MARK: - дополнение для Alert
+
+extension RegisterViewController {
+    
+    func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            completion?()
+        }
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+    }
+}
