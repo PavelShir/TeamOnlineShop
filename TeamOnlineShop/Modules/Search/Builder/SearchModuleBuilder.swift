@@ -1,4 +1,4 @@
-//
+
 //  SearchModuleBuilder.swift
 //  TeamOnlineShop
 //
@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import PlatziFakeStore
 
 final class SearchModuleBuilder {
     
-    static func build(products: [Product]) -> SearchViewController {
+    static func build(products: [PlatziFakeStore.Product]) -> SearchViewController {
         
         let presenter  = SearchPresenter()
         let searchViewController = SearchViewController(presenter: presenter, productArray: products)

@@ -12,8 +12,7 @@ protocol SearchPresenterImplementation {}
 final class SearchPresenter {
     
     weak var view: SearchViewImplementation?
-    
-    
+
 }
 
 extension SearchPresenter: SearchPresenterImplementation {}
