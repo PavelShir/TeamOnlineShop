@@ -1,21 +1,21 @@
 //
-//  TermsAndConditionsPresenter.swift
+//  DetailPresenter.swift
 //  TeamOnlineShop
 //
-//  Created by Maksim Stogniy on 16.04.2024.
+//  Created by  Maksim Stogniy on 25.04.2024.
 //
 
-import Foundation
 import UIKit
 
-protocol TermsAndConditionsRouterProtocol: AnyObject {
+protocol DetailRouterProtocol: AnyObject {
     
     init(navigationVC: UINavigationController)
-    func dismissTermsAndConditionsVC()
+    func dismissDetailVC()
+    func goToCartVC()
     
 }
 
-final class TermsAndConditionsRouter: TermsAndConditionsRouterProtocol {
+final class DetailRouter: DetailRouterProtocol {
 
     weak var navigationVC: UINavigationController?
     
@@ -23,8 +23,11 @@ final class TermsAndConditionsRouter: TermsAndConditionsRouterProtocol {
         self.navigationVC = navigationVC
     }
     
-    func dismissTermsAndConditionsVC() {
+    func dismissDetailVC() {
         navigationVC?.popViewController(animated: true)
     }
     
+    func goToCartVC() {
+        // go to cart
+    }
 }
