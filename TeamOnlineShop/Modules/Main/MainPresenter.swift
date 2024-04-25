@@ -21,7 +21,7 @@ final class MainPresenter {
     }
     
     private func fetchProducts(completion: @escaping () -> Void) {
-        PlatziStore.shared.productList(limit: 20, offset: 0) { [weak self] result in
+        PlatziStore.shared.productList(limit: 40, offset: 0) { [weak self] result in
             switch result {
             case .success(let products):
                 self?.filteredProducts = products
