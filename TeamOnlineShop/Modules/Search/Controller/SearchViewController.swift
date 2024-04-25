@@ -13,11 +13,11 @@ protocol SearchViewImplementation: AnyObject {}
 final class SearchViewController: UIViewController {
     
     // MARK: - properties
-    
     private let presenter: SearchPresenterImplementation
     
     var productArray = [PlatziFakeStore.Product]()
     
+    // MARK: - Init
     init(presenter: SearchPresenterImplementation, productArray: [PlatziFakeStore.Product]) {
         self.presenter = presenter
         self.productArray = productArray
@@ -28,11 +28,24 @@ final class SearchViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    // MARK: - Private methods
     private let searchBarView: SearchBarView = {
         let view = SearchBarView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -40,12 +53,12 @@ final class SearchViewController: UIViewController {
     }()
     
     private lazy var backButton: UIButton = {
-         let button = UIButton(type: .system)
+        let button = UIButton(type: .system)
         button.setImage(UIImage.Icons.arrowLeft, for: .normal)
-         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-         button.translatesAutoresizingMaskIntoConstraints = false
-         return button
-     }()
+        button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
     private let filterButton: CustomFiltersButton = {
         let button = CustomFiltersButton()
@@ -56,7 +69,7 @@ final class SearchViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-
+        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -64,7 +77,7 @@ final class SearchViewController: UIViewController {
         collectionView.register(ProductsViewCell.self, forCellWithReuseIdentifier: ProductsViewCell.reuseIdentifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
-      }()
+    }()
     
     private let searchResultsLabel: UILabel = {
         let element = UILabel()
@@ -72,12 +85,13 @@ final class SearchViewController: UIViewController {
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
-
-    // MARK: - Selectors
-      @objc private func backButtonTapped() {
-          navigationController?.popViewController(animated: true)
-      }
     
+    // MARK: - Selectors
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: - Setup views + Constraints
     private func setupViews() {
         view.addSubviews(
             backButton,
@@ -85,26 +99,31 @@ final class SearchViewController: UIViewController {
             filterButton,
             searchResultsLabel,
             collectionView)
-    
+        
         NSLayoutConstraint.activate([
+            // Constraints for backButton
             backButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            backButton.widthAnchor.constraint(equalToConstant: 44),
-            backButton.heightAnchor.constraint(equalToConstant: 44),
             
-            searchBarView.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 16),
-            searchBarView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            searchBarView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -60),
+            backButton.widthAnchor.constraint(equalToConstant: 24),
+            backButton.heightAnchor.constraint(equalToConstant: 24),
+            backButton.centerYAnchor.constraint(equalTo: searchBarView.centerYAnchor),
+            // Constraints for searchBarView
+            searchBarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            searchBarView.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 16),
+            searchBarView.trailingAnchor.constraint(equalTo: filterButton.trailingAnchor), // Ensure there's space between searchBar and filterButton
             
-            filterButton.centerYAnchor.constraint(equalTo: searchBarView.centerYAnchor),
-            filterButton.leadingAnchor.constraint(equalTo: searchBarView.trailingAnchor, constant: 8),
+            // Constraints for filterButton
+            filterButton.centerYAnchor.constraint(equalTo: searchResultsLabel.centerYAnchor),
             filterButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             filterButton.widthAnchor.constraint(equalToConstant: 44),
+            filterButton.heightAnchor.constraint(equalToConstant: 27),
             
+            // Constraints for searchResultsLabel
             searchResultsLabel.topAnchor.constraint(equalTo: searchBarView.bottomAnchor, constant: 20),
             searchResultsLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            searchResultsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            searchResultsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16), // Ensure label is not too wide
             
+            // Constraints for collectionView
             collectionView.topAnchor.constraint(equalTo: searchResultsLabel.bottomAnchor, constant: 8),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -112,9 +131,10 @@ final class SearchViewController: UIViewController {
         ])
     }
 }
-
+// MARK: - SearchViewController + SearchViewImplementation
 extension SearchViewController: SearchViewImplementation {}
 
+// MARK: - SearchViewController + UICollectionViewDataSource
 extension SearchViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -133,18 +153,20 @@ extension SearchViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-          let numberOfColumns: CGFloat = 2
-          let spacingBetweenCells: CGFloat = 10
-          let totalSpacing = (numberOfColumns - 1) * spacingBetweenCells
-          let availableWidth = collectionView.frame.width - totalSpacing
-          let widthPerItem = availableWidth / numberOfColumns
+        let numberOfColumns: CGFloat = 2
+        let spacingBetweenCells: CGFloat = 10
+        let totalSpacing = (numberOfColumns - 1) * spacingBetweenCells
+        let availableWidth = collectionView.frame.width - totalSpacing
+        let widthPerItem = availableWidth / numberOfColumns
         let heightPerItem = widthPerItem * 1.5
-
+        
         return CGSize(width: widthPerItem, height: heightPerItem)
-      }
+    }
 }
 
+// MARK: - SearchViewController + UICollectionViewDelegate
 extension SearchViewController: UICollectionViewDelegate {}
 
+// MARK: - SearchViewController + UICollectionViewDelegateFlowLayout
 extension SearchViewController: UICollectionViewDelegateFlowLayout {}
 
