@@ -10,18 +10,17 @@ import UIKit
 
 protocol DetailBuilderProtocol: AnyObject {
     
-    func buildDetailVC(data: Product) -> UIViewController?
+    func buildDetailVC(data: Product) -> UIViewController
 }
 
 class DetailBuilder: DetailBuilderProtocol{
-    weak var navigationVC: UINavigationController?
+    let navigationVC: UINavigationController
     
     init(navigationVC: UINavigationController) {
         self.navigationVC = navigationVC
     }
     
-    func buildDetailVC(data: Product) -> UIViewController? {
-        guard let navigationVC = navigationVC else { return nil}
+    func buildDetailVC(data: Product) -> UIViewController {
         let router = DetailRouter(navigationVC: navigationVC)
         let presenter = DetailPresenter(
             router: router,

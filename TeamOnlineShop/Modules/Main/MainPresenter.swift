@@ -4,6 +4,7 @@ import PlatziFakeStore
 protocol MainPresenterImplementation: AnyObject {
     func fetchModel()
     func searchAndOpenFilteredResults(query: String)
+    func goToProductDetail(_ index: Int)
 }
 
 final class MainPresenter {
@@ -56,7 +57,6 @@ extension MainPresenter: MainPresenterImplementation {
         }
     }
     
-    
     func fetchModel() {
         let dispatchGroup = DispatchGroup()
         
@@ -93,6 +93,20 @@ extension MainPresenter: MainPresenterImplementation {
             )
             self.view?.render(model: model)
         }
+    }
+    
+    func goToProductDetail(_ index: Int) {
+        let product = productsArray[index]
+        let convertedProduct = Product(
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            description: product.description,
+            images: product.images,
+            category: Category(id: product.category.id, name: product.category.name, image: product.category.image),
+            categoryId: product.category.id
+        )
+        router.showProductDetail(data: convertedProduct)
     }
 }
 
