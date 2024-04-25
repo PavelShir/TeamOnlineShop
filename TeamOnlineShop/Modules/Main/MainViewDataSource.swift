@@ -1,25 +1,28 @@
 import UIKit
+import PlatziFakeStore
 
 final class MainViewCollectionDataSource: NSObject {
     
-    private var products = [ProductModel]()
-    private var categories = [ProductCategory]()
+    private var products = [PlatziFakeStore.Product]()
+    private var categories = [PlatziFakeStore.Category]()
     var isExpanded = false
-    
+    var delegate: CategoryHeaderDelegate?
     // MARK: - Properties
     private let collectionView: UICollectionView
     
     // MARK: - Init
-    init(_ collectionView: UICollectionView, presenter: MainPresenterImplementation?) {
+    init(_ collectionView: UICollectionView, presenter: MainPresenterImplementation?, delegate: CategoryHeaderDelegate?) {
         self.collectionView = collectionView
+        self.delegate = delegate
         super.init()
         self.collectionView.dataSource = self
+        
         registerElement()
     }
     
     func setRenderModel(
-        products: [ProductModel],
-        categories: [ProductCategory]) {
+        products: [PlatziFakeStore.Product],
+        categories: [PlatziFakeStore.Category]) {
         self.products = products
         self.categories = categories
     }
@@ -58,7 +61,7 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
         
         switch sectionType {
         case .categories:
-            return isExpanded ? categories.count + 1 : 10
+            return isExpanded ? categories.count + 1 : 5
         case .products:
             return products.count
         }
@@ -78,20 +81,26 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
             
             guard let categoryCell = cell as? CategoriesViewCell else { return cell }
             
-            let isSpecialCell = (isExpanded && indexPath.item == categories.count) || (!isExpanded && indexPath.item == 9)
+            let isSpecialCell = (isExpanded && indexPath.item == categories.count) || (!isExpanded && indexPath.item == 4)
             
             if isSpecialCell {
                 let title = isExpanded ? "Hide" : "All Categories"
-                categoryCell.configureCell(name: title, image: UIImage(named: "allCategoriesIcon") ?? UIImage())
+                categoryCell.configureSpecialCell(
+                    name: title,
+                    image: UIImage.Icons.allCategories ?? UIImage())
             } else {
-                let category = categories[indexPath.item]
-                categoryCell.configureCell(name: category.name, image: category.image ?? UIImage())
+                if indexPath.item < categories.count {
+                           let category = categories[indexPath.item]
+                           categoryCell.configure(model: category)
+                       }
             }
             
             return categoryCell
             
         case .products:
             guard let productCell = cell as? ProductsViewCell else { return cell }
+            let product = products[indexPath.item]
+            productCell.configure(model: product)
             return  productCell
         }
     }
@@ -101,11 +110,16 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
         guard let sectionType = Section(rawValue: indexPath.section), kind == UICollectionView.elementKindSectionHeader else {
             fatalError("Unexpected kind \(kind) or unknown section")
         }
         
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: sectionType.headerIdentifier, for: indexPath)
+        
+        if let categoryHeader = header as? CategoryHeader {
+                categoryHeader.delegate = delegate
+            }
         return header
     }
 }

@@ -5,18 +5,7 @@ final class ProductsHeader: UICollectionReusableView {
     let label = UILabel()
     static let reuseIdentifier = ProductsHeader.description()
     
-    private let filtersButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle(" Filters ", for: .normal)
-        button.titleLabel?.font = UIFont.InterFont.Regular.size(of: 14)
-        button.setImage(UIImage.Icons.filter2, for: .normal)
-        button.tintColor = UIColor(named: Colors.blackLight)
-        button.semanticContentAttribute = .forceRightToLeft
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor(named: Colors.greyBorders)?.cgColor
-        button.layer.cornerRadius = 5
-        return button
-       }()
+    private let filtersButton = CustomFiltersButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -1,4 +1,7 @@
 import UIKit
+import AsyncImageView
+import PlatziFakeStore
+
 
 final class CategoriesViewCell: UICollectionViewCell {
     
@@ -14,16 +17,15 @@ final class CategoriesViewCell: UICollectionViewCell {
         return view
     }()
     
-     let imageView: UIImageView = {
-        let element = UIImageView()
-        element.image = UIImage.Icons.allCategories
+    let imageView: AsyncImageView = {
+        let element = AsyncImageView(frame: .zero)
         element.contentMode = .scaleAspectFit
         element.clipsToBounds = true
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
     
-   let categoryNameLabel: UILabel = {
+    let categoryNameLabel: UILabel = {
         let element = UILabel()
         element.text = "Сategory"
         element.font = UIFont.TextFont.Screens.MainScreen.categoryTitle
@@ -61,25 +63,37 @@ final class CategoriesViewCell: UICollectionViewCell {
         vStack.addArrangedSubviews(iconBackgroundView,categoryNameLabel)
         contentView.backgroundColor = UIColor(named: Colors.whitePrimary)
     }
+    func configureSpecialCell(name: String, image: UIImage) {
+        categoryNameLabel.text = name
+        imageView.image = image
+        
+    }
+        func configure(model: PlatziFakeStore.Category) {
+            categoryNameLabel.text = model.name
+                imageView.setImage(from: model.image)
+            
+            }
+        
+            private func setupConstraints(){
+                NSLayoutConstraint.activate([
+                    iconBackgroundView.heightAnchor.constraint(equalToConstant: 40),
+                    iconBackgroundView.widthAnchor.constraint(equalToConstant: 40),
+                    
+//                    imageView.centerXAnchor.constraint(equalTo: iconBackgroundView.centerXAnchor),
+//                    imageView.centerYAnchor.constraint(equalTo: iconBackgroundView.centerYAnchor),
+                    imageView.leadingAnchor.constraint(equalTo: iconBackgroundView.leadingAnchor),
+                    imageView.bottomAnchor.constraint(equalTo: iconBackgroundView.bottomAnchor),
+                    imageView.trailingAnchor.constraint(equalTo: iconBackgroundView.trailingAnchor),
+                    imageView.topAnchor.constraint(equalTo: iconBackgroundView.topAnchor),
+//                    imageView.widthAnchor.constraint(equalToConstant: 30),
+//                    imageView.heightAnchor.constraint(equalToConstant: 30),
+                    
+                    vStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+                    vStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+                    vStack.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 8),
+                    vStack.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -8)
+                ])
+            }
+        }
     
-     func configureCell(name: String, image: UIImage) {
-            categoryNameLabel.text = name
-            imageView.image = image
-    }
-    private func setupConstraints(){
-        NSLayoutConstraint.activate([
-            iconBackgroundView.heightAnchor.constraint(equalToConstant: 40),
-            iconBackgroundView.widthAnchor.constraint(equalToConstant: 40),
-            
-            imageView.centerXAnchor.constraint(equalTo: iconBackgroundView.centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: iconBackgroundView.centerYAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 24),
-            imageView.heightAnchor.constraint(equalToConstant: 24),
-            
-            vStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            vStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            vStack.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 8),
-            vStack.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -8)
-        ])
-    }
-}
+

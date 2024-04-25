@@ -10,9 +10,9 @@ import UIKit
 class DetailViewController: UIViewController {
     
     //Временные значения
-    let imageName = "CellImage"
-    let name = "Air pods max by Apple"
-    let price = "$ 1999,99"
+    let imageName = UIImage()
+    let name = ""
+    let price = ""
     let nameDescription = "Description of product"
     let text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquet arcu id tincidunt tellus arcu rhoncus, turpis nisl sed. Neque viverra ipsum orci, morbi semper. Nulla bibendum purus tempor semper purus. Ut curabitur platea sed blandit. Amet non at proin justo nulla et. A, blandit morbi suspendisse vel malesuada purus massa mi. Faucibus neque a mi hendrerit.\n \n Audio Technology \n Apple-designed dynamic driver \n Active Noise Cancellation \n Transparency mode"
     
@@ -75,7 +75,7 @@ class DetailViewController: UIViewController {
     
     private lazy var imageView: UIImageView = {
         let element = UIImageView()
-        element.image = UIImage(named: imageName)
+        element.image = imageName
         element.contentMode = .scaleAspectFit
         element.translatesAutoresizingMaskIntoConstraints = false
         return element

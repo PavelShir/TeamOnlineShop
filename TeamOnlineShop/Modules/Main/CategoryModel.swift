@@ -1,4 +1,5 @@
 import UIKit
+import PlatziFakeStore
 
 struct ProductModel {
     let id: String?
@@ -17,8 +18,8 @@ struct ProductCategory {
 
 struct Model{
     let isExpanded: Bool
-    let productCategory: [ProductCategory]
-    let productsArray: [ProductModel]
+    let productCategory: [PlatziFakeStore.Category]
+    let productsArray: [PlatziFakeStore.Product]
     let query: String
     let address: String
 }
@@ -45,16 +46,6 @@ struct MockData {
         ProductCategory(id: "7", name: "Games", image: UIImage(systemName: "gamecontroller")),
         ProductCategory(id: "8", name: "Clothing", image: UIImage(systemName: "tshirt")),
         ProductCategory(id: "9", name: "Shoes", image: UIImage(systemName: "figure.walk")),
-        ProductCategory(id: "10", name: "Jewelry", image: UIImage(systemName: "jewelry")),
-        ProductCategory(id: "11", name: "Cars", image: UIImage(systemName: "car")),
-        ProductCategory(id: "12", name: "Bikes", image: UIImage(systemName: "bicycle")),
-        ProductCategory(id: "13", name: "Plants", image: UIImage(systemName: "leaf")),
-        ProductCategory(id: "14", name: "Pets", image: UIImage(systemName: "pawprint")),
-        ProductCategory(id: "15", name: "Toys", image: UIImage(systemName: "cube.box")),
-        ProductCategory(id: "16", name: "Tools", image: UIImage(systemName: "wrench.and.screwdriver")),
-        ProductCategory(id: "17", name: "Furniture", image: UIImage(systemName: "bed.double")),
-        ProductCategory(id: "18", name: "Kitchen", image: UIImage(systemName: "fork.knife")),
-        ProductCategory(id: "19", name: "Art", image: UIImage(systemName: "paintbrush")),
-        ProductCategory(id: "20", name: "Photography", image: UIImage(systemName: "camera"))
+        ProductCategory(id: "10", name: "Jewelry", image: UIImage(systemName: "jewelry"))
     ]
 }

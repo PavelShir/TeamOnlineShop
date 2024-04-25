@@ -1,4 +1,6 @@
+
 import UIKit
+import PlatziFakeStore
 
 protocol MainViewImplementation: AnyObject {
     func render(model: Model)
@@ -8,13 +10,16 @@ final class MainViewController: UIViewController {
     
     // MARK: - Properties
     private let presenter: MainPresenterImplementation
-    private let dataSource: MainViewCollectionDataSource
+    private var dataSource: MainViewCollectionDataSource!
+    private var categories = [PlatziFakeStore.Category]()
     var isExpanded = false
     
     init(presenter: MainPresenterImplementation) {
+        
         self.presenter = presenter
-        self.dataSource = .init(collectionView, presenter: presenter)
+        
         super.init(nibName: nil, bundle: nil)
+        self.dataSource = .init(collectionView, presenter: presenter, delegate: self)
     }
     
     @available(*, unavailable)
@@ -23,7 +28,7 @@ final class MainViewController: UIViewController {
     }
     
     // MARK: - UI
-    private let collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = CollectionViewCompLayout.createLayout(isExpanded: false)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor =  .white
@@ -33,21 +38,21 @@ final class MainViewController: UIViewController {
     
     // MARK: - Lifecycle
     override func loadView() {
-        
         super.loadView()
+        
         view.addSubview(collectionView)
         setupCollectionViewConstraints()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         collectionView.delegate = self
         view.backgroundColor = .white
         
         dataSource.updateContent([])
         presenter.fetchModel()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -78,18 +83,21 @@ extension MainViewController: MainViewImplementation {
             products: model.productsArray,
             categories: model.productCategory
         )
-        collectionView.reloadData()
+        categories = model.productCategory
+        
+        
+        collectionView.performBatchUpdates({
+            collectionView.reloadSections(IndexSet(arrayLiteral: 0,1))
+        }, completion: nil)
     }
 }
 
 
 extension MainViewController: UICollectionViewDelegate {
-    // TODO: Presenter переделать
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let categories = presenter.getCategoryData()
         
-            if indexPath.section == Section.categories.rawValue && indexPath.item == (isExpanded ? categories.count : 9) {
-                // Переключаем состояние isExpanded
+            if indexPath.section == Section.categories.rawValue && indexPath.item == (isExpanded ? categories.count : 4) {
+                
                 isExpanded.toggle()
                 dataSource.isExpanded = isExpanded
                 
@@ -102,7 +110,41 @@ extension MainViewController: UICollectionViewDelegate {
         }
     }
 
+extension MainViewController: CategoryHeaderDelegate {
+    func searchBarTextDidChange(_ searchBar: UISearchBar, newText: String) {
+    }
     
+    func searchBarSearchButtonClicked(with text: String) {
+        
+        presenter.searchAndOpenFilteredResults(query: text)
+    }
+}
+
+
+    
+
+
+//{
+//
+//    guard let homePresenter = presenter as? HomePresenter else { return }
+//
+//    NetworkManager.shared.fetchData(for: text) { result in
+//        switch result {
+//        case .success(let articles):
+//            DispatchQueue.main.async {
+//                self.presenter.articles = articles.articles
+//                let searchVC = SearchArticlesViewController(searchText: text)
+//                searchVC.articles = articles.articles
+//                #warning("почему эта скотина не работает через роутер????")
+////                    self.presenter.router?.showSearchVC(searchText: text)
+//                self.navigationController?.pushViewController(searchVC, animated: true)
+//            }
+//
+//        case .failure(let error):
+//            print(error)
+//        }
+//    }
+//}
     // MARK: - Preview
 //    import SwiftUI
 //
