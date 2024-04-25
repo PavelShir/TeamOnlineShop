@@ -46,6 +46,7 @@
 		31910D592BD8554A00655CB3 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 31910D582BD8554A00655CB3 /* FirebaseStorage */; };
 		31910D5B2BD8554A00655CB3 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 31910D5A2BD8554A00655CB3 /* FirebaseStorageCombine-Community */; };
 		31910D5D2BD86BC300655CB3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31910D5C2BD86BC300655CB3 /* GoogleService-Info.plist */; };
+		31910D5F2BD9800700655CB3 /* PickerCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31910D5E2BD9800700655CB3 /* PickerCustomCell.swift */; };
 		B64FD72A2BD282F900C05917 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64FD7292BD282F900C05917 /* UIView.swift */; };
 		B64FD72C2BD29F2000C05917 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64FD72B2BD29F2000C05917 /* UIStackView.swift */; };
 		B64FD72E2BD2AEF800C05917 /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64FD72D2BD2AEF800C05917 /* CategoryModel.swift */; };
@@ -140,6 +141,7 @@
 		31910D212BD6FC4D00655CB3 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		31910D232BD7017500655CB3 /* RegisterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterCell.swift; sourceTree = "<group>"; };
 		31910D5C2BD86BC300655CB3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		31910D5E2BD9800700655CB3 /* PickerCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerCustomCell.swift; sourceTree = "<group>"; };
 		B64FD7292BD282F900C05917 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		B64FD72B2BD29F2000C05917 /* UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
 		B64FD72D2BD2AEF800C05917 /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 				31910D1E2BCF2CE500655CB3 /* LoginViewController.swift */,
 				31910D212BD6FC4D00655CB3 /* RegisterViewController.swift */,
 				31910D232BD7017500655CB3 /* RegisterCell.swift */,
+				31910D5E2BD9800700655CB3 /* PickerCustomCell.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -909,6 +912,7 @@
 				B6C81FC42BD4FD6700AECDA6 /* MainViewDataSource.swift in Sources */,
 				D901B8E52BD432F7007B5579 /* CategoryPresenter.swift in Sources */,
 				D92F92F02BD408A200EF7B59 /* ManagerBuilder.swift in Sources */,
+				31910D5F2BD9800700655CB3 /* PickerCustomCell.swift in Sources */,
 				B65CEDC72BCE772200EA373A /* MainPresenter.swift in Sources */,
 				D92F92EF2BD408A200EF7B59 /* ManagerPresenter.swift in Sources */,
 				31910D1F2BCF2CE500655CB3 /* LoginViewController.swift in Sources */,

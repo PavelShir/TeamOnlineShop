@@ -11,6 +11,9 @@ import FirebaseAuth
 
 class RegisterViewController: UIViewController {
     
+    var user: User = User(id: "1")
+    var userType: UserType = .user
+    
     let labelNamesConstants = [
         "First name", "Enter your name",
         "E-mail", "Enter your email",
@@ -58,7 +61,8 @@ class RegisterViewController: UIViewController {
         tableView.delegate = self
         tableView.isScrollEnabled = false
         tableView.register(RegisterCell.self, forCellReuseIdentifier: "Cell")
-        
+        tableView.register(PickerCustomCell.self, forCellReuseIdentifier: "PickerCell")
+     
         view.addSubview(tableView)
         view.addSubview(registerButton)
         view.addSubview(loginLabel)
@@ -77,15 +81,18 @@ class RegisterViewController: UIViewController {
     
     @objc func registerButtonTapped() {
         
-        /*    if let email = emailTextfield.text, let password = passwordTextfield.text {
-            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+        if !user.email.isEmpty && !user.pass.isEmpty {
+            Auth.auth().createUser(withEmail: user.email, password: user.pass) { authResult, error in
                 if let error = error {
                     print (error.localizedDescription)
                 } else {
-                    self.performSegue(withIdentifier: K.registerSegue, sender: self)
+                    let tabBarVC = TabBarController()
+                    tabBarVC.modalPresentationStyle = .fullScreen
+                    self.present(tabBarVC, animated: true)
                 }
             }
-        } */
+        }
+        saveUserToFirestore(user, userType)
     }
     
 // MARK: - Констрейнты
@@ -134,9 +141,20 @@ extension RegisterViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! RegisterCell
-        cell.textField.placeholder = labelNamesConstants[indexPath.section * 2 + 1]
-        return cell
+        if indexPath.section == 4 && indexPath.section < labelNamesConstants.count / 2 {
+            let сell = tableView.dequeueReusableCell(withIdentifier: "PickerCell", for: indexPath) as! PickerCustomCell
+            сell.pickerView.selectRow(0, inComponent: 0, animated: false)
+            return сell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! RegisterCell
+            cell.textField.placeholder = labelNamesConstants[indexPath.section * 2 + 1]
+            if indexPath.section == 2 || indexPath.section == 3 {
+                cell.textField.isSecureTextEntry = true
+            } else {
+                cell.textField.isSecureTextEntry = false
+            }
+            return cell
+        }
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -148,21 +166,24 @@ extension RegisterViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.row {
-        case 0:
-            // Обработка нажатия на ячейку с именем
-            break
-        case 1:
-            // Обработка нажатия на ячейку с логином
-            break
-        case 2:
-            // Обработка нажатия на ячейку с паролем
-            break
-        case 3:
-            // Обработка нажатия на ячейку с повтором пароля
-            break
-        default:
-            break
+        if let cell = tableView.cellForRow(at: indexPath) as? RegisterCell {
+            switch indexPath.row {
+            case 0:
+                user.username = cell.textField.text ?? ""
+            case 1:
+                user.email = cell.textField.text ?? ""
+            case 2:
+                user.pass = cell.textField.text ?? ""
+            case 3:
+                let pickerCell = tableView.cellForRow(at: indexPath) as? PickerCustomCell
+                if let selectedValue = pickerCell?.didSelectValue {
+                    user.type = userType.rawValue
+                }
+            default:
+                break
+            }
+        } else {
+            
         }
     }
 }
@@ -179,4 +200,29 @@ extension RegisterViewController {
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }
+}
+
+// MARK: - сохранение а Firestore
+
+extension RegisterViewController {
+    
+    func saveUserToFirestore(_ user: User, _ userType: UserType) {
+        
+        let db = Firestore.firestore()
+        let usersCollection = db.collection("users")
+        
+        let userData: [String: Any] = [
+            "name": user.username,
+            "login": user.email,
+            "user type": userType.rawValue,
+        ]
+        
+        do {
+            try usersCollection.document(user.id).setData(userData)
+            print("Пользователь успешно сохранен в Firestore")
+        } catch let error {
+            print("Ошибка при сохранении пользователя в Firestore: \(error)")
+        }
+    }
+    
 }
