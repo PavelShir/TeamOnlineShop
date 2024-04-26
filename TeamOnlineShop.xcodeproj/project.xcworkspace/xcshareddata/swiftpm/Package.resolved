@@ -1,4 +1,5 @@
 {
+  "originHash" : "4eff7eb253c6d1079e114907d61c62bc2687d5b69d57c71021decfdb8154a63e",
   "pins" : [
     {
       "identity" : "platzifakestore",
@@ -6,7 +7,7 @@
       "location" : "https://github.com/ShapovalovIlya/PlatziFakeStore.git",
       "state" : {
         "branch" : "main",
-        "revision" : "d4a97dadd09929fcf63b1afd25c678b7555d35a6"
+        "revision" : "a6d8b2753ddac6eb92f51cdfaa802c6fa207593f"
       }
     },
     {
@@ -19,5 +20,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

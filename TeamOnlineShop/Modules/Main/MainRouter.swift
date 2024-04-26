@@ -25,13 +25,9 @@ final class MainRouter {
         navigationVC.pushViewController(vc, animated: true)
     }
     
-//    func showDetail(data: PlatziFakeStore.Product) {
-//        let vc = DetailViewController(
-//            name: data.title,
-//            image: data.images.first,
-//            price: data.price,
-//            text: data.description)
-//        navigationVC.pushViewController(vc, animated: true)
-//    }
+    func showProductDetail(data: Product) {
+        let detailVC = DetailBuilder(navigationVC: navigationVC).buildDetailVC(data: data)
+        navigationVC.pushViewController(detailVC, animated: true)
+    }
 }
 

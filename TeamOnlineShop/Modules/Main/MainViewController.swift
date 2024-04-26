@@ -96,19 +96,25 @@ extension MainViewController: MainViewImplementation {
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-            if indexPath.section == Section.categories.rawValue && indexPath.item == (isExpanded ? categories.count : 4) {
-                
-                isExpanded.toggle()
-                dataSource.isExpanded = isExpanded
-                
-                collectionView.setCollectionViewLayout(CollectionViewCompLayout.createLayout(isExpanded: isExpanded), animated: true)
-                
-                collectionView.performBatchUpdates({
-                    collectionView.reloadSections(IndexSet(integer: indexPath.section))
-                }, completion: nil)
-            }
+        if indexPath.section == Section.categories.rawValue && indexPath.item == (isExpanded ? categories.count : 4) {
+            
+            isExpanded.toggle()
+            dataSource.isExpanded = isExpanded
+            
+            collectionView.setCollectionViewLayout(CollectionViewCompLayout.createLayout(isExpanded: isExpanded), animated: true)
+            
+            collectionView.performBatchUpdates({
+                collectionView.reloadSections(IndexSet(integer: indexPath.section))
+            }, completion: nil)
+            
+            return
+        }
+        
+        if indexPath.section == Section.products.rawValue {
+            presenter.goToProductDetail(indexPath.row)
         }
     }
+}
 
 extension MainViewController: CategoryHeaderDelegate {
     func searchBarTextDidChange(_ searchBar: UISearchBar, newText: String) {
