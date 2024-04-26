@@ -68,32 +68,28 @@ final class CategoriesViewCell: UICollectionViewCell {
         imageView.image = image
         
     }
-        func configure(model: PlatziFakeStore.Category) {
-            categoryNameLabel.text = model.name
-                imageView.setImage(from: model.image)
-            
-            }
+    func configure(model: PlatziFakeStore.Category) {
+        categoryNameLabel.text = model.name
+        imageView.setImage(from: model.image)
         
-            private func setupConstraints(){
-                NSLayoutConstraint.activate([
-                    iconBackgroundView.heightAnchor.constraint(equalToConstant: 40),
-                    iconBackgroundView.widthAnchor.constraint(equalToConstant: 40),
-                    
-//                    imageView.centerXAnchor.constraint(equalTo: iconBackgroundView.centerXAnchor),
-//                    imageView.centerYAnchor.constraint(equalTo: iconBackgroundView.centerYAnchor),
-                    imageView.leadingAnchor.constraint(equalTo: iconBackgroundView.leadingAnchor),
-                    imageView.bottomAnchor.constraint(equalTo: iconBackgroundView.bottomAnchor),
-                    imageView.trailingAnchor.constraint(equalTo: iconBackgroundView.trailingAnchor),
-                    imageView.topAnchor.constraint(equalTo: iconBackgroundView.topAnchor),
-//                    imageView.widthAnchor.constraint(equalToConstant: 30),
-//                    imageView.heightAnchor.constraint(equalToConstant: 30),
-                    
-                    vStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-                    vStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-                    vStack.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 8),
-                    vStack.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -8)
-                ])
-            }
-        }
+    }
     
+    private func setupConstraints(){
+        NSLayoutConstraint.activate([
+            iconBackgroundView.heightAnchor.constraint(equalToConstant: 40),
+            iconBackgroundView.widthAnchor.constraint(equalToConstant: 40),
+            
+            imageView.leadingAnchor.constraint(equalTo: iconBackgroundView.leadingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: iconBackgroundView.bottomAnchor),
+            imageView.trailingAnchor.constraint(equalTo: iconBackgroundView.trailingAnchor),
+            imageView.topAnchor.constraint(equalTo: iconBackgroundView.topAnchor),
+            
+            vStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            vStack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            vStack.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 8),
+            vStack.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -8)
+        ])
+    }
+}
+
 

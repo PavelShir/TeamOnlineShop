@@ -101,29 +101,26 @@ final class SearchViewController: UIViewController {
             collectionView)
         
         NSLayoutConstraint.activate([
-            // Constraints for backButton
+            
             backButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             
             backButton.widthAnchor.constraint(equalToConstant: 24),
             backButton.heightAnchor.constraint(equalToConstant: 24),
             backButton.centerYAnchor.constraint(equalTo: searchBarView.centerYAnchor),
-            // Constraints for searchBarView
+            
             searchBarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             searchBarView.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 16),
-            searchBarView.trailingAnchor.constraint(equalTo: filterButton.trailingAnchor), // Ensure there's space between searchBar and filterButton
+            searchBarView.trailingAnchor.constraint(equalTo: filterButton.trailingAnchor),
             
-            // Constraints for filterButton
             filterButton.centerYAnchor.constraint(equalTo: searchResultsLabel.centerYAnchor),
             filterButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             filterButton.widthAnchor.constraint(equalToConstant: 44),
             filterButton.heightAnchor.constraint(equalToConstant: 27),
             
-            // Constraints for searchResultsLabel
             searchResultsLabel.topAnchor.constraint(equalTo: searchBarView.bottomAnchor, constant: 20),
             searchResultsLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            searchResultsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16), // Ensure label is not too wide
+            searchResultsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
-            // Constraints for collectionView
             collectionView.topAnchor.constraint(equalTo: searchResultsLabel.bottomAnchor, constant: 8),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -165,7 +162,12 @@ extension SearchViewController: UICollectionViewDataSource {
 }
 
 // MARK: - SearchViewController + UICollectionViewDelegate
-extension SearchViewController: UICollectionViewDelegate {}
+extension SearchViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+           presenter.goToProductDetail(indexPath.row)
+       }
+}
 
 // MARK: - SearchViewController + UICollectionViewDelegateFlowLayout
 extension SearchViewController: UICollectionViewDelegateFlowLayout {}

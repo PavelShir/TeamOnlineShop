@@ -3,10 +3,8 @@ import AsyncImageView
 import PlatziFakeStore
 
 final class ProductsViewCell: UICollectionViewCell {
-    
     // MARK: - Properties
     static let reuseIdentifier = ProductsViewCell.description()
-    
     
     // MARK: - UI
     private var imageView: AsyncImageView = {
@@ -68,6 +66,7 @@ final class ProductsViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle
     override func layoutSubviews() {
         super.layoutSubviews()
         contentView.layer.cornerRadius = 15
