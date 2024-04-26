@@ -113,6 +113,11 @@ extension MainViewController: UICollectionViewDelegate {
         if indexPath.section == Section.products.rawValue {
             presenter.goToProductDetail(indexPath.row)
         }
+        
+        if indexPath.section == Section.categories.rawValue {
+            let category = categories[indexPath.row]
+            presenter.searchProductsByCategory(category.id)
+        }
     }
 }
 

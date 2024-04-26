@@ -128,6 +128,7 @@ final class SearchViewController: UIViewController {
         ])
     }
 }
+
 // MARK: - SearchViewController + SearchViewImplementation
 extension SearchViewController: SearchViewImplementation {}
 

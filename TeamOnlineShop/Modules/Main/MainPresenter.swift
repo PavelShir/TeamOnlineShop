@@ -5,6 +5,7 @@ protocol MainPresenterImplementation: AnyObject {
     func fetchModel()
     func searchAndOpenFilteredResults(query: String)
     func goToProductDetail(_ index: Int)
+    func searchProductsByCategory(_ categoryId: Int)
 }
 
 final class MainPresenter {
@@ -37,22 +38,36 @@ final class MainPresenter {
 // MARK: - MainPresenter + MainPresenterProtocol
 extension MainPresenter: MainPresenterImplementation {
     
+    func searchProductsByCategory(_ categoryId: Int) {
+        PlatziStore.shared.searchProduct(categoryId: categoryId) { [weak self] result in
+            switch result {
+            case .success(let products):
+                DispatchQueue.main.async {
+                    self?.router.showSearch(data: products)
+                }
+            case .failure(let error):
+                print("Error fetching products by category: \(error)")
+            }
+        }
+    }
+    
     func searchAndOpenFilteredResults(query: String) {
         
-        fetchProducts { [weak self] in
-            guard let self = self else { return }
-            
-            let filteredProducts = self.filteredProducts.filter { $0.title.lowercased().contains(query.lowercased()) }
-            
-            print("Filtered products: \(filteredProducts.map { $0.title })")
-            if !filteredProducts.isEmpty {
-                
+        guard !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            print("Search query is empty.")
+            return
+        }
+        
+        PlatziStore.shared.searchProduct(named: query, categoryId: nil) { [weak self] result in
+            switch result {
+            case .success(let products):
                 DispatchQueue.main.async {
-                    self.router.showSearch(data: filteredProducts)
+                    self?.router.showSearch(data: products)
                 }
-                
-            } else {
-                print("No products found matching the query.")
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    print("Error during the search: \(error)")
+                }
             }
         }
     }
@@ -72,7 +87,7 @@ extension MainPresenter: MainPresenterImplementation {
         }
         
         dispatchGroup.enter()
-        PlatziStore.shared.productList(limit: 20, offset: 0) { [weak self] result in
+        PlatziStore.shared.productList(limit: 50, offset: 2) { [weak self] result in
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let products):
@@ -110,4 +125,22 @@ extension MainPresenter: MainPresenterImplementation {
     }
 }
 
-
+//func searchAndOpenFilteredResults(query: String) {
+//
+//    fetchProducts { [weak self] in
+//        guard let self = self else { return }
+//
+//        let filteredProducts = self.filteredProducts.filter { $0.title.lowercased().contains(query.lowercased()) }
+//
+//        print("Filtered products: \(filteredProducts.map { $0.title })")
+//        if !filteredProducts.isEmpty {
+//
+//            DispatchQueue.main.async {
+//                self.router.showSearch(data: filteredProducts)
+//            }
+//
+//        } else {
+//            print("No products found matching the query.")
+//        }
+//    }
+//}
