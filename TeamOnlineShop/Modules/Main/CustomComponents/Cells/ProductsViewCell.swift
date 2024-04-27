@@ -18,7 +18,6 @@ final class ProductsViewCell: UICollectionViewCell {
     
     private let productNameLabel: UILabel = {
         let element = UILabel()
-        element.text = "Monitor LG 22”inc 4K 120Fps"
         element.numberOfLines = 1
         element.font = UIFont.TextFont.Screens.MainScreen.categoryTitle
         element.tintColor = UIColor(named: Colors.blackLight)

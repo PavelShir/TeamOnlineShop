@@ -20,9 +20,12 @@ final class MainRouter {
         navigationVC.viewControllers = [mainVC]
     }
     
-    func showSearch(data: [PlatziFakeStore.Product]) {
-        let vc = SearchModuleBuilder.build(router: self,
-                                           products: data)
+    func showSearch(data: [PlatziFakeStore.Product], serachText: String) {
+       
+        let vc = SearchModuleBuilder.build(
+            router: self,
+            products: data,
+            searchText: serachText)
         navigationVC.pushViewController(vc, animated: true)
     }
     

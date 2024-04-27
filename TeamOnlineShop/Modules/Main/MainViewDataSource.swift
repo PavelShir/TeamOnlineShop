@@ -7,13 +7,19 @@ final class MainViewCollectionDataSource: NSObject {
     private var categories = [PlatziFakeStore.Category]()
     var isExpanded = false
     var delegate: CategoryHeaderDelegate?
+    var filterDelegate: CustomFiltersButtonDelegate?
     // MARK: - Properties
     private let collectionView: UICollectionView
     
     // MARK: - Init
-    init(_ collectionView: UICollectionView, presenter: MainPresenterImplementation?, delegate: CategoryHeaderDelegate?) {
+    init(_ collectionView: UICollectionView,
+         presenter: MainPresenterImplementation?,
+         delegate: CategoryHeaderDelegate?,
+         filterDelegate: CustomFiltersButtonDelegate) {
+        
         self.collectionView = collectionView
         self.delegate = delegate
+        self.filterDelegate = filterDelegate
         super.init()
         self.collectionView.dataSource = self
         
@@ -42,10 +48,6 @@ final class MainViewCollectionDataSource: NSObject {
             CategoryHeader.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: CategoryHeader.reuseIdentifier)
-        self.collectionView.register(
-            AllCategoriesFooterView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-            withReuseIdentifier: AllCategoriesFooterView.reuseIdentifier)
     }
     
     func updateContent(_ content: [String]) {
@@ -116,6 +118,10 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
         }
         
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: sectionType.headerIdentifier, for: indexPath)
+        
+        if let productHeader  = header as? ProductsHeader {
+            productHeader.configure(delegate: filterDelegate)
+            }
         
         if let categoryHeader = header as? CategoryHeader {
                 categoryHeader.delegate = delegate
