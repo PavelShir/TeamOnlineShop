@@ -7,7 +7,8 @@
 
 import UIKit
 
-class CartCell: UICollectionViewCell {
+final class CartCell: UICollectionViewCell {
+    static let identifier = CartCell.debugDescription()
     
     private lazy var cellStack: UIStackView = {
         let element = UIStackView()

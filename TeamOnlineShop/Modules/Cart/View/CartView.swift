@@ -8,15 +8,49 @@
 import UIKit
 import AsyncImageView
 
+protocol CartView: UIView {
+    var collectionView: UICollectionView { get }
+    var payButton: CustomButton { get }
+    var amountLabel: UILabel { get }
+    var deliveryPicker: UIPickerView { get }
+}
+
 protocol CartViewDelegate: AnyObject {
     func tappedBackButton()
     func tappedCartButton()
     func tappedBuyButton()
 }
 
-final class CartView: UIView {
+final class CartViewImpl: UIView, CartView {
     
-    weak var delegate: CartViewDelegate?
+    //MARK: - Public property
+    let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+//        collectionView.isUserInteractionEnabled = false
+        return collectionView
+    }()
+    
+    let payButton = CustomButton(label: "Pay", size: CustomButton.Size.normal, type: CustomButton.ButtonType.primary)
+    
+    let amountLabel: UILabel = {
+        let element = UILabel()
+        element.text = "$ 2499,97"
+        element.font = UIFont.TextFont.Screens.ShopCartItem.title
+//        element.tintColor = .blackLight
+        element.translatesAutoresizingMaskIntoConstraints = false
+        return element
+    }()
+    
+    let deliveryPicker: UIPickerView = {
+        let element = UIPickerView()
+        element.translatesAutoresizingMaskIntoConstraints = false
+        return element
+    }()
+    
+    //MARK: - Private properties
     private let title: UILabel = LabelFactory.makeScreenTitle()
     
     private let backButton: UIButton = {
@@ -63,12 +97,6 @@ final class CartView: UIView {
         return element
     }()
     
-    private lazy var deliveryPicker: UIPickerView = {
-        let element = UIPickerView()
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
-    }()
-    
     private lazy var lineTwo: UIView = {
         let element = UIView()
         element.backgroundColor = UIColor(named: Colors.greyLightest)
@@ -109,17 +137,6 @@ final class CartView: UIView {
         return element
     }()
     
-    private lazy var amountLabel: UILabel = {
-        let element = UILabel()
-        element.text = "$ 2499,97"
-        element.font = UIFont.TextFont.Screens.ShopCartItem.title
-//        element.tintColor = .blackLight
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
-    }()
-    
-    private let payButton = CustomButton(label: "Pay", size: CustomButton.Size.normal, type: CustomButton.ButtonType.primary)
-    
 //    private lazy var payButton: UIButton = {
 //        let element = UIButton()
 //        element.setTitle("Pay", for: .normal)
@@ -137,6 +154,7 @@ final class CartView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .white
         setViews()
         setupConstraints()
     }
@@ -159,6 +177,7 @@ final class CartView: UIView {
         
         self.addSubview(line)
         self.addSubview(deliveryStack)
+        addSubview(collectionView)
         
         deliveryStack.addArrangedSubview(deliveryLabel)
         deliveryStack.addArrangedSubview(deliveryPicker)
@@ -177,8 +196,8 @@ final class CartView: UIView {
     
     private func setUpViews() {
         title.text = "Your Cart"
-        backButton.addTarget(nil, action: #selector(backButtonTapped), for: .touchUpInside)
-        cartButton.addTarget(nil, action: #selector(cartButtonTapped), for: .touchUpInside)
+//        backButton.addTarget(nil, action: #selector(backButtonTapped), for: .touchUpInside)
+//        cartButton.addTarget(nil, action: #selector(cartButtonTapped), for: .touchUpInside)
     }
     
 //MARK: - Setup Constraints
@@ -216,6 +235,11 @@ final class CartView: UIView {
             totalsStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             totalsStack.heightAnchor.constraint(equalToConstant: 30),
             
+            collectionView.topAnchor.constraint(equalTo: bottomAnchor,constant: 15),
+            collectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -160),
+            collectionView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            collectionView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            
             payButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -40),
             payButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             payButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
@@ -225,19 +249,19 @@ final class CartView: UIView {
     
     //MARK: - Button Tapped
     
-    @objc private func backButtonTapped() {
-        delegate?.tappedBackButton()
-    }
+//    @objc private func backButtonTapped() {
+//        delegate?.tappedBackButton()
+//    }
+//    
+//    @objc private func cartButtonTapped() {
+//        delegate?.tappedCartButton()
+//    }
     
-    @objc private func cartButtonTapped() {
-        delegate?.tappedCartButton()
-    }
-    
-    @objc private func payButtonTapped() {
+//    @objc private func payButtonTapped() {
 //        let payVC = PaymentsViewController()
 //        present(payVC, animated: true)
-        delegate?.tappedBuyButton()
-    }
+//        delegate?.tappedBuyButton()
+//    }
     
 }
 

@@ -10,25 +10,30 @@ import UIKit
 
 protocol CartBuilderProtocol: AnyObject {
     
-    func buildCartVC(data: Cart) -> UIViewController
+    func buildCartVC(router: CartRouterProtocol, data: Cart) -> UIViewController
 
 }
 
-class CartBuilder: CartBuilderProtocol {
-    let navigationVC: UINavigationController
+final class CartBuilder: CartBuilderProtocol {
+    private let navigationVC: UINavigationController
     
     init(navigationVC: UINavigationController) {
         self.navigationVC = navigationVC
     }
     
-    func buildCartVC(data: Cart) -> UIViewController {
-        let router = CartRouter(navigationVC: navigationVC)
+    func buildRouter() -> CartRouter {
+        CartRouter(navigationVC: navigationVC, builder: self)
+    }
+    
+    func buildCartVC(router: CartRouterProtocol, data: Cart) -> UIViewController {
         let presenter = CartPresenter(
             router: router,
             data: data
         )
-
-        let vc = CartViewController(presenter: presenter)
+        let vc = CartViewController(
+            presenter: presenter,
+            cartView: CartViewImpl()
+        )
         return vc
     }
 }

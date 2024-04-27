@@ -17,6 +17,8 @@ struct Cart {
             .init(id: 3, title: "Erphones for monitor", price: 99, count: 2)
         ]
     }
+    
+    static let sample = Self(items: Cart.allItems())
 }
 
 struct CartItem {
