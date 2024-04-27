@@ -9,7 +9,7 @@ import UIKit
 
 final class CartCollectionDataSource: NSObject {
     private let collectionView: UICollectionView
-    private var cartItems: [CartItem] = .init()
+    private var cartItems: [CartItemCell] = .init()
     
     init(_ collectionView: UICollectionView) {
         self.collectionView = collectionView
@@ -18,7 +18,7 @@ final class CartCollectionDataSource: NSObject {
         collectionView.dataSource = self
     }
     
-    func update(_ cartItems: [CartItem]) {
+    func update(_ cartItems: [CartItemCell]) {
         self.cartItems = cartItems
         collectionView.reloadData()
     }

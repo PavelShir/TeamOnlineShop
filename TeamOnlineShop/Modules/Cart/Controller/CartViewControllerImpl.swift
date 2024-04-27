@@ -1,5 +1,5 @@
 //
-//  CartViewController.swift
+//  CartViewControllerImpl.swift
 //  TeamOnlineShop
 //
 //  Created by Сергей П on 20.04.2024.
@@ -7,9 +7,7 @@
 
 import UIKit
 
-protocol CartVCDelegate {}
-
-final class CartViewController: UIViewController {
+final class CartViewControllerImpl: UIViewController {
     //MARK: - Private properties
     private let presenter: CartPresenterProtocol
     private let cartView: CartView
@@ -37,11 +35,26 @@ final class CartViewController: UIViewController {
     //MARK: - LifeCycle
     override func loadView() {
         view = cartView
+        
+        delegate.didSelectCartAt = { [weak self] index in
+            self?.presenter.didSelectCartItem(at: index)
+        }
+        delegate.didDeselectCartAt = { [weak self] index in
+            self?.presenter.didDeselectCartItem(at: index)
+        }
+        delegate.selectedItemAd = { [weak self] index in
+            self?.presenter.isSelectedItem(at: index) ?? false
+        }
+        
+        cartView.payButton.addAction(
+            UIAction { [weak self] _ in self?.presenter.didTapPayButton() },
+            for: .touchUpInside
+        )
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dataSource.update(Cart.allItems())
+        presenter.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,19 +63,12 @@ final class CartViewController: UIViewController {
     }
 }
 
-//MARK: - CartViewDelegate
-
-extension CartViewController: CartViewDelegate {
-    func tappedBackButton() {
-        presenter.dismissCartVC()
+//MARK: - CartViewController
+extension CartViewControllerImpl: CartViewController {
+    func render(_ viewModel: CartViewModel) {
+        dataSource.update(viewModel.items)
+        cartView.amountLabel.text = viewModel.totalPrice
     }
     
-    func tappedCartButton() {
-        
-    }
     
-    func tappedBuyButton() {
-        let payVC = PaymentsViewController()
-        present(payVC, animated: true)
-    }
 }

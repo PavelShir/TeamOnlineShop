@@ -30,10 +30,11 @@ final class CartBuilder: CartBuilderProtocol {
             router: router,
             data: data
         )
-        let vc = CartViewController(
+        let vc = CartViewControllerImpl(
             presenter: presenter,
             cartView: CartViewImpl()
         )
+        presenter.view = vc
         return vc
     }
 }

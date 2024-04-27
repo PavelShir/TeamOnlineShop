@@ -10,20 +10,28 @@ import UIKit
 final class CartCell: UICollectionViewCell {
     static let identifier = CartCell.debugDescription()
     
-    private lazy var cellStack: UIStackView = {
-        let element = UIStackView()
-        element.axis = .horizontal
-        element.spacing = 10
-//        element.distribution = .equalSpacing
-        element.backgroundColor = .white
+    override var isSelected: Bool {
+        didSet { updateCheckmark(isSelected) }
+    }
+    
+    private var minusAction: (() -> Void)?
+    private var plusAction: (() -> Void)?
+    private var trashAction: (() -> Void)?
+            
+    private lazy var checkButton: UIImageView = {
+        let element = UIImageView()
+        element.image = UIImage(systemName: self.isSelected ? "checkmark.square.fill" : "square")
+        element.tintColor = isSelected ? .greenPrimary : .lightGray
+        element.contentMode = .scaleAspectFit
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
     
-    private lazy var checkButton: UIButton = {
-        let element = UIButton(type: .system)
-        element.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal) // пустой "square"
-        element.tintColor = .greenPrimary
+    private lazy var cellStack: UIStackView = {
+        let element = UIStackView()
+        element.axis = .horizontal
+        element.spacing = 10
+        element.backgroundColor = .white
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -69,17 +77,17 @@ final class CartCell: UICollectionViewCell {
         return element
     }()
     
-    private lazy var minusButton: UIButton = {
-        let element = UIButton(type: .system)
-        element.setImage(UIImage.Icons.minus, for: .normal)
-        element.tintColor = .greyLight
+    private lazy var numberLabel: UILabel = {
+        let element = UILabel()
+        element.tintColor = .blackLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
     
-    private lazy var numberLabel: UILabel = {
-        let element = UILabel()
-        element.tintColor = .blackLight
+    private lazy var minusButton: UIButton = {
+        let element = UIButton(type: .system)
+        element.setImage(UIImage.Icons.minus, for: .normal)
+        element.tintColor = .greyLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -100,43 +108,87 @@ final class CartCell: UICollectionViewCell {
         return element
     }()
     
-    func setup(_ item: CartItem) {
-        
-        imageView.image = UIImage(named: "CellImage")
-        titleLabel.text = item.title
-        priceLabel.text = "$ " + String(item.price)
-        numberLabel.text = String(item.count)
-    }
-    
+    //MARK: - init(_:)
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupContentView()
         setupConstraints()
+        
+        minusButton.addTarget(self, action: #selector(self.minus), for: .touchUpInside)
+        plusButton.addTarget(self, action: #selector(self.plus), for: .touchUpInside)
+        trashButton.addTarget(self, action: #selector(self.trash), for: .touchUpInside)
+
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupConstraints() {
-        self.contentView.addSubview(cellStack)
+    //MARK: - Life cycle
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        imageView.image = nil
+        titleLabel.text = nil
+        priceLabel.text = nil
+        numberLabel.text = nil
+        
+        minusAction = nil
+        plusAction = nil
+        trashAction = nil
+    }
+    
+    //MARK: - Public methods
+    func setup(_ item: CartItemCell) {
+        imageView.image = UIImage(named: "CellImage")
+        titleLabel.text = item.title
+        priceLabel.text = "$ ".appending(item.price.description)
+        numberLabel.text = item.count.description
+        
+        minusAction = item.decreaseCounter
+        plusAction = item.increaseCounter
+        trashAction = item.deleteItem
+    }
+    
+}
+
+private extension CartCell {
+    @objc func minus() {
+        minusAction?()
+    }
+    
+    @objc func plus() {
+        plusAction?()
+    }
+    
+    @objc func trash() {
+        trashAction?()
+    }
+    
+    func updateCheckmark(_ isSelected: Bool) {
+        checkButton.image = UIImage(systemName: isSelected ? "checkmark.square.fill" : "square")
+        checkButton.tintColor = isSelected ? .greenPrimary : .systemGray
+    }
+    
+    func setupContentView() {
+        contentView.addSubview(cellStack)
+        clipsToBounds = true
         cellStack.addArrangedSubview(checkButton)
         cellStack.addArrangedSubview(imageView)
         cellStack.addArrangedSubview(detailsStack)
-
+        
         detailsStack.addArrangedSubview(titleLabel)
         detailsStack.addArrangedSubview(priceLabel)
-        
         
         detailsStack.addSubview(buttonStack)
         buttonStack.addArrangedSubview(minusButton)
         buttonStack.addArrangedSubview(numberLabel)
         buttonStack.addArrangedSubview(plusButton)
-        buttonStack.addArrangedSubview(trashButton)
-        
-        self.clipsToBounds = true
-        
+        buttonStack.addArrangedSubview(trashButton)        
+    }
+    
+    func setupConstraints() {
         NSLayoutConstraint.activate([
-            
             cellStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             cellStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             cellStack.topAnchor.constraint(equalTo: contentView.topAnchor),

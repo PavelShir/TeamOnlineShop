@@ -15,12 +15,6 @@ protocol CartView: UIView {
     var deliveryPicker: UIPickerView { get }
 }
 
-protocol CartViewDelegate: AnyObject {
-    func tappedBackButton()
-    func tappedCartButton()
-    func tappedBuyButton()
-}
-
 final class CartViewImpl: UIView, CartView {
     
     //MARK: - Public property
@@ -29,7 +23,7 @@ final class CartViewImpl: UIView, CartView {
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-//        collectionView.isUserInteractionEnabled = false
+        collectionView.allowsMultipleSelection = true
         return collectionView
     }()
     
