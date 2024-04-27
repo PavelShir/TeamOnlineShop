@@ -102,7 +102,8 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
         case .products:
             guard let productCell = cell as? ProductsViewCell else { return cell }
             let product = products[indexPath.item]
-            productCell.configure(model: product)
+            productCell.configure(model: product, showLikeButton: false)
+            productCell.delegate = self
             return  productCell
         }
     }
@@ -127,5 +128,13 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
                 categoryHeader.delegate = delegate
             }
         return header
+    }
+}
+
+extension MainViewCollectionDataSource: ProductsViewCellDelegate {
+    func didTapWishButton(in cell: ProductsViewCell) {}
+    
+    func didTapAddToCartButton(in cell: ProductsViewCell) {
+        print("Add to Cart button tapped")
     }
 }
