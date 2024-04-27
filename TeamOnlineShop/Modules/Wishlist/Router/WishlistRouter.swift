@@ -1,5 +1,5 @@
 //
-//  WishlistPresenter.swift
+//  WishlistRouter.swift
 //  TeamOnlineShop
 //
 //  Created by  Maksim Stogniy on 25.04.2024.
@@ -10,24 +10,25 @@ import UIKit
 protocol WishlistRouterProtocol: AnyObject {
     
     init(navigationVC: UINavigationController)
-    func goToDetailVC()
+    func showProductDetail(data: Product)
     func goToCartVC()
     
 }
 
 final class WishlistRouter: WishlistRouterProtocol {
 
-    weak var navigationVC: UINavigationController?
+    let navigationVC: UINavigationController
     
     required init(navigationVC: UINavigationController) {
         self.navigationVC = navigationVC
     }
     
-    func goToDetailVC() {
-        // go to detail
+    func showProductDetail(data: Product) {
+        let detailVC = DetailBuilder(navigationVC: navigationVC).buildDetailVC(data: data)
+        navigationVC.pushViewController(detailVC, animated: true)
     }
     
     func goToCartVC() {
-        // go to cart
+        print("go to cart")
     }
 }

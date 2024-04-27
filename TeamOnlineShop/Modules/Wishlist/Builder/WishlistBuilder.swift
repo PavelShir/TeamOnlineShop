@@ -13,20 +13,18 @@ protocol WishlistBuilderProtocol: AnyObject {
     func buildWishlistVC() -> UIViewController
 }
 
-class WishlistBuilder: WishlistBuilderProtocol{
-    let navigationVC: UINavigationController
+final class WishlistBuilder: WishlistBuilderProtocol{
     
-    init(navigationVC: UINavigationController) {
-        self.navigationVC = navigationVC
-    }
+    let navigationVC = UINavigationController()
     
     func buildWishlistVC() -> UIViewController {
         let router = WishlistRouter(navigationVC: navigationVC)
         let presenter = WishlistPresenter(
             router: router
         )
-        
         let vc = WishlistViewController(presenter: presenter)
-        return vc
+        
+        navigationVC.viewControllers = [vc]
+        return navigationVC
     }
 }

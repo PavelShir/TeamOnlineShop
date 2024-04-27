@@ -1,5 +1,5 @@
 //
-//  DetailViewController.swift
+//  WishlistViewController.swift
 //  TeamOnlineShop
 //
 //  Created by  Maksim Stogniy on 25.04.2024.
@@ -14,12 +14,10 @@ protocol WishlistVCDelegate{
 final class WishlistViewController: UIViewController {
 
     private let presenter: WishlistPresenterProtocol
-    var detailView: WishlistVCDelegate?
     private let customView = WishlistView()
     
     init(presenter: WishlistPresenterProtocol) {
         self.presenter = presenter
-        
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -28,18 +26,22 @@ final class WishlistViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+//    override func loadView() {
+//        view = custom
+//    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupCustomView()
-        configView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.setHidesBackButton(true, animated: false)
         navigationController?.navigationBar.isHidden = true
-        presenter.setProductWishState()
+        tabBarController?.tabBar.isHidden = false
+        presenter.getWishlistFromUser()
+        reload()
     }
     
     private func setupCustomView() {
@@ -50,39 +52,81 @@ final class WishlistViewController: UIViewController {
             customView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             customView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        customView.delegate = self
-    }
-    
-    private func configView() {
-//        customView.configView(data: presenter.data , isLiked: false)
+        customView.setDelegates(self)
     }
 
 }
+extension WishlistViewController: UICollectionViewDelegateFlowLayout {}
 
-//MARK: - WishlistViewDelegate
-extension WishlistViewController: WishlistViewDelegate {
-    
-    func tappedBackButton() {
-        presenter.goToDetailVC()
+extension WishlistViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let count = presenter.getProductsCount()
+        customView.switchEmptyLabelVisability(count != 0)
+        return count
     }
     
-    func tappedCartButton() {
-        presenter.goToCartVC()
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.reuseIdentifier, for: indexPath) as? ProductsViewCell else {
+            fatalError("Unable to dequeue ProductsViewCell")
+        }
+        // refactor to Product type
+//        let product = presenter.getProduct(indexPath.row)
+//        cell.configure(
+//            model: product,
+//           showLikeButton: true)
+        cell.delegate = self
+        return cell
     }
     
-    func tappedWishButton(_ isWished: Bool) {
-        presenter.updateWishList(isWished)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let numberOfColumns: CGFloat = 2
+        let spacingBetweenCells: CGFloat = 10
+        let totalSpacing = (numberOfColumns - 1) * spacingBetweenCells
+        let availableWidth = collectionView.frame.width - totalSpacing
+        let widthPerItem = availableWidth / numberOfColumns
+        let heightPerItem = widthPerItem * 1.5
+        
+        return CGSize(width: widthPerItem, height: heightPerItem)
     }
-    
-    func tappedAddToCartButton() {
-        presenter.addProductToCart()
+}
+
+extension WishlistViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("element is tapped")
+        presenter.goToProductDetail(indexPath.row)
+    }
+}
+
+extension WishlistViewController: ProductsViewCellDelegate {
+    func didTapAddToCartButton(in cell: ProductsViewCell) {
+        print("Add to Cart button tapped")
+    }
+
+    func didTapWishButton(in cell: ProductsViewCell) {
+        print("Wish button tapped")
     }
 }
 
 //MARK: - WishlistPresenterViewProtocol
 extension WishlistViewController: WishlistPresenterViewProtocol {
-    func updateProductWishState(isWished: Bool) {
-        customView.updateWishButtonState(isWished: isWished)
+    
+    func reload() {
+        customView.reloadCollection()
     }
 }
 
+//MARK: - UISearchBarDelegate
+extension WishlistViewController: UISearchBarDelegate{
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+        presenter.searchProducts(query: searchText)
+        searchBar.resignFirstResponder()
+    }
+}
+
+//MARK: - WishlistViewDelegate
+extension WishlistViewController: WishlistViewDelegate {
+    func tappedCartButton() {
+        presenter.goToCartVC()
+    }
+}

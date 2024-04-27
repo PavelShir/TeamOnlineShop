@@ -9,17 +9,18 @@ import UIKit
 
 
 protocol WishlistPresenterViewProtocol: AnyObject {
-    func updateProductWishState(isWished: Bool)
-    
+    func reload()
 }
 
 protocol WishlistPresenterProtocol: AnyObject {
     init(router: WishlistRouterProtocol)
-    func goToDetailVC()
+    func getProductsCount() -> Int
+    func goToProductDetail(_ index: Int)
     func goToCartVC()
-    func updateWishList(_ isWished: Bool)
-    func setProductWishState()
-    func addProductToCart()
+    func deleteProductFromWishList(_ index: Int)
+    func addProductToCart(_ index: Int)
+    func getWishlistFromUser()
+    func searchProducts(query: String)
 }
 
 final class WishlistPresenter: WishlistPresenterProtocol {
@@ -27,37 +28,49 @@ final class WishlistPresenter: WishlistPresenterProtocol {
     private weak var view: WishlistPresenterViewProtocol?
     private var router: WishlistRouterProtocol?
     
+    var products: [Product] = []
+    
     required init(router: WishlistRouterProtocol) {
         self.router = router
-    }
-    
-    func goToDetailVC(){
-        router?.goToDetailVC()
     }
     
     func goToCartVC(){
         router?.goToCartVC()
     }
     
-    func updateWishList(_ isWished: Bool){
-        if isWished {
-           print("")
-        } else {
-            print("")
-        }
-        view?.updateProductWishState(isWished: !isWished)
+    func deleteProductFromWishList(_ index: Int){
+//        UserManager.shared.deleteProductFromWishList(productId: <#T##Int#>, completion: <#T##((any Error)?) -> Void#>)
+        getWishlistFromUser()
     }
     
-    func addProductToCart() {
+    func addProductToCart(_ index: Int) {
 //        UserManager.shared.addProductToCart(product: data) { error in
-            print("complete")
+//            print("complete")
 //        }
     }
     
-    func setProductWishState() {
-        let savedProduts: [Product] = UserManager.shared.getProductsFromWithList()
-        let savedProductsIds = savedProduts.map { $0.id }
+    func goToProductDetail(_ index: Int) {
+        let product = products[index]
+        router?.showProductDetail(data: product)
+    }
+    
+    func getWishlistFromUser() {
+        // products = get wishlist from user
+    }
+    
+    func getProductsCount() -> Int {
+        return products.count
+    }
+    
+    func searchProducts(query: String) {
+        if (query.isEmpty) {
+            getWishlistFromUser()
+            return
+        }
         
-//        view?.updateProductWishState(isWished: savedProductsIds.contains(data.id))
+        products = products.filter{ product in
+            product.title.lowercased().contains(query.lowercased())
+        }
+        view?.reload()
     }
 }

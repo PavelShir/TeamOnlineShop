@@ -10,15 +10,22 @@ import AsyncImageView
 
 protocol WishlistViewDelegate: AnyObject {
     func tappedCartButton()
-    func tappedWishButton(_ isWished: Bool)
-    func tappedAddToCartButton()
 }
 
 final class WishlistView: UIView {
     
-    weak var delegate: WishlistViewDelegate?
-    private var wished: Bool = false
-    private let title: UILabel = LabelFactory.makeScreenTitle()
+    private let searchBar = CustomSearchBarView()
+    
+    private let emptyWishlistLabel: UILabel = {
+        let label = UILabel()
+        label.text = "You don't add anything to wishlist"
+        label.textColor = .gray
+        label.textAlignment = .center
+        label.font = UIFont.TextFont.Screens.text
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     private var cartButton: UIButton = {
         let button = UIButton(type: .system)
@@ -30,78 +37,28 @@ final class WishlistView: UIView {
         return button
     }()
     
-    private var productImage: AsyncImageView = {
-        let imageView = AsyncImageView(frame: .zero)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.tintColor = UIColor(named: Colors.blackLight)
-        return imageView
-    }()
-    
-    private lazy var productName: UILabel = {
-        let element = UILabel()
-        element.text = ""
-        element.font = UIFont.TextFont.Screens.ProductDetail.title
-        element.textColor = UIColor(named: Colors.blackLight)
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
-    }()
-    
-    private let descriptionLabel: UILabel = {
-        let element = UILabel()
-        element.text = "Description of product"
-        element.font = UIFont.TextFont.Screens.ProductDetail.descriptionLabel
-        element.textColor = UIColor(named: Colors.blackLight)
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
-    }()
-    
-    private var productPrice: UILabel = {
-        let element = UILabel()
-        element.font = UIFont.TextFont.Screens.ProductDetail.price
-        element.textColor = UIColor(named: Colors.blackLight)
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
-    }()
-    
-    private var descriptionText: UITextView = {
-        let textView = UITextView()
-        textView.backgroundColor = .clear
-        textView.text = ""
-        textView.textColor = UIColor(named: Colors.blackLight)
-        textView.font = UIFont.TextFont.Screens.ProductDetail.descriptionText
-        textView.textAlignment = .left
-        textView.showsVerticalScrollIndicator = false
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        return textView
-    }()
-    
-    private var wishButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.layer.cornerRadius = 23
-        button.setImage(UIImage.Icons.wishlist, for: .normal)
-        button.tintColor = UIColor(named: Colors.greyPrimary)
-        button.backgroundColor = UIColor(named: Colors.greyLighter)
-        button.layer.borderColor = UIColor(named: Colors.greyLight)?.cgColor
-        button.layer.borderWidth = 1
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private let separator = Separator()
-    
-    private lazy var buttonStack: UIStackView = {
+    private lazy var hStack: UIStackView = {
         let element = UIStackView()
         element.axis = .horizontal
-        element.distribution = .fillEqually
+        element.distribution = .fill
         element.alignment = .center
         element.spacing = 15
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
+    private let separator = Separator()
     
-    private let addToCartButton = CustomButton(label: "Add to cart", size: CustomButton.Size.normal, type: CustomButton.ButtonType.primary)
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 10
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .white
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(ProductsViewCell.self, forCellWithReuseIdentifier: ProductsViewCell.reuseIdentifier)
+        return collectionView
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -115,130 +72,70 @@ final class WishlistView: UIView {
         layoutViews()
     }
     
-    //MARK: - ConfigView public method
-    func configView(data: Product, isLiked: Bool?) {
-        productImage.setImage(from: data.images[0])
-        productName.text = data.title
-        productPrice.text = "$ \(data.price)"
-        descriptionText.text = data.description
-//        wishButton.setBackgroundImage(favoriteImage, for: .normal)
+    func setDelegates(_ value: WishlistViewController) {
+        collectionView.dataSource = value
+        collectionView.delegate = value
+        searchBar.delegate = value
     }
-     
+    
     func setViews() {
         self.backgroundColor = UIColor(named: Colors.whitePrimary)
         
-        [addToCartButton].forEach { buttonStack.addArrangedSubview($0) }
-        setUpViews()
+        [searchBar, cartButton].forEach { hStack.addArrangedSubview($0) }
         [
-            title,
-            cartButton,
-            productImage,
-            productName,
-            productPrice,
-            descriptionLabel,
-            descriptionText,
-            wishButton,
+            hStack,
             separator,
-            buttonStack
+            collectionView,
+            emptyWishlistLabel,
         ].forEach { addSubview($0) }
     }
     
-    private func setUpViews(){
-        title.text = "Product details"
-        cartButton.addTarget(nil, action: #selector(cartTapped), for: .touchUpInside)
-        wishButton.addTarget(nil, action: #selector(wishTapped), for: .touchUpInside)
+    func switchEmptyLabelVisability(_ isHidden: Bool) {
+        emptyWishlistLabel.isHidden = isHidden
     }
-    
     
     func layoutViews() {
         self.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            title.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-            title.centerXAnchor.constraint(equalTo: self.centerXAnchor)
-        ])
-
-        NSLayoutConstraint.activate([
-            cartButton.topAnchor.constraint(equalTo: title.topAnchor),
-            cartButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            cartButton.widthAnchor.constraint(equalToConstant: 20),
-            cartButton.heightAnchor.constraint(equalToConstant: 20)
+            hStack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
+            hStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            hStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
         ])
         
         NSLayoutConstraint.activate([
-            productImage.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 25),
-            productImage.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            productImage.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            productImage.heightAnchor.constraint(equalToConstant: 200),
-            productImage.heightAnchor.constraint(equalTo: productImage.widthAnchor, multiplier: 0.6),
+            searchBar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
+            searchBar.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20)
         ])
         
         NSLayoutConstraint.activate([
-            productName.topAnchor.constraint(equalTo: productImage.bottomAnchor, constant: 10),
-            productName.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-        ])
-        
-        NSLayoutConstraint.activate([
-            productPrice.topAnchor.constraint(equalTo: productName.bottomAnchor, constant: 5),
-            productPrice.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-        ])
-        
-        NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: productPrice.bottomAnchor, constant: 15),
-            descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-        ])
-        
-        NSLayoutConstraint.activate([
-            wishButton.topAnchor.constraint(equalTo: productImage.bottomAnchor, constant: 10),
-            wishButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            wishButton.widthAnchor.constraint(equalToConstant: 46),
-            wishButton.heightAnchor.constraint(equalToConstant: 46)
-        ])
-        
-        
-        NSLayoutConstraint.activate([
-            descriptionText.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 10),
-            descriptionText.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            descriptionText.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            descriptionText.bottomAnchor.constraint(equalTo: separator.topAnchor, constant: -10)
+            cartButton.widthAnchor.constraint(equalToConstant: 25),
+            cartButton.heightAnchor.constraint(equalToConstant: 25)
         ])
         
         NSLayoutConstraint.activate([
             separator.heightAnchor.constraint(equalToConstant: 1),
             separator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             separator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            separator.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -90),
+            separator.topAnchor.constraint(equalTo: hStack.bottomAnchor, constant: 10),
         ])
         
         NSLayoutConstraint.activate([
-            buttonStack.heightAnchor.constraint(equalToConstant: 100),
-            buttonStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            buttonStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            buttonStack.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
-            
-            addToCartButton.heightAnchor.constraint(equalToConstant: 45),
+            collectionView.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 10),
+            collectionView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            collectionView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            collectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -10)
         ])
         
+        NSLayoutConstraint.activate([
+            emptyWishlistLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            emptyWishlistLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            emptyWishlistLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            emptyWishlistLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+        ])
     }
     
-    @objc private func cartTapped(){
-        delegate?.tappedCartButton()
-    }
-    
-    @objc private func wishTapped(){
-        delegate?.tappedWishButton(!wished)
-    }
-    
-    @objc private func addToCartTapped(){
-        delegate?.tappedAddToCartButton()
-    }
-}
-
-// MARK: - WishlistVCDelegate
-extension WishlistView: WishlistVCDelegate{
-    func updateWishButtonState(isWished: Bool) {
-        let colorName = isWished ? Colors.greenPrimary : Colors.greyPrimary
-        wishButton.tintColor = UIColor(named: colorName)
-        wished = isWished
+    func reloadCollection() {
+        collectionView.reloadData()
     }
 }
