@@ -57,7 +57,7 @@ extension MainPresenter: MainPresenterImplementation {
     }
     
     func searchProductsByCategory(_ categoryId: Int) {
-        PlatziStore.shared.searchProduct(categoryId: categoryId) { [weak self] result in
+        PlatziStore.shared.searchProduct( SearchOption.categoryId(categoryId)) { [weak self] result in
             switch result {
             case .success(let products):
                 let categoryName = self?.getCategoryName(by: categoryId) ?? "Unknown Category"
@@ -78,7 +78,7 @@ extension MainPresenter: MainPresenterImplementation {
             return
         }
         
-        PlatziStore.shared.searchProduct(named: query, categoryId: nil) { [weak self] result in
+        PlatziStore.shared.searchProduct(SearchOption.title(query)) { [weak self] result in
             switch result {
             case .success(let products):
                 DispatchQueue.main.async {

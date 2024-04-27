@@ -48,7 +48,7 @@ extension SearchPresenter: SearchPresenterImplementation {
             return
         }
         
-        PlatziStore.shared.searchProduct(named: query, categoryId: nil) { [weak self] result in
+        PlatziStore.shared.searchProduct(SearchOption.title(query)) { [weak self] result in
             switch result {
             case .success(let products):
                 guard let self = self else { return }
