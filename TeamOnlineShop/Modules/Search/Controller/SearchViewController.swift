@@ -170,7 +170,8 @@ extension SearchViewController: UICollectionViewDataSource {
             fatalError("Unable to dequeue ProductsViewCell")
         }
         let product = productArray[indexPath.row]
-        cell.configure(model: product)
+        cell.configure(model: product, showLikeButton: false)
+        cell.delegate = self
         return cell
     }
     
@@ -208,4 +209,12 @@ extension SearchViewController: SearchBarViewDelegate {
     }
     
     
+}
+
+extension SearchViewController: ProductsViewCellDelegate {
+    func didTapWishButton(in cell: ProductsViewCell) {}
+    
+    func didTapAddToCartButton(in cell: ProductsViewCell) {
+        print("Add to Cart button tapped")
+    }
 }

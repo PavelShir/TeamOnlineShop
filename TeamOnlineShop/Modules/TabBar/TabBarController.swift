@@ -26,8 +26,10 @@ final class TabBarController: UITabBarController {
         let managerVC = ManagerBuilder().buildManagerView()
         managerVC.tabBarItem = UITabBarItem(title: "Manager", image: UIImage.Icons.manager ?? UIImage(), selectedImage: nil)
         
-        // Add wishlist here
-        viewControllers = [navigationController, managerVC, profileVC]
+        let wishlistVC = WishlistBuilder().buildWishlistVC()
+        wishlistVC.tabBarItem = UITabBarItem(title: "Wishlist", image: UIImage.Icons.wishlist ?? UIImage(), selectedImage: nil)
+        
+        viewControllers = [navigationController, wishlistVC, managerVC, profileVC]
         
     }
     
