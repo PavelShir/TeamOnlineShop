@@ -39,7 +39,7 @@ final class CartViewImpl: UIView, CartView {
         let element = UILabel()
         element.text = "$ 2499,97"
         element.font = UIFont.TextFont.Screens.ShopCartItem.title
-//        element.tintColor = .blackLight
+        element.tintColor = .blackLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -115,7 +115,7 @@ final class CartViewImpl: UIView, CartView {
         let element = UILabel()
         element.text = "Order Summary"
         element.font = UIFont.TextFont.Screens.ShopCartItem.title
-//        element.tintColor = .blackLight
+        element.tintColor = .blackLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -132,7 +132,7 @@ final class CartViewImpl: UIView, CartView {
         let element = UILabel()
         element.text = "Totals"
         element.font = UIFont.TextFont.Screens.ShopCartItem.title
-//        element.tintColor = .blackLight
+        element.tintColor = .blackLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -206,43 +206,43 @@ final class CartViewImpl: UIView, CartView {
         NSLayoutConstraint.activate([
             
             line.heightAnchor.constraint(equalToConstant: 1),
-            line.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            line.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            line.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            line.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            line.leadingAnchor.constraint(equalTo: leadingAnchor),
+            line.trailingAnchor.constraint(equalTo: trailingAnchor),
             
             deliveryStack.heightAnchor.constraint(equalToConstant: 50),
             deliveryStack.topAnchor.constraint(equalTo: line.bottomAnchor),
-            deliveryStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-            deliveryStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
+            deliveryStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
+            deliveryStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
             
             lineTwo.heightAnchor.constraint(equalToConstant: 1),
             lineTwo.topAnchor.constraint(equalTo: deliveryStack.bottomAnchor),
-            lineTwo.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            lineTwo.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            lineTwo.leadingAnchor.constraint(equalTo: leadingAnchor),
+            lineTwo.trailingAnchor.constraint(equalTo: trailingAnchor),
             
             lineThree.heightAnchor.constraint(equalToConstant: 1),
-            lineThree.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -160),
-            lineThree.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            lineThree.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            lineThree.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -160),
+            lineThree.leadingAnchor.constraint(equalTo: leadingAnchor),
+            lineThree.trailingAnchor.constraint(equalTo: trailingAnchor),
             
-            orderLabel.bottomAnchor.constraint(equalTo: totalsStack.topAnchor, constant: -1),
-            orderLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            orderLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            orderLabel.heightAnchor.constraint(equalToConstant: 30),
-            
-            totalsStack.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -10),
-            totalsStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            totalsStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            totalsStack.heightAnchor.constraint(equalToConstant: 30),
-            
-            collectionView.topAnchor.constraint(equalTo: bottomAnchor,constant: 15),
+            collectionView.topAnchor.constraint(equalTo: deliveryStack.bottomAnchor,constant: 15),
             collectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -160),
             collectionView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15),
             collectionView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15),
             
-            payButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -40),
-            payButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            payButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            orderLabel.bottomAnchor.constraint(equalTo: totalsStack.topAnchor, constant: -1),
+            orderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            orderLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            orderLabel.heightAnchor.constraint(equalToConstant: 30),
+            
+            totalsStack.bottomAnchor.constraint(equalTo: payButton.topAnchor, constant: -10),
+            totalsStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            totalsStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            totalsStack.heightAnchor.constraint(equalToConstant: 30),
+            
+            payButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -40),
+            payButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            payButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             payButton.heightAnchor.constraint(equalToConstant: 45),
         ])
     }

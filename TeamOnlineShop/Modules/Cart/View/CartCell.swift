@@ -23,7 +23,7 @@ final class CartCell: UICollectionViewCell {
     private lazy var checkButton: UIButton = {
         let element = UIButton(type: .system)
         element.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal) // пустой "square"
-//        element.tintColor = .greenPrimary
+        element.tintColor = .greenPrimary
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -48,7 +48,7 @@ final class CartCell: UICollectionViewCell {
     private lazy var titleLabel: UILabel = {
         let element = UILabel()
         element.font = UIFont.TextFont.Screens.ShopCartItem.title
-//        element.tintColor = .blackLight
+        element.tintColor = .blackLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -56,7 +56,7 @@ final class CartCell: UICollectionViewCell {
     private lazy var priceLabel: UILabel = {
         let element = UILabel()
         element.font = UIFont.TextFont.Screens.ShopCartItem.price
-//        element.tintColor = .blackLight
+        element.tintColor = .blackLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -72,14 +72,14 @@ final class CartCell: UICollectionViewCell {
     private lazy var minusButton: UIButton = {
         let element = UIButton(type: .system)
         element.setImage(UIImage.Icons.minus, for: .normal)
-//        element.tintColor = .greyLight
+        element.tintColor = .greyLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
     
     private lazy var numberLabel: UILabel = {
         let element = UILabel()
-//        element.tintColor = .blackLight
+        element.tintColor = .blackLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -87,7 +87,7 @@ final class CartCell: UICollectionViewCell {
     private lazy var plusButton: UIButton = {
         let element = UIButton(type: .system)
         element.setImage(UIImage.Icons.plus, for: .normal)
-//        element.tintColor = .greyLight
+        element.tintColor = .greyLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -95,7 +95,7 @@ final class CartCell: UICollectionViewCell {
     private lazy var trashButton: UIButton = {
         let element = UIButton(type: .system)
         element.setImage(UIImage.Icons.trashCircle, for: .normal)
-//        element.tintColor = .greyLight
+        element.tintColor = .greyLight
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
