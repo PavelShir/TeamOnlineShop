@@ -99,12 +99,12 @@ class CartCell: UICollectionViewCell {
         return element
     }()
     
-    func setup(_ item: CartModel) {
+    func setup(_ item: CartItem) {
         
         imageView.image = UIImage(named: "CellImage")
         titleLabel.text = item.title
         priceLabel.text = "$ " + String(item.price)
-        numberLabel.text = String(item.amount)
+        numberLabel.text = String(item.count)
     }
     
     override init(frame: CGRect) {
