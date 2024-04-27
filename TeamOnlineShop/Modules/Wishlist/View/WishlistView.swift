@@ -94,8 +94,6 @@ final class WishlistView: UIView {
     }
     
     func layoutViews() {
-        self.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
             hStack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
             hStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),

@@ -26,9 +26,9 @@ final class WishlistViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    override func loadView() {
-//        view = custom
-//    }
+    override func loadView() {
+        view = customView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,13 +45,6 @@ final class WishlistViewController: UIViewController {
     }
     
     private func setupCustomView() {
-        view.addSubview(customView)
-        NSLayoutConstraint.activate([
-            customView.topAnchor.constraint(equalTo: view.topAnchor),
-            customView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            customView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            customView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
         customView.setDelegates(self)
     }
 
