@@ -6,6 +6,8 @@ protocol MainPresenterImplementation: AnyObject {
     func searchAndOpenFilteredResults(query: String)
     func goToProductDetail(_ index: Int)
     func searchProductsByCategory(_ categoryId: Int)
+    func filterByPriceRange(low: Double, high: Double)
+    func filterByName()
 }
 
 final class MainPresenter {
@@ -13,37 +15,55 @@ final class MainPresenter {
     // MARK: - Properties
     weak var view: MainViewImplementation?
     let router: MainRouter
-    
+    private var isSortingAscending = true
     private var categoriesArray = [PlatziFakeStore.Category]()
     private var productsArray = [PlatziFakeStore.Product]()
-    private var filteredProducts = [PlatziFakeStore.Product]()
     
     init(router: MainRouter) {
         self.router = router
     }
     
-    private func fetchProducts(completion: @escaping () -> Void) {
-        PlatziStore.shared.productList(limit: 40, offset: 0) { [weak self] result in
-            switch result {
-            case .success(let products):
-                self?.filteredProducts = products
-                completion()
-            case .failure(let error):
-                print("Error fetching products: \(error)")
-            }
-        }
+    private func getCategoryName(by categoryId: Int) -> String? {
+        return categoriesArray.first(where: { $0.id == categoryId })?.name
     }
 }
 
 // MARK: - MainPresenter + MainPresenterProtocol
 extension MainPresenter: MainPresenterImplementation {
     
+    func filterByPriceRange(low: Double, high: Double) {
+        
+        productsArray = productsArray.filter { $0.price >= Int(low) && $0.price <= Int(high) }
+        DispatchQueue.main.async {
+            self.view?.collectionView.reloadSections(IndexSet(arrayLiteral: 0,1))
+        }
+    }
+    
+    func filterByName() {
+        print("Before sorting: \(productsArray.map { $0.title })")
+
+        if isSortingAscending {
+            productsArray.sort { $0.title.lowercased() < $1.title.lowercased() }
+        } else {
+            productsArray.sort { $0.title.lowercased() > $1.title.lowercased() }
+        }
+
+        print("After sorting: \(productsArray.map { $0.title })")
+        isSortingAscending.toggle()
+
+        DispatchQueue.main.async {
+            self.view?.collectionView.reloadData()
+        }
+    }
+    
     func searchProductsByCategory(_ categoryId: Int) {
         PlatziStore.shared.searchProduct(categoryId: categoryId) { [weak self] result in
             switch result {
             case .success(let products):
+                let categoryName = self?.getCategoryName(by: categoryId) ?? "Unknown Category"
                 DispatchQueue.main.async {
-                    self?.router.showSearch(data: products)
+                    self?.router.showSearch(data: products,
+                                            serachText: categoryName)
                 }
             case .failure(let error):
                 print("Error fetching products by category: \(error)")
@@ -62,7 +82,7 @@ extension MainPresenter: MainPresenterImplementation {
             switch result {
             case .success(let products):
                 DispatchQueue.main.async {
-                    self?.router.showSearch(data: products)
+                    self?.router.showSearch(data: products, serachText: query)
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -124,23 +144,3 @@ extension MainPresenter: MainPresenterImplementation {
         router.showProductDetail(data: convertedProduct)
     }
 }
-
-//func searchAndOpenFilteredResults(query: String) {
-//
-//    fetchProducts { [weak self] in
-//        guard let self = self else { return }
-//
-//        let filteredProducts = self.filteredProducts.filter { $0.title.lowercased().contains(query.lowercased()) }
-//
-//        print("Filtered products: \(filteredProducts.map { $0.title })")
-//        if !filteredProducts.isEmpty {
-//
-//            DispatchQueue.main.async {
-//                self.router.showSearch(data: filteredProducts)
-//            }
-//
-//        } else {
-//            print("No products found matching the query.")
-//        }
-//    }
-//}

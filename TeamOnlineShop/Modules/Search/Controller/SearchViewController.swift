@@ -8,20 +8,27 @@
 import UIKit
 import PlatziFakeStore
 
-protocol SearchViewImplementation: AnyObject {}
+protocol SearchViewImplementation: AnyObject {
+    func fetchModel(model: SearchModel)
+}
 
 final class SearchViewController: UIViewController {
     
     // MARK: - properties
     private let presenter: SearchPresenterImplementation
-    
+    private var searchText: String
     var productArray = [PlatziFakeStore.Product]()
     
     // MARK: - Init
-    init(presenter: SearchPresenterImplementation, productArray: [PlatziFakeStore.Product]) {
+    init(presenter: SearchPresenterImplementation,
+         productArray: [PlatziFakeStore.Product],
+         searchText: String) {
+        
         self.presenter = presenter
         self.productArray = productArray
+        self.searchText = searchText
         super.init(nibName: nil, bundle: nil)
+        searchBarView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -33,6 +40,8 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
+        updateSearchResultsLabel(text: searchText)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,7 +75,7 @@ final class SearchViewController: UIViewController {
         return button
     }()
     
-    private lazy var collectionView: UICollectionView = {
+    internal lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         
@@ -79,17 +88,27 @@ final class SearchViewController: UIViewController {
         return collectionView
     }()
     
-    private let searchResultsLabel: UILabel = {
+    private var searchResultsLabel: UILabel = {
         let element = UILabel()
-        element.text = "Search results for 'Earphone' "
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
+    
+    func render(model: SearchModel) {
+        
+        productArray = model.productsArray
+        
+        collectionView.reloadData()
+    }
     
     // MARK: - Selectors
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
+    
+    func updateSearchResultsLabel(text: String) {
+            searchResultsLabel.text = "Search results for '\(text)'"
+        }
     
     // MARK: - Setup views + Constraints
     private func setupViews() {
@@ -110,18 +129,17 @@ final class SearchViewController: UIViewController {
             
             searchBarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             searchBarView.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 16),
-            searchBarView.trailingAnchor.constraint(equalTo: filterButton.trailingAnchor),
+            searchBarView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
-            filterButton.centerYAnchor.constraint(equalTo: searchResultsLabel.centerYAnchor),
-            filterButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            filterButton.widthAnchor.constraint(equalToConstant: 44),
-            filterButton.heightAnchor.constraint(equalToConstant: 27),
+            filterButton.centerYAnchor.constraint(equalTo: searchResultsLabel.centerYAnchor, constant: -3),
+            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             
             searchResultsLabel.topAnchor.constraint(equalTo: searchBarView.bottomAnchor, constant: 20),
-            searchResultsLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            searchResultsLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            
-            collectionView.topAnchor.constraint(equalTo: searchResultsLabel.bottomAnchor, constant: 8),
+            searchResultsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            searchResultsLabel.widthAnchor.constraint(equalToConstant: 250),
+            searchResultsLabel.heightAnchor.constraint(equalToConstant: 20),
+           
+            collectionView.topAnchor.constraint(equalTo: searchResultsLabel.bottomAnchor, constant: 15),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
@@ -130,7 +148,14 @@ final class SearchViewController: UIViewController {
 }
 
 // MARK: - SearchViewController + SearchViewImplementation
-extension SearchViewController: SearchViewImplementation {}
+extension SearchViewController: SearchViewImplementation {
+    
+    func fetchModel(model: SearchModel) {
+        productArray = model.productsArray
+        updateSearchResultsLabel(text: model.query)
+        collectionView.reloadData()
+    }
+}
 
 // MARK: - SearchViewController + UICollectionViewDataSource
 extension SearchViewController: UICollectionViewDataSource {
@@ -144,7 +169,6 @@ extension SearchViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.reuseIdentifier, for: indexPath) as? ProductsViewCell else {
             fatalError("Unable to dequeue ProductsViewCell")
         }
-        cell.backgroundColor = .blue
         let product = productArray[indexPath.row]
         cell.configure(model: product)
         return cell
@@ -173,3 +197,15 @@ extension SearchViewController: UICollectionViewDelegate {
 // MARK: - SearchViewController + UICollectionViewDelegateFlowLayout
 extension SearchViewController: UICollectionViewDelegateFlowLayout {}
 
+// MARK: - SearchViewController + SearchBarViewDelegate
+extension SearchViewController: SearchBarViewDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {}
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+        presenter.searchAndOpenFilteredResults(query: searchText)
+    }
+    
+    
+}
