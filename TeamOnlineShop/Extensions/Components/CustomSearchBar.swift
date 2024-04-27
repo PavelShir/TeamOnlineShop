@@ -51,7 +51,7 @@ class CustomSearchBarView: UISearchBar {
     }
     
     private func setupAppearenceSeacrhBar(){
-        let backgroundImage =  UIImage.imageWithColor(color: backColor ?? .white)
+        let backgroundImage =  UIImage.imageWithColor(color: backColor)
         setBackgroundImage(backgroundImage, for: .any, barMetrics: .default)
         layer.cornerRadius = 4
         clipsToBounds = true

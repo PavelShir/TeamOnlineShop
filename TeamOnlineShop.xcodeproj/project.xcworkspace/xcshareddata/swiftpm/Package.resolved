@@ -1,12 +1,13 @@
 {
   "pins" : [
     {
+
       "identity" : "platzifakestore",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ShapovalovIlya/PlatziFakeStore.git",
       "state" : {
         "branch" : "main",
-        "revision" : "b6b42b3695adc46d0f8737d43149d8d943851731"
+
       }
     },
     {
