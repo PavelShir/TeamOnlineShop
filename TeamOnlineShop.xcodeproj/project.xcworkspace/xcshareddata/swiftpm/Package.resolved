@@ -102,10 +102,10 @@
     {
       "identity" : "platzifakestore",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ShapovalovIlya/PlatziFakeStore.git",
+      "location" : "https://github.com/ShapovalovIlya/PlatziFakeStore",
       "state" : {
         "branch" : "main",
-        "revision" : "2f97d5cddcfaca9023efd8fcfc3089132bebdae3"
+        "revision" : "9c2dea58c7634f59c1079e348410ac4d781c48f6"
       }
     },
     {
