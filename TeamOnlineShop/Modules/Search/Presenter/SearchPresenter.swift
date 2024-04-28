@@ -11,12 +11,16 @@ import PlatziFakeStore
 protocol SearchPresenterImplementation {
     func goToProductDetail(_ index: Int)
     func searchAndOpenFilteredResults(query: String)
+    func filterByPriceRange(low: Double, high: Double)
+    func filterByName()
 }
 
 final class SearchPresenter {
     
     weak var view: SearchViewImplementation?
     let router: MainRouter
+    private var query = " "
+    var isSortingAscending = true
     private var productsArray = [PlatziFakeStore.Product]()
     
     init(router: MainRouter,
@@ -27,6 +31,7 @@ final class SearchPresenter {
 }
 
 extension SearchPresenter: SearchPresenterImplementation {
+    
     func goToProductDetail(_ index: Int) {
         let product = productsArray[index]
         let convertedProduct = Product(
@@ -52,6 +57,7 @@ extension SearchPresenter: SearchPresenterImplementation {
             switch result {
             case .success(let products):
                 guard let self = self else { return }
+                self.query = query
                 DispatchQueue.main.async {
                     let model = SearchModel(
                         productsArray: products,
@@ -64,6 +70,38 @@ extension SearchPresenter: SearchPresenterImplementation {
                     print("Error during the search: \(error)")
                 }
             }
+        }
+    }
+    
+    func filterByName() {
+        
+        if isSortingAscending {
+            productsArray.sort { $0.title.lowercased() < $1.title.lowercased() }
+        } else {
+            productsArray.sort { $0.title.lowercased() > $1.title.lowercased() }
+        }
+        
+        isSortingAscending.toggle()
+        DispatchQueue.main.async {
+            
+            let model = SearchModel(
+                productsArray: self.productsArray,
+                query: self.query
+            )
+            self.view?.fetchModel(model: model)
+        }
+    }
+    
+    func filterByPriceRange(low: Double, high: Double) {
+        
+        productsArray = productsArray.filter { $0.price >= Int(low) && $0.price <= Int(high) }
+        DispatchQueue.main.async {
+            
+            let model = SearchModel(
+                productsArray: self.productsArray,
+                query: self.query
+            )
+            self.view?.fetchModel(model: model)
         }
     }
 }

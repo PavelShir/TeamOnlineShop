@@ -31,16 +31,24 @@ final class MainPresenter {
 // MARK: - MainPresenter + MainPresenterProtocol
 extension MainPresenter: MainPresenterImplementation {
     
+    // MARK: - Filter methods
     func filterByPriceRange(low: Double, high: Double) {
         
         productsArray = productsArray.filter { $0.price >= Int(low) && $0.price <= Int(high) }
         DispatchQueue.main.async {
-            self.view?.collectionView.reloadSections(IndexSet(arrayLiteral: 0,1))
+            
+            let model = Model(
+                isExpanded: false,
+                productCategory: self.categoriesArray,
+                productsArray: self.productsArray,
+                query: "Search",
+                address: "Delivery address"
+            )
+            self.view?.render(model: model)
         }
     }
     
     func filterByName() {
-        print("Before sorting: \(productsArray.map { $0.title })")
 
         if isSortingAscending {
             productsArray.sort { $0.title.lowercased() < $1.title.lowercased() }
@@ -48,14 +56,24 @@ extension MainPresenter: MainPresenterImplementation {
             productsArray.sort { $0.title.lowercased() > $1.title.lowercased() }
         }
 
-        print("After sorting: \(productsArray.map { $0.title })")
         isSortingAscending.toggle()
 
         DispatchQueue.main.async {
-            self.view?.collectionView.reloadData()
+            DispatchQueue.main.async {
+                
+                let model = Model(
+                    isExpanded: false,
+                    productCategory: self.categoriesArray,
+                    productsArray: self.productsArray,
+                    query: "Search",
+                    address: "Delivery address"
+                )
+                self.view?.render(model: model)
+            }
+
         }
     }
-    
+    // MARK: - Search methods
     func searchProductsByCategory(_ categoryId: Int) {
         PlatziStore.shared.searchProduct( SearchOption.categoryId(categoryId)) { [weak self] result in
             switch result {
@@ -92,6 +110,7 @@ extension MainPresenter: MainPresenterImplementation {
         }
     }
     
+    // MARK: - Fetch and init local model
     func fetchModel() {
         let dispatchGroup = DispatchGroup()
         
@@ -130,6 +149,7 @@ extension MainPresenter: MainPresenterImplementation {
         }
     }
     
+    // MARK: - Navigation methods
     func goToProductDetail(_ index: Int) {
         let product = productsArray[index]
         let convertedProduct = Product(
