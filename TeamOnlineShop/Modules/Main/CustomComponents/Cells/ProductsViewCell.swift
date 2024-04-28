@@ -97,7 +97,7 @@ final class ProductsViewCell: UICollectionViewCell {
     }
     
     // MARK: - Global funcs
-    func configure(model: PlatziFakeStore.Product,  showLikeButton: Bool) {
+    func configure(model: Product,  showLikeButton: Bool) {
         productNameLabel.text = model.title
         priceLabel.text = "$\(model.price)"
         wishButton.isHidden = !showLikeButton

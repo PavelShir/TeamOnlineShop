@@ -16,8 +16,8 @@ final class MainPresenter {
     weak var view: MainViewImplementation?
     let router: MainRouter
     private var isSortingAscending = true
-    private var categoriesArray = [PlatziFakeStore.Category]()
-    private var productsArray = [PlatziFakeStore.Product]()
+    private var categoriesArray = [Category]()
+    private var productsArray = [Product]()
     
     init(router: MainRouter) {
         self.router = router
@@ -62,7 +62,7 @@ extension MainPresenter: MainPresenterImplementation {
             case .success(let products):
                 let categoryName = self?.getCategoryName(by: categoryId) ?? "Unknown Category"
                 DispatchQueue.main.async {
-                    self?.router.showSearch(data: products,
+                    self?.router.showSearch(data: products.map { Product(fromDTO: $0) },
                                             serachText: categoryName)
                 }
             case .failure(let error):
@@ -82,7 +82,7 @@ extension MainPresenter: MainPresenterImplementation {
             switch result {
             case .success(let products):
                 DispatchQueue.main.async {
-                    self?.router.showSearch(data: products, serachText: query)
+                    self?.router.showSearch(data: products.map { Product(fromDTO: $0) }, serachText: query)
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -100,7 +100,7 @@ extension MainPresenter: MainPresenterImplementation {
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let categories):
-                self?.categoriesArray = categories
+                self?.categoriesArray = categories.map { Category(fromDTO: $0) }
             case .failure(let error):
                 print("Error fetching categories: \(error)")
             }
@@ -111,7 +111,7 @@ extension MainPresenter: MainPresenterImplementation {
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let products):
-                self?.productsArray = products
+                self?.productsArray = products.map { Product(fromDTO: $0) }
             case .failure(let error):
                 print("Error fetching products: \(error)")
             }
@@ -138,8 +138,7 @@ extension MainPresenter: MainPresenterImplementation {
             price: product.price,
             description: product.description,
             images: product.images,
-            category: Category(id: product.category.id, name: product.category.name, image: product.category.image),
-            categoryId: product.category.id
+            category: Category(id: product.category.id, name: product.category.name, image: product.category.image)
         )
         router.showProductDetail(data: convertedProduct)
     }

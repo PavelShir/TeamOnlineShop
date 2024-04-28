@@ -20,7 +20,7 @@ final class MainRouter {
         navigationVC.viewControllers = [mainVC]
     }
     
-    func showSearch(data: [PlatziFakeStore.Product], serachText: String) {
+    func showSearch(data: [Product], serachText: String) {
        
         let vc = SearchModuleBuilder.build(
             router: self,

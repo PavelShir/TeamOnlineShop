@@ -17,10 +17,10 @@ final class SearchPresenter {
     
     weak var view: SearchViewImplementation?
     let router: MainRouter
-    private var productsArray = [PlatziFakeStore.Product]()
+    private var productsArray = [Product]()
     
     init(router: MainRouter,
-         productsArray: [PlatziFakeStore.Product]) {
+         productsArray: [Product]) {
         self.router = router
         self.productsArray = productsArray
     }
@@ -35,8 +35,8 @@ extension SearchPresenter: SearchPresenterImplementation {
             price: product.price,
             description: product.description,
             images: product.images,
-            category: Category(id: product.category.id, name: product.category.name, image: product.category.image),
-            categoryId: product.category.id
+            category: Category(id: product.category.id, name: product.category.name, image: product.category.image)
+//            categoryId: product.category.id
         )
         router.showProductDetail(data: convertedProduct)
     }
@@ -54,7 +54,7 @@ extension SearchPresenter: SearchPresenterImplementation {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     let model = SearchModel(
-                        productsArray: products,
+                        productsArray: products.map { Product(fromDTO: $0) },
                         query: query
                     )
                     self.view?.fetchModel(model: model)

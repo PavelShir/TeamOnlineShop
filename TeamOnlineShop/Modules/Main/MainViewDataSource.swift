@@ -3,8 +3,8 @@ import PlatziFakeStore
 
 final class MainViewCollectionDataSource: NSObject {
     
-    private var products = [PlatziFakeStore.Product]()
-    private var categories = [PlatziFakeStore.Category]()
+    private var products = [Product]()
+    private var categories = [Category]()
     var isExpanded = false
     var delegate: CategoryHeaderDelegate?
     var filterDelegate: CustomFiltersButtonDelegate?
@@ -27,8 +27,8 @@ final class MainViewCollectionDataSource: NSObject {
     }
     
     func setRenderModel(
-        products: [PlatziFakeStore.Product],
-        categories: [PlatziFakeStore.Category]) {
+        products: [Product],
+        categories: [Category]) {
         self.products = products
         self.categories = categories
     }
@@ -92,9 +92,9 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
                     image: UIImage.Icons.allCategories ?? UIImage())
             } else {
                 if indexPath.item < categories.count {
-                           let category = categories[indexPath.item]
-                           categoryCell.configure(model: category)
-                       }
+                    let category = categories[indexPath.item]
+                    categoryCell.configure(model: category)
+                }
             }
             
             return categoryCell

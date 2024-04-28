@@ -49,7 +49,7 @@ final class DetailPresenter: DetailPresenterProtocol {
                 print("complete")
             }
         } else {
-            UserManager.shared.deleteProductFromWishList(productId: data.id!) { error in
+            UserManager.shared.deleteProductFromWishList(productId: data.id) { error in
                 print("complete")
             }
         }

@@ -17,11 +17,11 @@ final class SearchViewController: UIViewController {
     // MARK: - properties
     private let presenter: SearchPresenterImplementation
     private var searchText: String
-    var productArray = [PlatziFakeStore.Product]()
+    var productArray = [Product]()
     
     // MARK: - Init
     init(presenter: SearchPresenterImplementation,
-         productArray: [PlatziFakeStore.Product],
+         productArray: [Product],
          searchText: String) {
         
         self.presenter = presenter

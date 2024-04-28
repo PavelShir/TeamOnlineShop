@@ -12,7 +12,7 @@ final class MainViewController: UIViewController {
     // MARK: - Properties
     private let presenter: MainPresenterImplementation
     private var dataSource: MainViewCollectionDataSource!
-    private var categories = [PlatziFakeStore.Category]()
+    private var categories = [Category]()
     var isExpanded = false
     
     init(presenter: MainPresenterImplementation) {
