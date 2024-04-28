@@ -45,7 +45,7 @@ final class ProductsViewCell: UICollectionViewCell {
     private var wishButton: UIButton = {
         let button = UIButton(type: .system)
         button.layer.cornerRadius = 23
-        button.setBackgroundImage(UIImage.Icons.wishlist, for: .normal)
+        button.setBackgroundImage(UIImage.Icons.wishlistFill, for: .normal)
         button.tintColor = UIColor(named: Colors.greenPrimary)
         button.backgroundColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false

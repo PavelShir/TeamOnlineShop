@@ -18,6 +18,10 @@ extension UIImage {
             return UIImage(systemName: "heart")
         }
         
+        static var wishlistFill: UIImage? {
+            return UIImage(systemName: "heart.fill")
+        }
+        
         static var manager: UIImage? {
             return UIImage(systemName: "doc.text")
         }

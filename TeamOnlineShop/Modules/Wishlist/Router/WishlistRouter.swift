@@ -29,6 +29,8 @@ final class WishlistRouter: WishlistRouterProtocol {
     }
     
     func goToCartVC() {
-        print("go to cart")
+        let builder = CartBuilder(navigationVC: navigationVC)
+        let router = builder.buildRouter()
+        router.showCartModule()
     }
 }

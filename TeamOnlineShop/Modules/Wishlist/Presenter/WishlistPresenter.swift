@@ -26,7 +26,7 @@ protocol WishlistPresenterProtocol: AnyObject {
 
 final class WishlistPresenter: WishlistPresenterProtocol {
     
-    private weak var view: WishlistPresenterViewProtocol?
+    weak var view: WishlistPresenterViewProtocol?
     private var router: WishlistRouterProtocol?
     
     var products: [Product] = []
@@ -77,6 +77,7 @@ final class WishlistPresenter: WishlistPresenterProtocol {
     func searchProducts(query: String) {
         if (query.isEmpty) {
             getWishlistFromUser()
+            view?.reload()
             return
         }
         

@@ -13,7 +13,7 @@ protocol WishlistViewDelegate: AnyObject {
 }
 
 final class WishlistView: UIView {
-    
+    weak var delegate: WishlistViewDelegate?
     private let searchBar = CustomSearchBarView()
     
     private let emptyWishlistLabel: UILabel = {
@@ -72,6 +72,7 @@ final class WishlistView: UIView {
     }
     
     func setDelegates(_ value: WishlistViewController) {
+        delegate = value
         collectionView.dataSource = value
         collectionView.delegate = value
         searchBar.delegate = value
@@ -87,10 +88,21 @@ final class WishlistView: UIView {
             collectionView,
             emptyWishlistLabel,
         ].forEach { addSubview($0) }
+        
+        cartButton.addTarget(nil, action: #selector(cartTapped), for: .touchUpInside)
     }
     
     func switchEmptyLabelVisability(_ isHidden: Bool) {
+        if searchBar.text?.count != 0 && !isHidden {
+            emptyWishlistLabel.text = "No matches"
+        } else {
+            emptyWishlistLabel.text = "You don't add anything to wishlist"
+        }
         emptyWishlistLabel.isHidden = isHidden
+    }
+    
+    @objc private func cartTapped(){
+        delegate?.tappedCartButton()
     }
     
     func layoutViews() {

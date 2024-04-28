@@ -112,7 +112,16 @@ extension WishlistViewController: UISearchBarDelegate{
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchText = searchBar.text, !searchText.isEmpty else { return }
         presenter.searchProducts(query: searchText)
-        searchBar.resignFirstResponder()
+        DispatchQueue.main.async {
+            searchBar.resignFirstResponder()
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            presenter.getWishlistFromUser()
+            reload()
+        }
     }
 }
 

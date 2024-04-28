@@ -187,8 +187,8 @@ final class DetailView: UIView {
         NSLayoutConstraint.activate([
             cartButton.topAnchor.constraint(equalTo: title.topAnchor),
             cartButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            cartButton.widthAnchor.constraint(equalToConstant: 20),
-            cartButton.heightAnchor.constraint(equalToConstant: 20)
+            cartButton.widthAnchor.constraint(equalToConstant: 25),
+            cartButton.heightAnchor.constraint(equalToConstant: 25)
         ])
         
         NSLayoutConstraint.activate([
@@ -274,7 +274,9 @@ final class DetailView: UIView {
 extension DetailView: DetailVCDelegate{
     func updateWishButtonState(isWished: Bool) {
         let colorName = isWished ? Colors.greenPrimary : Colors.greyPrimary
+        let icon = isWished ? UIImage.Icons.wishlistFill : UIImage.Icons.wishlist
         wishButton.tintColor = UIColor(named: colorName)
+        wishButton.setImage(icon, for: .normal)
         wished = isWished
     }
 }

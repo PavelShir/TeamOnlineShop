@@ -57,6 +57,10 @@ final class CartPresenter: CartPresenterProtocol {
     }
     
     func didTapPayButton() {
+        if cartItems.count == 0 {
+            return
+        }
+        
         router.goToPaymentsVC(onContinue: { [weak self] in
             self?.cartItems.removeAll(where: \.selected)
             self?.updateUI()
