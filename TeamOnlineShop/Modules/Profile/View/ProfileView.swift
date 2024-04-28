@@ -228,6 +228,15 @@ final class ProfileView: UIView {
         profileImage.image = safeImage
     }
     
+    func configView(with userData: UserData) {
+        profileName.text = userData.username
+        profileEmail.text = userData.email
+        guard let image = userData.image else { return }
+        
+        profileImage.image = image
+        
+    }
+    
     @objc private func signOutButtonTapped(){
         delegate?.signOutButtonTapped()
     }

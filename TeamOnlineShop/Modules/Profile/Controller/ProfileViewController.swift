@@ -49,6 +49,7 @@ final class ProfileViewController: UIViewController {
             customView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         customView.delegate = self
+        customView.configView(with: UserManager.shared.getUserProfileData())
     }
     
     private func setupPhotoSelectionMenu() {
@@ -109,7 +110,11 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
             picker.dismiss(animated: true, completion: nil)
             return
         }
-        
+        UserManager.shared.updateUserAvatar(avatar: selectedImage) { error in
+            if error != nil {
+                print("Error is occured during saving new user avatar")
+            }
+        }
         customView.updateProfileImage(selectedImage)
         hidePhotoSelectionMenu()
         
