@@ -188,6 +188,10 @@ final class UserManager {
         )
     }
     
+    func getUserRole() -> UserRole {
+        return UserRole(rawValue: user?.role ?? "user") ?? UserRole.user
+    }
+    
     private func makeUserImage() -> UIImage? {
         guard let imageData = getUserAvatarFromUD(by: user?.id ?? ""), !imageData.isEmpty else {
             return nil
