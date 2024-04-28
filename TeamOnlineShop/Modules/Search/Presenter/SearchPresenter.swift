@@ -49,6 +49,8 @@ extension SearchPresenter: SearchPresenterImplementation {
         UserManager.shared.addProductToCart(product: product) { error in
             print("complete")
         }
+        
+        view?.updateCartLabelCount(count: UserManager.shared.getProductsFromCart().count)
     }
     
     func searchAndOpenFilteredResults(query: String) {
@@ -69,6 +71,8 @@ extension SearchPresenter: SearchPresenterImplementation {
                         query: query
                     )
                     self.view?.fetchModel(model: model)
+                    
+                    self.view?.updateCartLabelCount(count: UserManager.shared.getProductsFromCart().count)
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -94,6 +98,8 @@ extension SearchPresenter: SearchPresenterImplementation {
                 query: self.query
             )
             self.view?.fetchModel(model: model)
+            
+            self.view?.updateCartLabelCount(count: UserManager.shared.getProductsFromCart().count)
         }
     }
     
@@ -107,6 +113,8 @@ extension SearchPresenter: SearchPresenterImplementation {
                 query: self.query
             )
             self.view?.fetchModel(model: model)
+            
+            self.view?.updateCartLabelCount(count: UserManager.shared.getProductsFromCart().count)
         }
     }
     
@@ -126,6 +134,8 @@ extension SearchPresenter: SearchPresenterImplementation {
                     query: self.query
                 )
                 self.view?.fetchModel(model: model) 
+                
+                self.view?.updateCartLabelCount(count: UserManager.shared.getProductsFromCart().count)
         }
     }
 }

@@ -14,7 +14,6 @@ final class CategoryHeader: UICollectionReusableView, UISearchBarDelegate, Searc
     static let reuseIdentifier = CategoryHeader.description()
     
     private let searchBar = SearchBarView()
-    private let cartButton = CartButton()
     private let DeliveryTitle: UILabel = {
         let label = UILabel()
         label.text = "Delivery address"

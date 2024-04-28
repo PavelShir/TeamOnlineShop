@@ -46,7 +46,7 @@ final class SearchBarView: UIView {
         super.init(frame: frame)
         setView()
         setupConstraints()
-        loadSearchHistory()
+//        loadSearchHistory()
     }
     
     required init?(coder: NSCoder) {
@@ -94,6 +94,10 @@ final class SearchBarView: UIView {
     // MARK: - Internal Methods
     func toggleSearchButton(with value: Bool) {
         searchButton.isEnabled = value
+    }
+    
+    func setSearchText(_ text: String) {
+        searchBar.text = text
     }
 }
 

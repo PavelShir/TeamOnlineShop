@@ -10,6 +10,7 @@ import PlatziFakeStore
 
 protocol SearchViewImplementation: AnyObject {
     func fetchModel(model: SearchModel)
+    func updateCartLabelCount(count: Int)
 }
 
 final class SearchViewController: UIViewController {
@@ -42,6 +43,8 @@ final class SearchViewController: UIViewController {
         filterButton.delegate = self
         setupViews()
         updateSearchResultsLabel(text: searchText)
+        searchBarView.setSearchText(searchText)
+        updateCartLabelCount(count: 1)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,6 +66,8 @@ final class SearchViewController: UIViewController {
         return view
     }()
     
+    private var cartButton = CustomCartButton()
+    
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage.Icons.arrowLeft, for: .normal)
@@ -70,6 +75,16 @@ final class SearchViewController: UIViewController {
         button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
+    }()
+    
+    private lazy var hStack: UIStackView = {
+        let element = UIStackView()
+        element.axis = .horizontal
+        element.distribution = .fill
+        element.alignment = .center
+        element.spacing = 10
+        element.translatesAutoresizingMaskIntoConstraints = false
+        return element
     }()
     
     private let filterButton: CustomFiltersButton = {
@@ -110,29 +125,32 @@ final class SearchViewController: UIViewController {
     }
     
     func updateSearchResultsLabel(text: String) {
-            searchResultsLabel.text = "Search results for '\(text)'"
-        }
+        searchResultsLabel.text = "Search results for '\(text)'"
+    }
     
     // MARK: - Setup views + Constraints
     private func setupViews() {
+        
+        [backButton, searchBarView, cartButton].forEach { hStack.addArrangedSubview($0) }
+        
         view.addSubviews(
-            backButton,
-            searchBarView,
+//            backButton,
+            hStack,
             filterButton,
             searchResultsLabel,
             collectionView)
+        cartButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            
-            backButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            
             backButton.widthAnchor.constraint(equalToConstant: 24),
             backButton.heightAnchor.constraint(equalToConstant: 24),
-            backButton.centerYAnchor.constraint(equalTo: searchBarView.centerYAnchor),
             
-            searchBarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            searchBarView.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 16),
-            searchBarView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            hStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            hStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            hStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            
+            cartButton.widthAnchor.constraint(equalToConstant: 25),
+            cartButton.heightAnchor.constraint(equalToConstant: 25),
             
             filterButton.centerYAnchor.constraint(equalTo: searchResultsLabel.centerYAnchor, constant: -3),
             filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
@@ -143,9 +161,9 @@ final class SearchViewController: UIViewController {
             searchResultsLabel.heightAnchor.constraint(equalToConstant: 20),
            
             collectionView.topAnchor.constraint(equalTo: searchResultsLabel.bottomAnchor, constant: 15),
-            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         ])
     }
 }
@@ -157,6 +175,10 @@ extension SearchViewController: SearchViewImplementation {
         productArray = model.productsArray
         updateSearchResultsLabel(text: model.query)
         collectionView.reloadData()
+    }
+    
+    func updateCartLabelCount(count: Int) {
+        cartButton.setItemCount(count)
     }
 }
 
