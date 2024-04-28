@@ -24,7 +24,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let vc = OnboardingViewController()
             vc.modalPresentationStyle = .fullScreen
             self.window?.rootViewController = vc
-            UserDefaults.standard.addObserver(self, forKeyPath: "theme", options: [.new], context: nil)
         }
         
         window.makeKeyAndVisible()
@@ -42,7 +41,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 
                 let tabBarController = TabBarController()
                 self?.window?.rootViewController = tabBarController
-                UserDefaults.standard.addObserver(self!, forKeyPath: "theme", options: [.new], context: nil)
             }
         }
     }
