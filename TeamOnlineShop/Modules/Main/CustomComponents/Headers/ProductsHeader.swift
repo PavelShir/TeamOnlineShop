@@ -24,6 +24,10 @@ final class ProductsHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(delegate: CustomFiltersButtonDelegate?) {
+         filtersButton.delegate = delegate
+     }
+    
     private func setupConstraints() {
         
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -33,10 +37,8 @@ final class ProductsHeader: UICollectionReusableView {
             label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             label.centerYAnchor.constraint(equalTo: centerYAnchor),
             
-            filtersButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            filtersButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            filtersButton.heightAnchor.constraint(equalTo: label.heightAnchor),
-            filtersButton.widthAnchor.constraint(equalToConstant: 80)
+            filtersButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            filtersButton.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 }

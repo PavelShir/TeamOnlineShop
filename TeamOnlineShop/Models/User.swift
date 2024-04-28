@@ -22,6 +22,7 @@ struct User {
     let id: String
     var username: String = ""
     var email: String = ""
+    var pass: String = ""
     var image: String?
     var type: String = UserType.user.rawValue
     var cart: [Product] = []

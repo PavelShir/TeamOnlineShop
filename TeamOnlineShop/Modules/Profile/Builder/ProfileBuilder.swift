@@ -17,7 +17,6 @@ final class ProfileBuilder: ProfileBuilderProtocol {
     
     let navigationController = UINavigationController()
     
-
     func buildProfileView() -> UIViewController {
         let router = ProfileRouter(navigationVC: navigationController)
         let presenter = ProfilePresenter(

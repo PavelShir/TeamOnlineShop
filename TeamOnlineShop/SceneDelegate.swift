@@ -16,6 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         
+        // let tabBarVC = LoginViewController()
+        // window.rootViewController = tabBarVC
         let navVC = UINavigationController()
         let builder = CartBuilder(navigationVC: navVC)
         let router = builder.buildRouter()
@@ -27,6 +29,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         self.window = window
     }
-
 }
 

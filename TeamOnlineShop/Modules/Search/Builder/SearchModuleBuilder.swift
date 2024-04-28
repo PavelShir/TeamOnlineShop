@@ -10,13 +10,20 @@ import PlatziFakeStore
 
 final class SearchModuleBuilder {
     
-    static func build(router: MainRouter, products: [PlatziFakeStore.Product]) -> SearchViewController {
+    static func build(
+        router: MainRouter,
+        products: [PlatziFakeStore.Product],
+        searchText: String) -> SearchViewController {
         
-        let presenter  = SearchPresenter(router: router, productsArray: products)
-        let searchViewController = SearchViewController(presenter: presenter, productArray: products)
-        presenter.view = searchViewController
-        
-        return searchViewController
-    }
+            let presenter  = SearchPresenter(router: router, productsArray: products)
+            let searchViewController = SearchViewController(
+                presenter: presenter,
+                productArray: products,
+                searchText: searchText)
+            
+            presenter.view = searchViewController
+            
+            return searchViewController
+        }
 }
 

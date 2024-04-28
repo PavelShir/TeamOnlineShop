@@ -10,7 +10,7 @@ import PlatziFakeStore
 
 protocol SearchPresenterImplementation {
     func goToProductDetail(_ index: Int)
-    
+    func searchAndOpenFilteredResults(query: String)
 }
 
 final class SearchPresenter {
@@ -39,5 +39,31 @@ extension SearchPresenter: SearchPresenterImplementation {
             categoryId: product.category.id
         )
         router.showProductDetail(data: convertedProduct)
+    }
+    
+    func searchAndOpenFilteredResults(query: String) {
+        
+        guard !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            print("Search query is empty.")
+            return
+        }
+        
+        PlatziStore.shared.searchProduct(SearchOption.title(query)) { [weak self] result in
+            switch result {
+            case .success(let products):
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    let model = SearchModel(
+                        productsArray: products,
+                        query: query
+                    )
+                    self.view?.fetchModel(model: model)
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    print("Error during the search: \(error)")
+                }
+            }
+        }
     }
 }

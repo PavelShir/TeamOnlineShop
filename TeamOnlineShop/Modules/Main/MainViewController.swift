@@ -4,6 +4,7 @@ import PlatziFakeStore
 
 protocol MainViewImplementation: AnyObject {
     func render(model: Model)
+    var collectionView: UICollectionView { get }
 }
 
 final class MainViewController: UIViewController {
@@ -17,9 +18,12 @@ final class MainViewController: UIViewController {
     init(presenter: MainPresenterImplementation) {
         
         self.presenter = presenter
-        
         super.init(nibName: nil, bundle: nil)
-        self.dataSource = .init(collectionView, presenter: presenter, delegate: self)
+        self.dataSource = .init(
+            collectionView,
+            presenter: presenter,
+            delegate: self,
+            filterDelegate: self)
     }
     
     @available(*, unavailable)
@@ -28,7 +32,7 @@ final class MainViewController: UIViewController {
     }
     
     // MARK: - UI
-    private lazy var collectionView: UICollectionView = {
+    internal lazy var collectionView: UICollectionView = {
         let layout = CollectionViewCompLayout.createLayout(isExpanded: false)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor =  .white
@@ -56,6 +60,7 @@ final class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        tabBarController?.tabBar.isHidden = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -79,6 +84,7 @@ final class MainViewController: UIViewController {
 extension MainViewController: MainViewImplementation {
     
     func render(model: Model) {
+        
         dataSource.setRenderModel(
             products: model.productsArray,
             categories: model.productCategory
@@ -89,6 +95,7 @@ extension MainViewController: MainViewImplementation {
         collectionView.performBatchUpdates({
             collectionView.reloadSections(IndexSet(arrayLiteral: 0,1))
         }, completion: nil)
+        
     }
 }
 
@@ -131,45 +138,15 @@ extension MainViewController: CategoryHeaderDelegate {
     }
 }
 
-
+extension MainViewController: CustomFiltersButtonDelegate {
     
+    func filterByName() {
+        presenter.filterByName()
+    }
+    
+    func filterByPriceRange(low: Double, high: Double) {
+        presenter.filterByPriceRange(low: low, high: high)
+    }
+}
 
-
-//{
-//
-//    guard let homePresenter = presenter as? HomePresenter else { return }
-//
-//    NetworkManager.shared.fetchData(for: text) { result in
-//        switch result {
-//        case .success(let articles):
-//            DispatchQueue.main.async {
-//                self.presenter.articles = articles.articles
-//                let searchVC = SearchArticlesViewController(searchText: text)
-//                searchVC.articles = articles.articles
-//                #warning("почему эта скотина не работает через роутер????")
-////                    self.presenter.router?.showSearchVC(searchText: text)
-//                self.navigationController?.pushViewController(searchVC, animated: true)
-//            }
-//
-//        case .failure(let error):
-//            print(error)
-//        }
-//    }
-//}
-    // MARK: - Preview
-//    import SwiftUI
-//
-//    struct MainViewControllerPreview: PreviewProvider {
-//        static var previews: some View {
-//            MainViewControllerContainer().edgesIgnoringSafeArea(.all)
-//        }
-//
-//        struct MainViewControllerContainer: UIViewControllerRepresentable {
-//            func makeUIViewController(context: Context) -> MainViewController {
-//                MainViewController(presenter: MainPresenter(router: <#MainRouter#>ro))
-//            }
-//
-//            func updateUIViewController(_ uiViewController: MainViewController, context: Context) {
-//            }
-//        }
     
