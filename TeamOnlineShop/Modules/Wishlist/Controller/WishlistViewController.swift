@@ -8,7 +8,7 @@
 import UIKit
 
 protocol WishlistVCDelegate{
-    func updateWishButtonState(isWished: Bool)
+    func updateCartButtonLabel(with count: Int)
 }
 
 final class WishlistViewController: UIViewController {
@@ -40,7 +40,7 @@ final class WishlistViewController: UIViewController {
         self.navigationItem.setHidesBackButton(true, animated: false)
         navigationController?.navigationBar.isHidden = true
         tabBarController?.tabBar.isHidden = false
-        presenter.getWishlistFromUser()
+        presenter.viewDidLoad()
         reload()
     }
     
@@ -104,6 +104,10 @@ extension WishlistViewController: WishlistPresenterViewProtocol {
     
     func reload() {
         customView.reloadCollection()
+    }
+    
+    func updateCartButtonLabel(with count: Int) {
+        customView.updateCartButtonLabel(with: count)
     }
 }
 

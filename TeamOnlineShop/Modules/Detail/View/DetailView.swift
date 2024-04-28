@@ -32,15 +32,7 @@ final class DetailView: UIView {
         return button
     }()
     
-    private var cartButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.layer.cornerRadius = 12
-        button.setBackgroundImage(UIImage.Icons.cart, for: .normal)
-        button.tintColor = UIColor(named: Colors.blackLight)
-        button.backgroundColor = .clear
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private var cartButton = CustomCartButton()
     
     private var productImage: AsyncImageView = {
         let imageView = AsyncImageView(frame: .zero)
@@ -173,6 +165,7 @@ final class DetailView: UIView {
     
     func layoutViews() {
         self.translatesAutoresizingMaskIntoConstraints = false
+        cartButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             title.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -267,18 +260,22 @@ final class DetailView: UIView {
         delegate?.tappedAddToCartButton()
     }
     
-    @objc private func buyNowTapped(){
+    @objc private func buyNowTapped() {
         delegate?.tappedBuyNowButton()
     }
 }
 
 // MARK: - DetailVCDelegate
-extension DetailView: DetailVCDelegate{
+extension DetailView: DetailVCDelegate {
     func updateWishButtonState(isWished: Bool) {
         let colorName = isWished ? Colors.greenPrimary : Colors.greyPrimary
         let icon = isWished ? UIImage.Icons.wishlistFill : UIImage.Icons.wishlist
         wishButton.tintColor = UIColor(named: colorName)
         wishButton.setImage(icon, for: .normal)
         wished = isWished
+    }
+    
+    func updateCartButtonLabel(with count: Int) {
+        cartButton.setItemCount(count)
     }
 }

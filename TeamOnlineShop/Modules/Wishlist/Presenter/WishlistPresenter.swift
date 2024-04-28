@@ -10,6 +10,7 @@ import UIKit
 
 protocol WishlistPresenterViewProtocol: AnyObject {
     func reload()
+    func updateCartButtonLabel(with count: Int)
 }
 
 protocol WishlistPresenterProtocol: AnyObject {
@@ -22,6 +23,7 @@ protocol WishlistPresenterProtocol: AnyObject {
     func addProductToCart(_ id: Int)
     func getWishlistFromUser()
     func searchProducts(query: String)
+    func viewDidLoad()
 }
 
 final class WishlistPresenter: WishlistPresenterProtocol {
@@ -55,7 +57,8 @@ final class WishlistPresenter: WishlistPresenterProtocol {
         UserManager.shared.addProductToCart(product: product) { error in
             print("complete")
         }
-    }
+        
+        view?.updateCartButtonLabel(with: UserManager.shared.getProductsFromCart().count)    }
     
     func getProduct(_ index: Int) -> Product {
         return products[index]
@@ -85,5 +88,10 @@ final class WishlistPresenter: WishlistPresenterProtocol {
             product.title.lowercased().contains(query.lowercased())
         }
         view?.reload()
+    }
+    
+    func viewDidLoad() {
+        getWishlistFromUser()
+        view?.updateCartButtonLabel(with: UserManager.shared.getProductsFromCart().count)
     }
 }

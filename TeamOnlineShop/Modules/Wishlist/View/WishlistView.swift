@@ -27,15 +27,7 @@ final class WishlistView: UIView {
         return label
     }()
     
-    private var cartButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.layer.cornerRadius = 12
-        button.setBackgroundImage(UIImage.Icons.cart, for: .normal)
-        button.tintColor = UIColor(named: Colors.blackLight)
-        button.backgroundColor = .clear
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private var cartButton = CustomCartButton()
     
     private lazy var hStack: UIStackView = {
         let element = UIStackView()
@@ -105,7 +97,8 @@ final class WishlistView: UIView {
         delegate?.tappedCartButton()
     }
     
-    func layoutViews() {
+    func layoutViews() { cartButton.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             hStack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
             hStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
@@ -146,5 +139,13 @@ final class WishlistView: UIView {
     
     func reloadCollection() {
         collectionView.reloadData()
+    }
+}
+
+// MARK: - DetailVCDelegate
+extension WishlistView: WishlistVCDelegate {
+
+    func updateCartButtonLabel(with count: Int) {
+        cartButton.setItemCount(count)
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 
 protocol DetailPresenterViewProtocol: AnyObject {
     func updateProductWishState(isWished: Bool)
-    
+    func updateCartButtonLabel(with count: Int)
 }
 
 protocol DetailPresenterProtocol: AnyObject {
@@ -19,7 +19,7 @@ protocol DetailPresenterProtocol: AnyObject {
     func dismissDetailVC()
     func goToCartVC()
     func updateWishList(_ isWished: Bool)
-    func setProductWishState()
+    func viewDidLoad()
     func addProductToCart()
     func buyProductNow()
 }
@@ -64,12 +64,15 @@ final class DetailPresenter: DetailPresenterProtocol {
         UserManager.shared.addProductToCart(product: data) { error in
             print("complete")
         }
+        view?.updateCartButtonLabel(with: UserManager.shared.getProductsFromCart().count)
     }
     
-    func setProductWishState() {
+    func viewDidLoad() {
         let savedProduts: [Product] = UserManager.shared.getProductsFromWithList()
         let savedProductsIds = savedProduts.map { $0.id }
         
         view?.updateProductWishState(isWished: savedProductsIds.contains(data.id))
+        
+        view?.updateCartButtonLabel(with: UserManager.shared.getProductsFromCart().count)
     }
 }

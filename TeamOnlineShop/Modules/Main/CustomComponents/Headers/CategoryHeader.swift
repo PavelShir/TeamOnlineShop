@@ -35,15 +35,7 @@ final class CategoryHeader: UICollectionReusableView, UISearchBarDelegate, Searc
         return button
     }()
     
-    private let cartButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.layer.cornerRadius = 12
-        button.setBackgroundImage(UIImage.Icons.cart, for: .normal)
-        button.tintColor = UIColor(named: Colors.blackLight)
-        button.backgroundColor = .clear
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private let cartButton = CustomCartButton()
     
     //MARK: Init
     override init(frame: CGRect) {
@@ -63,7 +55,7 @@ final class CategoryHeader: UICollectionReusableView, UISearchBarDelegate, Searc
                     cartButton,
                     bellButton,
                     searchBar)
-
+        
         bellButton.translatesAutoresizingMaskIntoConstraints = false
         addressLabel.translatesAutoresizingMaskIntoConstraints = false
         DeliveryTitle.translatesAutoresizingMaskIntoConstraints = false
