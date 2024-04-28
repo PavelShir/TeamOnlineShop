@@ -9,6 +9,7 @@ import UIKit
 
 class PaymentsViewController: UIViewController {
     
+    var onContinue: (() -> Void)?
     //Временные значения
     let titleText = "Congrats! Your payment is successfully"
     let text = "Track your order or just chat direcktly to the seller."
@@ -18,24 +19,23 @@ class PaymentsViewController: UIViewController {
     private lazy var closeButton: UIButton = {
         let element = UIButton(type: .system)
         element.setImage(UIImage.Icons.remove, for: .normal)
-//        element.tintColor = .blackLight
-        element.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        element.tintColor = UIColor(named: Colors.blackLight)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
     
     private lazy var checkImageView: UIImageView = {
         let element = UIImageView()
-        element.image = UIImage(systemName: "checkmark.seal.fill")
-        element.tintColor = .greenPrimary
+        element.image = UIImage.Icons.checkmarkSealFill
+        element.tintColor = UIColor(named: Colors.greenPrimary)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
     
     private lazy var checkShadowImageView: UIImageView = {
         let element = UIImageView()
-        element.image = UIImage(systemName: "checkmark.seal.fill")
-        element.tintColor = .systemGray6
+        element.image = UIImage.Icons.checkmarkSealFill
+        element.tintColor = UIColor(named: Colors.greyLighter)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -60,17 +60,8 @@ class PaymentsViewController: UIViewController {
         return element
     }()
     
-    private lazy var continueButton: UIButton = {
-        let element = UIButton()
-        element.setTitle("Continue", for: .normal)
-        element.titleLabel?.font = UIFont.TextFont.Element.Button.normal
-        element.tintColor = UIColor(named: Colors.whitePrimary)
-//        element.backgroundColor = .greenPrimary
-        element.layer.cornerRadius = 4
-        element.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
-    }()
+    private lazy var continueButton = CustomButton(label: "Continue", size: CustomButton.Size.normal, type: CustomButton.ButtonType.primary)
+    
     
     //MARK: - LifeCycle
     
@@ -92,16 +83,24 @@ class PaymentsViewController: UIViewController {
         view.addSubview(titleLabel)
         view.addSubview(textLabel)
         view.addSubview(continueButton)
+        
+        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        continueButton.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
+
     }
     
     //MARK: - Button Tapped
     
     @objc private func closeButtonTapped() {
-        dismiss(animated: true)
+        dismiss(animated: true) {
+            self.onContinue?()
+        }
     }
     
     @objc private func continueButtonTapped() {
-        dismiss(animated: true)
+        dismiss(animated: true) {
+            self.onContinue?()
+        }
     }
 }
 

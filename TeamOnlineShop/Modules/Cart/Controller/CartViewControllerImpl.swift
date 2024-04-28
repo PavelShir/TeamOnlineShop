@@ -50,6 +50,11 @@ final class CartViewControllerImpl: UIViewController {
             UIAction { [weak self] _ in self?.presenter.didTapPayButton() },
             for: .touchUpInside
         )
+        
+        cartView.backButton.addAction(
+            UIAction { [weak self] _ in self?.presenter.dismissCartVC() },
+            for: .touchUpInside
+        )
     }
     
     override func viewDidLoad() {
@@ -59,7 +64,9 @@ final class CartViewControllerImpl: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.navigationItem.setHidesBackButton(true, animated: false)
+        navigationController?.navigationBar.isHidden = true
+        self.tabBarController?.tabBar.isHidden = true
     }
 }
 
@@ -68,7 +75,8 @@ extension CartViewControllerImpl: CartViewController {
     func render(_ viewModel: CartViewModel) {
         dataSource.update(viewModel.items)
         cartView.amountLabel.text = viewModel.totalPrice
+        cartView.emptyCartLabel.isHidden = !viewModel.items.isEmpty
+        cartView.deliveryAddressSelector.selectedItem = Address.usa
     }
-    
     
 }

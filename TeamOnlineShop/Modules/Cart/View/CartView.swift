@@ -10,14 +10,26 @@ import AsyncImageView
 
 protocol CartView: UIView {
     var collectionView: UICollectionView { get }
+    var backButton: UIButton { get }
     var payButton: CustomButton { get }
     var amountLabel: UILabel { get }
-    var deliveryPicker: UIPickerView { get }
+    var emptyCartLabel: UILabel { get }
+    var deliveryAddressSelector: AddressSelector { get }
 }
 
 final class CartViewImpl: UIView, CartView {
     
     //MARK: - Public property
+    let backButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.layer.cornerRadius = 12
+        button.setBackgroundImage(UIImage.Icons.arrowLeft, for: .normal)
+        button.tintColor = UIColor(named: Colors.blackLight)
+        button.backgroundColor = .clear
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -38,24 +50,21 @@ final class CartViewImpl: UIView, CartView {
         return element
     }()
     
-    let deliveryPicker: UIPickerView = {
-        let element = UIPickerView()
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
+    let deliveryAddressSelector = AddressSelector()
+    
+    let emptyCartLabel: UILabel = {
+        let label = UILabel()
+        label.text = "You don't add anything to cart"
+        label.textColor = .gray
+        label.textAlignment = .center
+        label.font = UIFont.TextFont.Screens.text
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     //MARK: - Private properties
     private let title: UILabel = LabelFactory.makeScreenTitle()
-    
-    private let backButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.layer.cornerRadius = 12
-        button.setBackgroundImage(UIImage.Icons.arrowLeft, for: .normal)
-        button.tintColor = UIColor(named: Colors.blackLight)
-        button.backgroundColor = .clear
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
     
     private var cartButton: UIButton = {
         let button = UIButton(type: .system)
@@ -69,12 +78,7 @@ final class CartViewImpl: UIView, CartView {
     
     //MARK: - UI
     
-    private lazy var line: UIView = {
-        let element = UIView()
-        element.backgroundColor = UIColor(named: Colors.greyLightest)
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
-    }()
+    private lazy var line = Separator()
     
     private lazy var deliveryStack: UIStackView = {
         let element = UIStackView()
@@ -91,19 +95,9 @@ final class CartViewImpl: UIView, CartView {
         return element
     }()
     
-    private lazy var lineTwo: UIView = {
-        let element = UIView()
-        element.backgroundColor = UIColor(named: Colors.greyLightest)
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
-    }()
+    private lazy var lineTwo = Separator()
     
-    private lazy var lineThree: UIView = {
-        let element = UIView()
-        element.backgroundColor = UIColor(named: Colors.greyLightest)
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
-    }()
+    private lazy var lineThree = Separator()
     
     private lazy var orderLabel: UILabel = {
         let element = UILabel()
@@ -131,24 +125,12 @@ final class CartViewImpl: UIView, CartView {
         return element
     }()
     
-//    private lazy var payButton: UIButton = {
-//        let element = UIButton()
-//        element.setTitle("Pay", for: .normal)
-//        element.titleLabel?.font = UIFont.TextFont.Element.Button.normal
-//        element.tintColor = UIColor(named: Colors.whitePrimary)
-////        element.backgroundColor = .greenPrimary
-//        element.layer.cornerRadius = 4
-//        element.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
-//        element.translatesAutoresizingMaskIntoConstraints = false
-//        return element
-//    }()
-    
-    
     //MARK: - LifeCycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
+        setUpViews()
         setViews()
         setupConstraints()
     }
@@ -160,21 +142,20 @@ final class CartViewImpl: UIView, CartView {
         setupConstraints()
     }
     
-    //MARK: - ConfigView public method
-    
-    func configView() {}
-    
     //MARK: - Set Views
     
     func setViews() {
         self.backgroundColor = .white
         
+        self.addSubview(backButton)
+        self.addSubview(title)
+        self.addSubview(cartButton)
         self.addSubview(line)
         self.addSubview(deliveryStack)
         addSubview(collectionView)
         
         deliveryStack.addArrangedSubview(deliveryLabel)
-        deliveryStack.addArrangedSubview(deliveryPicker)
+        deliveryStack.addArrangedSubview(deliveryAddressSelector)
         
         self.addSubview(lineTwo)
         
@@ -186,25 +167,37 @@ final class CartViewImpl: UIView, CartView {
         totalsStack.addArrangedSubview(amountLabel)
         
         self.addSubview(payButton)
+        self.addSubview(emptyCartLabel)
     }
     
     private func setUpViews() {
         title.text = "Your Cart"
-//        backButton.addTarget(nil, action: #selector(backButtonTapped), for: .touchUpInside)
-//        cartButton.addTarget(nil, action: #selector(cartButtonTapped), for: .touchUpInside)
     }
     
 //MARK: - Setup Constraints
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+
+            title.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+            title.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
+            backButton.topAnchor.constraint(equalTo: title.topAnchor),
+            backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            backButton.widthAnchor.constraint(equalToConstant: 20),
+            backButton.heightAnchor.constraint(equalToConstant: 20),
+            
+            cartButton.topAnchor.constraint(equalTo: title.topAnchor),
+            cartButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            cartButton.widthAnchor.constraint(equalToConstant: 20),
+            cartButton.heightAnchor.constraint(equalToConstant: 20),
+                
             line.heightAnchor.constraint(equalToConstant: 1),
-            line.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            line.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 20),
             line.leadingAnchor.constraint(equalTo: leadingAnchor),
             line.trailingAnchor.constraint(equalTo: trailingAnchor),
             
-            deliveryStack.heightAnchor.constraint(equalToConstant: 50),
+            deliveryStack.heightAnchor.constraint(equalToConstant: 40),
             deliveryStack.topAnchor.constraint(equalTo: line.bottomAnchor),
             deliveryStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
             deliveryStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
@@ -238,25 +231,13 @@ final class CartViewImpl: UIView, CartView {
             payButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             payButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             payButton.heightAnchor.constraint(equalToConstant: 45),
+        
+            emptyCartLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            emptyCartLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            emptyCartLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            emptyCartLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
         ])
     }
-    
-    //MARK: - Button Tapped
-    
-//    @objc private func backButtonTapped() {
-//        delegate?.tappedBackButton()
-//    }
-//    
-//    @objc private func cartButtonTapped() {
-//        delegate?.tappedCartButton()
-//    }
-    
-//    @objc private func payButtonTapped() {
-//        let payVC = PaymentsViewController()
-//        present(payVC, animated: true)
-//        delegate?.tappedBuyButton()
-//    }
-    
 }
 
 

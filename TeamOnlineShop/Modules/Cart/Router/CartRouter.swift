@@ -10,7 +10,7 @@ import UIKit
 protocol CartRouterProtocol: AnyObject {
     init(navigationVC: UINavigationController, builder: CartBuilder)
     func dismissCartVC()
-    func goToPaymentsVC()
+    func goToPaymentsVC(onContinue completion: @escaping () -> Void)
 }
 
 final class CartRouter: CartRouterProtocol {
@@ -34,8 +34,9 @@ final class CartRouter: CartRouterProtocol {
         navigationVC.pushViewController(vc, animated: true)
     }
     
-    func goToPaymentsVC() {
+    func goToPaymentsVC(onContinue completion: @escaping () -> Void) {
         let vc = PaymentsViewController()
+        vc.onContinue = completion
         navigationVC.present(vc, animated: true)
     }
 }

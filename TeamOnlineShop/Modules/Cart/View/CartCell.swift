@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AsyncImageView
 
 final class CartCell: UICollectionViewCell {
     static let identifier = CartCell.debugDescription()
@@ -36,8 +37,8 @@ final class CartCell: UICollectionViewCell {
         return element
     }()
     
-    private lazy var imageView: UIImageView = {
-        let element = UIImageView()
+    private lazy var imageView: AsyncImageView = {
+        let element = AsyncImageView(frame: .zero)
         element.contentMode = .scaleAspectFill
         element.layer.cornerRadius = 5
         element.clipsToBounds = true
