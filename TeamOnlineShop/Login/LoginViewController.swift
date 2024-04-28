@@ -139,11 +139,13 @@ final class LoginViewController: UIViewController {
         let navigationVC = UINavigationController(rootViewController: rootVC)
         navigationVC.modalPresentationStyle = .fullScreen
         navigationVC.navigationBar.backgroundColor = .white
+        navigationVC.navigationBar.tintColor = UIColor(named: Colors.blackLight)
         
         let backButton = UIBarButtonItem(image: UIImage(systemName: "arrow.left.circle.fill"),
                                          style: .done,
                                          target: self,
                                          action: #selector(backButtonTapped))
+        backButton.tintColor = UIColor(named: Colors.blackLight)
         rootVC.navigationItem.leftBarButtonItem = backButton
         present(navigationVC, animated: true)
     }

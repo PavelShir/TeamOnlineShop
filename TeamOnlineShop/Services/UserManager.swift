@@ -29,7 +29,15 @@ final class UserManager {
             let pathToAvatar = saveUserAvatarToUD(with: user?.id ?? "", avatar: base64String)
             user?.image = pathToAvatar
             DispatchQueue.main.async {
-                // save user here
+                FirestoreManager.shared.setCollection(
+                    with: self.user!
+                ) { success, error in
+                    if let error = error {
+                        completion(error)
+                    }
+                    
+                    completion(nil)
+                }
             }
         } else {
             let error = NSError(domain: "YourDomain", code: 2, userInfo: [NSLocalizedDescriptionKey: "Error converting image to base64"])
@@ -37,17 +45,33 @@ final class UserManager {
         }
     }
     
-    func changeUserType(type: UserType, completion: @escaping (Error?) -> Void) {
-        user?.type = type.rawValue
+    func changeUserType(type: UserRole, completion: @escaping (Error?) -> Void) {
+        user?.role = type.rawValue
         DispatchQueue.main.async {
-            // save user here
+            FirestoreManager.shared.setCollection(
+                with: self.user!
+            ) { success, error in
+                if let error = error {
+                    completion(error)
+                }
+                
+                completion(nil)
+            }
         }
     }
     
     func addProductToWithList(product: Product, completion: @escaping (Error?) -> Void){
         user?.wishList.append(product)
         DispatchQueue.main.async {
-            // save user here`
+            FirestoreManager.shared.setCollection(
+                with: self.user!
+            ) { success, error in
+                if let error = error {
+                    completion(error)
+                }
+                
+                completion(nil)
+            }
         }
     }
     
@@ -64,7 +88,15 @@ final class UserManager {
         }
         
         DispatchQueue.main.async {
-            // save user here`
+            FirestoreManager.shared.setCollection(
+                with: self.user!
+            ) { success, error in
+                if let error = error {
+                    completion(error)
+                }
+                
+                completion(nil)
+            }
         }
     }
     
@@ -74,7 +106,15 @@ final class UserManager {
             user?.cart[index] = product
             
             DispatchQueue.main.async {
-                // save user here`
+                FirestoreManager.shared.setCollection(
+                    with: self.user!
+                ) { success, error in
+                    if let error = error {
+                        completion(error)
+                    }
+                    
+                    completion(nil)
+                }
             }
         }
     }
@@ -84,7 +124,31 @@ final class UserManager {
             user?.cart.remove(at: index)
             
             DispatchQueue.main.async {
-               // save user here
+                FirestoreManager.shared.setCollection(
+                    with: self.user!
+                ) { success, error in
+                    if let error = error {
+                        completion(error)
+                    }
+                    
+                    completion(nil)
+                }
+            }
+        }
+    }
+    
+    func deleteProductsFromCart(productIds: [Int], completion: @escaping (Error?) -> Void) {
+        user?.cart.removeAll(where: { productIds.contains($0.id) })
+            
+        DispatchQueue.main.async {
+            FirestoreManager.shared.setCollection(
+                with: self.user!
+            ) { success, error in
+                if let error = error {
+                    completion(error)
+                }
+                
+                completion(nil)
             }
         }
     }
@@ -94,7 +158,15 @@ final class UserManager {
             user?.wishList.remove(at: index)
             
             DispatchQueue.main.async {
-               // save user here
+                FirestoreManager.shared.setCollection(
+                    with: self.user!
+                ) { success, error in
+                    if let error = error {
+                        completion(error)
+                    }
+                    
+                    completion(nil)
+                }
             }
         }
     }
@@ -112,8 +184,12 @@ final class UserManager {
             username: user!.username,
             email: user!.email,
             image: makeUserImage(),
-            type: user!.type
+            type: user!.role
         )
+    }
+    
+    func getUserRole() -> UserRole {
+        return UserRole(rawValue: user?.role ?? "user") ?? UserRole.user
     }
     
     private func makeUserImage() -> UIImage? {

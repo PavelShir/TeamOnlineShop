@@ -11,9 +11,8 @@ import FirebaseAuth
 
 final class RegViewController: UIViewController {
     
-    var currentUser = User(id: "1", username: "", email: "", image: nil, type: UserType.user.rawValue, cart: [], wishList: [], location: "")
-    var userType: UserType = .user
-    let values = ["Клиент", "Менеджер"]
+    var userRole: UserRole = .user
+    let values = [UserRole.user.rawValue, UserRole.manager.rawValue]
     
     private var pickerView: UIPickerView!
     
@@ -128,6 +127,7 @@ final class RegViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         title = "Sing up"
+        
         pickerView = createPickerView()
         
         setViewsHierarchie()
@@ -183,16 +183,51 @@ final class RegViewController: UIViewController {
             return
         }
         
-        if let login = emailTextField.text, let password = passwordTextField.text {
-            Auth.auth().createUser(withEmail: login, password: password) { authResult, error in
-                if let error = error {
-                    print (error.localizedDescription)
+        if userRole == .manager {
+            let alert = UIAlertController(title: "Manager Access", message: "Enter the manager access code", preferredStyle: .alert)
+            alert.addTextField { (textField) in
+                textField.placeholder = "Access Code"
+                textField.isSecureTextEntry = true
+            }
+            let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned alert] _ in
+                let answer = alert.textFields![0]
+                if answer.text == "secret" {
+                    self.completeRegistration()
                 } else {
-                    self.saveUserToFirestore(self.currentUser, .user)
-                    let tabBarVC = TabBarController()
-                    tabBarVC.modalPresentationStyle = .fullScreen
-                    self.present(tabBarVC, animated: true)
+                    self.showAlert(title: "Error", message: "Incorrect access code")
                 }
+            }
+            alert.addAction(submitAction)
+            present(alert, animated: true)
+        } else {
+            completeRegistration()
+        }
+    }
+    
+    func completeRegistration() {
+        if let email = emailTextField.text, let password = passwordTextField.text, let username = nameTextField.text {
+            let request = RegisterUserRequest(
+                username: username,
+                email: email,
+                password: password,
+                role: userRole.rawValue
+            )
+            
+            AuthManager.shared.registerUser(with: request) { registeredUser, error in
+                if let error = error {
+                    self.showAlert(title: "Registration error", message: error.localizedDescription)
+                    return
+                }
+                
+                guard let user = registeredUser else {
+                    self.showAlert(title: "Registration error", message: "Unexpected error")
+                    return
+                }
+                UserManager.shared.setUser(userObject: user)
+                
+                let tabBarVC = TabBarController()
+                tabBarVC.modalPresentationStyle = .fullScreen
+                self.view?.window?.rootViewController = tabBarVC
             }
         }
         
@@ -282,7 +317,7 @@ extension RegViewController {
 
 extension RegViewController {
     
-    func saveUserToFirestore(_ user: User, _ userType: UserType) {
+    func saveUserToFirestore(_ user: User, _ userType: UserRole) {
         
         let db = Firestore.firestore()
         let usersCollection = db.collection("users")
@@ -317,6 +352,6 @@ extension RegViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let selectedValue = values[row]
-        userType = UserType(rawValue: selectedValue) ?? .user
+        userRole = UserRole(rawValue: selectedValue) ?? .user
     }
 }

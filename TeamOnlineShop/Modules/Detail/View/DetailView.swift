@@ -34,13 +34,16 @@ final class DetailView: UIView {
     
     private var cartButton = CustomCartButton()
     
-    private var productImage: AsyncImageView = {
-        let imageView = AsyncImageView(frame: .zero)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.tintColor = UIColor(named: Colors.blackLight)
-        return imageView
+    private var imagesCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width * 0.6)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.identifier)
+        return collectionView
     }()
     
     private lazy var productName: UILabel = {
@@ -126,11 +129,16 @@ final class DetailView: UIView {
     
     //MARK: - ConfigView public method
     func configView(data: Product, isLiked: Bool?) {
-        productImage.setImage(from: data.images[0])
         productName.text = data.title
         productPrice.text = "$ \(data.price)"
         descriptionText.text = data.description
 //        wishButton.setBackgroundImage(favoriteImage, for: .normal)
+    }
+    
+    func setDelegates(_ value: DetailViewController) {
+        delegate = value
+        imagesCollectionView.dataSource = value
+        imagesCollectionView.delegate = value
     }
      
     func setViews() {
@@ -142,7 +150,7 @@ final class DetailView: UIView {
             backButton,
             title,
             cartButton,
-            productImage,
+            imagesCollectionView,
             productName,
             productPrice,
             descriptionLabel,
@@ -166,6 +174,7 @@ final class DetailView: UIView {
     func layoutViews() {
         self.translatesAutoresizingMaskIntoConstraints = false
         cartButton.translatesAutoresizingMaskIntoConstraints = false
+        imagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             title.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -187,15 +196,14 @@ final class DetailView: UIView {
         ])
         
         NSLayoutConstraint.activate([
-            productImage.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 25),
-            productImage.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            productImage.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-//            productImage.heightAnchor.constraint(equalToConstant: 200),
-            productImage.heightAnchor.constraint(equalTo: productImage.widthAnchor, multiplier: 0.6),
+            imagesCollectionView.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 25),
+            imagesCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            imagesCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            imagesCollectionView.heightAnchor.constraint(equalTo: imagesCollectionView.widthAnchor, multiplier: 0.6)
         ])
         
         NSLayoutConstraint.activate([
-            productName.topAnchor.constraint(equalTo: productImage.bottomAnchor, constant: 10),
+            productName.topAnchor.constraint(equalTo: imagesCollectionView.bottomAnchor, constant: 10),
             productName.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             productName.trailingAnchor.constraint(equalTo: wishButton.leadingAnchor, constant: -20),
         ])
@@ -211,7 +219,7 @@ final class DetailView: UIView {
         ])
         
         NSLayoutConstraint.activate([
-            wishButton.topAnchor.constraint(equalTo: productImage.bottomAnchor, constant: 10),
+            wishButton.topAnchor.constraint(equalTo: imagesCollectionView.bottomAnchor, constant: 10),
             wishButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             wishButton.widthAnchor.constraint(equalToConstant: 46),
             wishButton.heightAnchor.constraint(equalToConstant: 46)
@@ -279,3 +287,5 @@ extension DetailView: DetailVCDelegate {
         cartButton.setItemCount(count)
     }
 }
+
+

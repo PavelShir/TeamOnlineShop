@@ -6,7 +6,7 @@
 //
 
 import UIKit
-enum Address: CaseIterable {
+enum Address: String, Codable, CaseIterable {
     case usa
     case europe
     case russia

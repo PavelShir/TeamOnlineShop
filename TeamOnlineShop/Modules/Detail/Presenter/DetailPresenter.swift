@@ -46,11 +46,15 @@ final class DetailPresenter: DetailPresenterProtocol {
     func updateWishList(_ isWished: Bool){
         if isWished {
             UserManager.shared.addProductToWithList(product: data) { error in
-                print("complete")
+                if error != nil {
+                    print("Error is occured during adding product to wishlist")
+                }
             }
         } else {
             UserManager.shared.deleteProductFromWishList(productId: data.id) { error in
-                print("complete")
+                if error != nil {
+                    print("Error is occured during deleting product from wishlist")
+                }
             }
         }
         view?.updateProductWishState(isWished: isWished)
@@ -62,7 +66,9 @@ final class DetailPresenter: DetailPresenterProtocol {
     
     func addProductToCart() {
         UserManager.shared.addProductToCart(product: data) { error in
-            print("complete")
+            if error != nil {
+                print("Error is occured during adding product to cart")
+            }
         }
         view?.updateCartButtonLabel(with: UserManager.shared.getProductsFromCart().count)
     }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import FirebaseAuth
 
 final class ProfileViewController: UIViewController {
     
@@ -50,6 +49,7 @@ final class ProfileViewController: UIViewController {
             customView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         customView.delegate = self
+        customView.configView(with: UserManager.shared.getUserProfileData())
     }
     
     private func setupPhotoSelectionMenu() {
@@ -67,18 +67,16 @@ final class ProfileViewController: UIViewController {
 //MARK: - ProfileViewDelegate
 extension ProfileViewController: ProfileViewDelegate {
     func signOutButtonTapped() {
-        
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
+        AuthManager.shared.signOut { error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
             let vc = OnboardingViewController()
             vc.modalPresentationStyle = .fullScreen
             self.view.window?.rootViewController = vc
-        } catch let signOutError as NSError {
-            print("Error signing out: %@", signOutError)
         }
-        
-        print("go to onboarding")
     }
     
     func termsAndConditionsButtonTapped() {
@@ -112,7 +110,11 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
             picker.dismiss(animated: true, completion: nil)
             return
         }
-        
+        UserManager.shared.updateUserAvatar(avatar: selectedImage) { error in
+            if error != nil {
+                print("Error is occured during saving new user avatar")
+            }
+        }
         customView.updateProfileImage(selectedImage)
         hidePhotoSelectionMenu()
         

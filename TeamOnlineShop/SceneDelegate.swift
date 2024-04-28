@@ -15,20 +15,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let window = UIWindow(windowScene: windowScene)
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        window?.windowScene = windowScene
         
+        window?.makeKeyAndVisible()
         
+        if UserDefaults.standard.bool(forKey: "isOnboardingCompleted"){
+            checkAuthentication()
+        } else {
+            let vc = OnboardingViewController()
+            vc.modalPresentationStyle = .fullScreen
+            self.window?.rootViewController = vc
+        }
+    }
+    
+    func checkAuthentication() {
         if Auth.auth().currentUser == nil {
             let loginVC = LoginViewController()
-            window.rootViewController = loginVC
+            window?.rootViewController = loginVC
         } else {
-            UserManager.shared.setUser(userObject: User(id: "1", username: "test", email: "test@m.ru", image: nil, type: UserType.user.rawValue, cart: [], wishList: [], location: ""))
-            let tabBarController = TabBarController()
-            window.rootViewController = tabBarController
+            AuthManager.shared.fetchUser { [weak self] user, error in
+                guard let user = user else { return }
+                UserManager.shared.setUser(userObject: user)
+                
+                let tabBarController = TabBarController()
+                self?.window?.rootViewController = tabBarController
+            }
         }
-        
-        window.makeKeyAndVisible()
-        self.window = window
     }
 }
 
