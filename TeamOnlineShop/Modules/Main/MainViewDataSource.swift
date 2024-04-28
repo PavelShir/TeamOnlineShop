@@ -3,21 +3,23 @@ import PlatziFakeStore
 
 final class MainViewCollectionDataSource: NSObject {
     
-    private var products = [PlatziFakeStore.Product]()
-    private var categories = [PlatziFakeStore.Category]()
+    private var products = [Product]()
+    private var categories = [Category]()
     var isExpanded = false
     var delegate: CategoryHeaderDelegate?
     var filterDelegate: CustomFiltersButtonDelegate?
     // MARK: - Properties
     private let collectionView: UICollectionView
+    private let presenter: MainPresenterImplementation
     
     // MARK: - Init
     init(_ collectionView: UICollectionView,
-         presenter: MainPresenterImplementation?,
+         presenter: MainPresenterImplementation,
          delegate: CategoryHeaderDelegate?,
          filterDelegate: CustomFiltersButtonDelegate) {
         
         self.collectionView = collectionView
+        self.presenter = presenter
         self.delegate = delegate
         self.filterDelegate = filterDelegate
         super.init()
@@ -27,8 +29,8 @@ final class MainViewCollectionDataSource: NSObject {
     }
     
     func setRenderModel(
-        products: [PlatziFakeStore.Product],
-        categories: [PlatziFakeStore.Category]) {
+        products: [Product],
+        categories: [Category]) {
         self.products = products
         self.categories = categories
     }
@@ -92,9 +94,9 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
                     image: UIImage.Icons.allCategories ?? UIImage())
             } else {
                 if indexPath.item < categories.count {
-                           let category = categories[indexPath.item]
-                           categoryCell.configure(model: category)
-                       }
+                    let category = categories[indexPath.item]
+                    categoryCell.configure(model: category)
+                }
             }
             
             return categoryCell
@@ -132,9 +134,10 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
 }
 
 extension MainViewCollectionDataSource: ProductsViewCellDelegate {
-    func didTapWishButton(in cell: ProductsViewCell) {}
+    func didTapAddToCartButton(productId id: Int) {
+        presenter.addProductToCart(by: id)
+    }
     
-    func didTapAddToCartButton(in cell: ProductsViewCell) {
-        print("Add to Cart button tapped")
+    func didTapWishButton(productId id: Int) {
     }
 }

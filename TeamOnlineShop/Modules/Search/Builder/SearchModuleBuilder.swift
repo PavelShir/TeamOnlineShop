@@ -12,7 +12,7 @@ final class SearchModuleBuilder {
     
     static func build(
         router: MainRouter,
-        products: [PlatziFakeStore.Product],
+        products: [Product],
         searchText: String) -> SearchViewController {
         
             let presenter  = SearchPresenter(router: router, productsArray: products)

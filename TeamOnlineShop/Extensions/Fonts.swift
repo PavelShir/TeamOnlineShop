@@ -103,6 +103,9 @@ extension UIFont {
                 static let label = PlusJakartaSansFont.SemiBold.size(of: 20)
                 static let actionItem = PlusJakartaSansFont.Bold.size(of: 14)
             }
+            enum CartButton {
+                static let badge = InterFont.Bold.size(of: 7)
+            }
         }
         
         enum Screens {

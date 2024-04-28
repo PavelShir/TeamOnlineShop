@@ -29,8 +29,8 @@ final class CartRouter: CartRouterProtocol {
         navigationVC.popViewController(animated: true)
     }
     
-    func showCartModule(_ cart: Cart) {
-        let vc = builder.buildCartVC(router: self, data: cart)
+    func showCartModule() {
+        let vc = builder.buildCartVC(router: self)
         navigationVC.pushViewController(vc, animated: true)
     }
     

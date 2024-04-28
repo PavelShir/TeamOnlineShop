@@ -210,11 +210,12 @@ final class ProductView:  UIView {
         let category = textFieldCategory.selectedItem
         let description = textFieldDescription.text ?? ""
         let imagesUrl = textFieldImage.text ?? ""
-        if let productSafe = product, let id = productSafe.id, let categorySafe = category {
-            return Product(id: id, title: title, price: Int(price) ?? 0, description: description, images: [imagesUrl], category: categorySafe, categoryId: 0)
-        }
-        
-        return Product(title: title, price: Int(price) ?? 0, description: description, images: [imagesUrl], categoryId: category?.id ?? 0)
+//        if let productSafe = product, let id = productSafe.id, let categorySafe = category {
+//            return Product(id: id, title: title, price: Int(price) ?? 0, description: description, images: [imagesUrl], category: categorySafe, categoryId: 0)
+//        }
+//        
+//        return Product(title: title, price: Int(price) ?? 0, description: description, images: [imagesUrl], categoryId: category?.id ?? 0)
+        return Product(id: 1, title: "", price: 1, description: "", images: [""], category: Category(id: 1, name: "", image: ""))
     }
     
     func setSearchBarDelegate(vc: ProductViewController) {

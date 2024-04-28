@@ -17,7 +17,7 @@ protocol CartViewController: AnyObject {
 }
 
 protocol CartPresenterProtocol: AnyObject {
-    init(router: CartRouterProtocol, data: Cart)
+    init(router: CartRouterProtocol)
     
     func viewDidLoad()
     func dismissCartVC()
@@ -34,9 +34,9 @@ final class CartPresenter: CartPresenterProtocol {
     weak var view: CartViewController?
     
     //MARK: - init(_:)
-    required init(router: CartRouterProtocol, data: Cart) {
+    required init(router: CartRouterProtocol) {
         self.router = router
-        self.cartItems = data.items
+        self.cartItems = .init()
     }
     
     //MARK: - Public methods
@@ -57,6 +57,10 @@ final class CartPresenter: CartPresenterProtocol {
     }
     
     func didTapPayButton() {
+        if cartItems.count == 0 {
+            return
+        }
+        
         router.goToPaymentsVC(onContinue: { [weak self] in
             self?.cartItems.removeAll(where: \.selected)
             self?.updateUI()
@@ -64,6 +68,16 @@ final class CartPresenter: CartPresenterProtocol {
     }
     
     func viewDidLoad() {
+        let products = UserManager.shared.getProductsFromCart()
+        cartItems = products.map({ product in
+            return CartItem(
+                id: product.id,
+                title: product.title,
+                price: Float(product.price),
+                images: product.images,
+                count: product.count
+            )
+        })
         updateUI()
     }
     
@@ -105,6 +119,9 @@ private extension CartPresenter {
     func increaseCounter(for id: Int) {
         guard let index = cartItems.firstIndex(where: { $0.id == id }) else { return }
         cartItems[index].count += 1
+        UserManager.shared.changeeProductCountInCart(index: index, count: cartItems[index].count){ error in
+            print("complete")
+        }
         updateUI()
     }
     
@@ -112,6 +129,9 @@ private extension CartPresenter {
         guard let index = cartItems.firstIndex(where: { $0.id == id }) else { return }
         if cartItems[index].count > .zero {
             cartItems[index].count -= 1
+            UserManager.shared.changeeProductCountInCart(index: index, count: cartItems[index].count){ error in
+                print("complete")
+            }
             updateUI()
         }
     }
@@ -119,6 +139,9 @@ private extension CartPresenter {
     func deleteItem(withId id: Int) {
         guard let index = cartItems.firstIndex(where: { $0.id == id }) else { return }
         cartItems.remove(at: index)
+        UserManager.shared.deleteProductFromCart(productId: id){ error in
+            print("complete")
+        }
         updateUI()
     }
 }

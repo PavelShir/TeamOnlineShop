@@ -52,24 +52,27 @@ final class UserManager {
     }
     
     func addProductToCart(product: Product, completion: @escaping (Error?) -> Void) {
-        var newProduct = product
-        newProduct.count += 1
-        user?.cart.append(newProduct)
+        if let index = user?.cart.firstIndex(where: { $0.id == product.id }) {
+            if var productToUpdate = user?.cart[index] {
+                productToUpdate.count += 1
+                user?.cart[index] = productToUpdate
+            }
+        } else {
+            var newProduct = product
+            newProduct.count = 1
+            user?.cart.append(newProduct)
+        }
         
         DispatchQueue.main.async {
             // save user here`
         }
     }
     
-    func changeeProductCountInCart(product: Product, action: String, completion: @escaping (Error?) -> Void) {
-        if let existingProductIndex = user?.cart.firstIndex(where: { $0.id == product.id }) {
-            let currentCount = user?.cart[existingProductIndex].count
-            user?.cart[existingProductIndex].count = action == "add" ? currentCount! + 1 : currentCount! - 1
-            if user?.cart[existingProductIndex].count == 0 {
-                user?.cart.remove(at: existingProductIndex)
-            }
-        
-        
+    func changeeProductCountInCart(index: Int, count: Int, completion: @escaping (Error?) -> Void) {
+        if var product = user?.cart[index] {
+            product.count = count
+            user?.cart[index] = product
+            
             DispatchQueue.main.async {
                 // save user here`
             }

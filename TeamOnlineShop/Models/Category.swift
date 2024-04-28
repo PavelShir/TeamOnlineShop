@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import PlatziFakeStore
 
 struct CategoriesResponse: Codable {
     var results: [Category]
 }
 
 struct Category: Codable, Equatable {
-    let id: Int?
+    let id: Int
     let name: String
     let image: String
     
@@ -29,16 +30,16 @@ struct Category: Codable, Equatable {
         image = try container.decode(String.self, forKey: .image)
     }
     
-    init(name: String, image: String) {
-        self.id = nil
-        self.name = name
-        self.image = image
-    }
-    
     init(id: Int, name: String, image: String) {
         self.id = id
         self.name = name
         self.image = image
+    }
+    
+    init(fromDTO category: PlatziFakeStore.Category) {
+        self.id = category.id
+        self.name = category.name
+        self.image = category.image
     }
 }
 

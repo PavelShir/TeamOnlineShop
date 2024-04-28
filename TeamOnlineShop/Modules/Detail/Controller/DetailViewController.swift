@@ -9,6 +9,7 @@ import UIKit
 
 protocol DetailVCDelegate{
     func updateWishButtonState(isWished: Bool)
+    func updateCartButtonLabel(with count: Int)
 }
 
 final class DetailViewController: UIViewController {
@@ -40,7 +41,7 @@ final class DetailViewController: UIViewController {
         self.navigationItem.setHidesBackButton(true, animated: false)
         navigationController?.navigationBar.isHidden = true
         self.tabBarController?.tabBar.isHidden = true
-        presenter.setProductWishState()
+        presenter.viewDidLoad()
     }
     
     private func setupCustomView() {
@@ -61,7 +62,7 @@ final class DetailViewController: UIViewController {
 }
 
 //MARK: - DetailViewDelegate
-extension DetailViewController: DetailViewDelegate {
+extension DetailViewController: DetailViewDelegate {    
     
     func tappedBackButton() {
         presenter.dismissDetailVC()
@@ -88,6 +89,10 @@ extension DetailViewController: DetailViewDelegate {
 extension DetailViewController: DetailPresenterViewProtocol {
     func updateProductWishState(isWished: Bool) {
         customView.updateWishButtonState(isWished: isWished)
+    }
+    
+    func updateCartButtonLabel(with count: Int) {
+        customView.updateCartButtonLabel(with: count)
     }
 }
 

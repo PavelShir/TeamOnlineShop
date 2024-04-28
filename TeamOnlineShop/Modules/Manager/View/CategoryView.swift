@@ -184,11 +184,11 @@ final class CategoryView:  UIView {
     func makeCategory() -> Category {
         let title = textFieldTitle.text ?? ""
         let imageUrl = textFieldImage.text ?? ""
-        if let categorySafe = category, let id = categorySafe.id  {
-            return Category(id: id, name: title, image: imageUrl)
-        }
+//        if let categorySafe = category, let id = categorySafe.id  {
+//            return Category(id: id, name: title, image: imageUrl)
+//        }
         
-        return Category(name: title, image: imageUrl)
+        return Category(id: 1, name: title, image: imageUrl)
     }
     
     func setSearchBarDelegate(vc: CategoryViewController) {

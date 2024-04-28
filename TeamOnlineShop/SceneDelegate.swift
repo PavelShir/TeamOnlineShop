@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Firebase
 import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -18,14 +17,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         
-        if Auth.auth().currentUser?.email == nil {
+        
+        if Auth.auth().currentUser == nil {
             let loginVC = LoginViewController()
             window.rootViewController = loginVC
         } else {
             UserManager.shared.setUser(userObject: User(id: "1", username: "test", email: "test@m.ru", image: nil, type: UserType.user.rawValue, cart: [], wishList: [], location: ""))
             let tabBarController = TabBarController()
             window.rootViewController = tabBarController
-        } 
+        }
+        
         window.makeKeyAndVisible()
         self.window = window
     }

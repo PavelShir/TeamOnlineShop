@@ -13,7 +13,7 @@ protocol WishlistViewDelegate: AnyObject {
 }
 
 final class WishlistView: UIView {
-    
+    weak var delegate: WishlistViewDelegate?
     private let searchBar = CustomSearchBarView()
     
     private let emptyWishlistLabel: UILabel = {
@@ -27,15 +27,7 @@ final class WishlistView: UIView {
         return label
     }()
     
-    private var cartButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.layer.cornerRadius = 12
-        button.setBackgroundImage(UIImage.Icons.cart, for: .normal)
-        button.tintColor = UIColor(named: Colors.blackLight)
-        button.backgroundColor = .clear
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private var cartButton = CustomCartButton()
     
     private lazy var hStack: UIStackView = {
         let element = UIStackView()
@@ -72,6 +64,7 @@ final class WishlistView: UIView {
     }
     
     func setDelegates(_ value: WishlistViewController) {
+        delegate = value
         collectionView.dataSource = value
         collectionView.delegate = value
         searchBar.delegate = value
@@ -87,13 +80,25 @@ final class WishlistView: UIView {
             collectionView,
             emptyWishlistLabel,
         ].forEach { addSubview($0) }
+        
+        cartButton.addTarget(nil, action: #selector(cartTapped), for: .touchUpInside)
     }
     
     func switchEmptyLabelVisability(_ isHidden: Bool) {
+        if searchBar.text?.count != 0 && !isHidden {
+            emptyWishlistLabel.text = "No matches"
+        } else {
+            emptyWishlistLabel.text = "You don't add anything to wishlist"
+        }
         emptyWishlistLabel.isHidden = isHidden
     }
     
-    func layoutViews() {
+    @objc private func cartTapped(){
+        delegate?.tappedCartButton()
+    }
+    
+    func layoutViews() { cartButton.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             hStack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
             hStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
@@ -134,5 +139,13 @@ final class WishlistView: UIView {
     
     func reloadCollection() {
         collectionView.reloadData()
+    }
+}
+
+// MARK: - DetailVCDelegate
+extension WishlistView: WishlistVCDelegate {
+
+    func updateCartButtonLabel(with count: Int) {
+        cartButton.setItemCount(count)
     }
 }

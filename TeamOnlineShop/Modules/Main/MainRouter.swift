@@ -20,7 +20,7 @@ final class MainRouter {
         navigationVC.viewControllers = [mainVC]
     }
     
-    func showSearch(data: [PlatziFakeStore.Product], serachText: String) {
+    func showSearch(data: [Product], serachText: String) {
        
         let vc = SearchModuleBuilder.build(
             router: self,
@@ -32,6 +32,12 @@ final class MainRouter {
     func showProductDetail(data: Product) {
         let detailVC = DetailBuilder(navigationVC: navigationVC).buildDetailVC(data: data)
         navigationVC.pushViewController(detailVC, animated: true)
+    }
+    
+    func goToCartVC() {
+        let builder = CartBuilder(navigationVC: navigationVC)
+        let router = builder.buildRouter()
+        router.showCartModule()
     }
 }
 

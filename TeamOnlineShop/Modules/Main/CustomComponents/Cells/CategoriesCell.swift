@@ -68,7 +68,7 @@ final class CategoriesViewCell: UICollectionViewCell {
         imageView.image = image
         
     }
-    func configure(model: PlatziFakeStore.Category) {
+    func configure(model: Category) {
         categoryNameLabel.text = model.name
         imageView.setImage(from: model.image)
         
