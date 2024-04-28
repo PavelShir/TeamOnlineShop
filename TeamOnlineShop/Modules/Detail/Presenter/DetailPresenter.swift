@@ -57,7 +57,7 @@ final class DetailPresenter: DetailPresenterProtocol {
     }
     
     func buyProductNow() {
-        print("go to payment screen with this product")
+        router?.goToPaymentsVC()
     }
     
     func addProductToCart() {

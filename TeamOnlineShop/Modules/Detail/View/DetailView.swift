@@ -165,7 +165,9 @@ final class DetailView: UIView {
         title.text = "Product details"
         backButton.addTarget(nil, action: #selector(backTapped), for: .touchUpInside)
         cartButton.addTarget(nil, action: #selector(cartTapped), for: .touchUpInside)
+        addToCartButton.addTarget(nil, action: #selector(addToCartTapped), for: .touchUpInside)
         wishButton.addTarget(nil, action: #selector(wishTapped), for: .touchUpInside)
+        buyNowButton.addTarget(nil, action: #selector(buyNowTapped), for: .touchUpInside)
     }
     
     

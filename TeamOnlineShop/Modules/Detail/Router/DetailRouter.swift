@@ -12,7 +12,8 @@ protocol DetailRouterProtocol: AnyObject {
     init(navigationVC: UINavigationController)
     func dismissDetailVC()
     func goToCartVC()
-    
+    func goToPaymentsVC()
+
 }
 
 final class DetailRouter: DetailRouterProtocol {
@@ -31,5 +32,10 @@ final class DetailRouter: DetailRouterProtocol {
         let builder = CartBuilder(navigationVC: navigationVC)
         let router = builder.buildRouter()
         router.showCartModule()
+    }
+    
+    func goToPaymentsVC() {
+        let vc = PaymentsViewController()
+        navigationVC.present(vc, animated: true)
     }
 }
