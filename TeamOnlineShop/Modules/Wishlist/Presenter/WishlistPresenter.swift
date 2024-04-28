@@ -43,7 +43,9 @@ final class WishlistPresenter: WishlistPresenterProtocol {
     
     func deleteProductFromWishList(_ id: Int){
         UserManager.shared.deleteProductFromWishList(productId: id){ error in
-            print("Error is occured during deleting product from wishlist")
+            if error != nil {
+                print("Error is occured during deleting product from wishlist")
+            }
         }
         getWishlistFromUser()
         view?.reload()
@@ -55,7 +57,9 @@ final class WishlistPresenter: WishlistPresenterProtocol {
         }) else { return }
         
         UserManager.shared.addProductToCart(product: product) { error in
-            print("Error is occured during adding product to cart")
+            if error != nil {
+                print("Error is occured during adding product to cart")
+            }
         }
         
         view?.updateCartButtonLabel(with: UserManager.shared.getProductsFromCart().count)    }

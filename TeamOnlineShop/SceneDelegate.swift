@@ -15,19 +15,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let window = UIWindow(windowScene: windowScene)
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        window?.windowScene = windowScene
         
+        window?.makeKeyAndVisible()
         
-        if  UserDefaults.standard.bool(forKey: "isOnboardingCompleted"){
+        if UserDefaults.standard.bool(forKey: "isOnboardingCompleted"){
             checkAuthentication()
         } else {
             let vc = OnboardingViewController()
             vc.modalPresentationStyle = .fullScreen
             self.window?.rootViewController = vc
         }
-        
-        window.makeKeyAndVisible()
-        self.window = window
     }
     
     func checkAuthentication() {

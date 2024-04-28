@@ -188,7 +188,9 @@ extension MainPresenter: MainPresenterImplementation {
         }) else { return }
         
         UserManager.shared.addProductToCart(product: product) { error in
-            print("Error is occured during adding product to cart")
+            if error != nil {
+                print("Error is occured during adding product to cart")
+            }
         }
     }
 }

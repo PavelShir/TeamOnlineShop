@@ -67,7 +67,9 @@ final class CartPresenter: CartPresenterProtocol {
                     .filter { $0.selected }
                     .map { $0.id } ?? []
             ) { error in
-                print("Error is occured during deleting products from cart")
+                if error != nil {
+                    print("Error is occured during deleting products from cart")
+                }
             }
             self?.cartItems.removeAll(where: \.selected)
             self?.updateUI()
@@ -127,7 +129,9 @@ private extension CartPresenter {
         guard let index = cartItems.firstIndex(where: { $0.id == id }) else { return }
         cartItems[index].count += 1
         UserManager.shared.changeeProductCountInCart(index: index, count: cartItems[index].count){ error in
-            print("Error is occured during increasing product count")
+            if error != nil {
+                print("Error is occured during increasing product count")
+            }
         }
         updateUI()
     }
@@ -149,7 +153,9 @@ private extension CartPresenter {
         guard let index = cartItems.firstIndex(where: { $0.id == id }) else { return }
         cartItems.remove(at: index)
         UserManager.shared.deleteProductFromCart(productId: id){ error in
-            print("Error is occured during deleting product from cart")
+            if error != nil {
+                print("Error is occured during deleting product from cart")
+            }
         }
         updateUI()
     }
