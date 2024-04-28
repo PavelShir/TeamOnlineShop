@@ -127,6 +127,10 @@ extension UIImage {
             return UIImage(systemName: "folder")
         }
         
+        static var checkmarkSealFill: UIImage? {
+            return UIImage(systemName: "checkmark.seal.fill")
+        }
+        
     }
     
     enum Images {
