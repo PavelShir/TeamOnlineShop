@@ -53,6 +53,7 @@ final class DetailViewController: UIViewController {
             customView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         customView.delegate = self
+        customView.setDelegates(self)
     }
     
     private func configView() {
@@ -95,4 +96,20 @@ extension DetailViewController: DetailPresenterViewProtocol {
         customView.updateCartButtonLabel(with: count)
     }
 }
+
+extension DetailViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return presenter.data.images.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.identifier, for: indexPath) as? ImageCollectionViewCell else {
+            fatalError("Unable to dequeue ImageCollectionViewCell")
+        }
+        cell.configure(with: presenter.data.images[indexPath.item])
+        return cell
+    }
+}
+
+extension DetailViewController: UICollectionViewDelegateFlowLayout {}
 
