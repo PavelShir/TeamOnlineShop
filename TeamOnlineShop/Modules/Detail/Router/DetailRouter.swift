@@ -17,17 +17,19 @@ protocol DetailRouterProtocol: AnyObject {
 
 final class DetailRouter: DetailRouterProtocol {
 
-    weak var navigationVC: UINavigationController?
+    let navigationVC: UINavigationController
     
     required init(navigationVC: UINavigationController) {
         self.navigationVC = navigationVC
     }
     
     func dismissDetailVC() {
-        navigationVC?.popViewController(animated: true)
+        navigationVC.popViewController(animated: true)
     }
     
     func goToCartVC() {
-        // go to cart
+        let builder = CartBuilder(navigationVC: navigationVC)
+        let router = builder.buildRouter()
+        router.showCartModule()
     }
 }

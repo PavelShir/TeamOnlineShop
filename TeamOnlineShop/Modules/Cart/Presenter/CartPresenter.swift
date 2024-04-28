@@ -17,7 +17,7 @@ protocol CartViewController: AnyObject {
 }
 
 protocol CartPresenterProtocol: AnyObject {
-    init(router: CartRouterProtocol, data: Cart)
+    init(router: CartRouterProtocol)
     
     func viewDidLoad()
     func dismissCartVC()
@@ -34,9 +34,9 @@ final class CartPresenter: CartPresenterProtocol {
     weak var view: CartViewController?
     
     //MARK: - init(_:)
-    required init(router: CartRouterProtocol, data: Cart) {
+    required init(router: CartRouterProtocol) {
         self.router = router
-        self.cartItems = data.items
+        self.cartItems = .init()
     }
     
     //MARK: - Public methods
@@ -64,6 +64,10 @@ final class CartPresenter: CartPresenterProtocol {
     }
     
     func viewDidLoad() {
+        let products = UserManager.shared.getProductsFromCart()
+        cartItems = products.map({ product in
+            return CartItem(id: product.id, title: product.title, price: Float(product.price), count: product.count)
+        })
         updateUI()
     }
     
