@@ -33,5 +33,11 @@ final class MainRouter {
         let detailVC = DetailBuilder(navigationVC: navigationVC).buildDetailVC(data: data)
         navigationVC.pushViewController(detailVC, animated: true)
     }
+    
+    func goToCartVC() {
+        let builder = CartBuilder(navigationVC: navigationVC)
+        let router = builder.buildRouter()
+        router.showCartModule()
+    }
 }
 

@@ -9,6 +9,7 @@ protocol MainPresenterImplementation: AnyObject {
     func searchProductsByCategory(_ categoryId: Int)
     func filterByPriceRange(low: Double, high: Double)
     func filterByName()
+    func goToCartVC()
 }
 
 final class MainPresenter {
@@ -129,6 +130,10 @@ extension MainPresenter: MainPresenterImplementation {
             )
             self.view?.render(model: model)
         }
+    }
+    
+    func goToCartVC() {
+        router.goToCartVC()
     }
     
     func goToProductDetail(_ index: Int) {

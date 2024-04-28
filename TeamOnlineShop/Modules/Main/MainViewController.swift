@@ -129,6 +129,10 @@ extension MainViewController: UICollectionViewDelegate {
 }
 
 extension MainViewController: CategoryHeaderDelegate {
+    func tappedCartButton() {
+        presenter.goToCartVC()
+    }
+    
     func searchBarTextDidChange(_ searchBar: UISearchBar, newText: String) {
     }
     
