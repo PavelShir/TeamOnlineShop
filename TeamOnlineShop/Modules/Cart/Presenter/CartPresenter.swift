@@ -119,6 +119,9 @@ private extension CartPresenter {
     func increaseCounter(for id: Int) {
         guard let index = cartItems.firstIndex(where: { $0.id == id }) else { return }
         cartItems[index].count += 1
+        UserManager.shared.changeeProductCountInCart(index: index, count: cartItems[index].count){ error in
+            print("complete")
+        }
         updateUI()
     }
     
@@ -126,6 +129,9 @@ private extension CartPresenter {
         guard let index = cartItems.firstIndex(where: { $0.id == id }) else { return }
         if cartItems[index].count > .zero {
             cartItems[index].count -= 1
+            UserManager.shared.changeeProductCountInCart(index: index, count: cartItems[index].count){ error in
+                print("complete")
+            }
             updateUI()
         }
     }
@@ -133,6 +139,9 @@ private extension CartPresenter {
     func deleteItem(withId id: Int) {
         guard let index = cartItems.firstIndex(where: { $0.id == id }) else { return }
         cartItems.remove(at: index)
+        UserManager.shared.deleteProductFromCart(productId: id){ error in
+            print("complete")
+        }
         updateUI()
     }
 }
