@@ -141,10 +141,15 @@ final class CartCell: UICollectionViewCell {
     
     //MARK: - Public methods
     func setup(_ item: CartItemCell) {
-        imageView.image = UIImage(named: "CellImage")
         titleLabel.text = item.title
         priceLabel.text = "$ ".appending(item.price.description)
         numberLabel.text = item.count.description
+        
+        if let firstImageUrl = item.images.first {
+            imageView.setImage(from: firstImageUrl)
+        } else {
+            imageView.image = UIImage(systemName: "photo")
+        }
         
         minusAction = item.decreaseCounter
         plusAction = item.increaseCounter

@@ -70,7 +70,13 @@ final class CartPresenter: CartPresenterProtocol {
     func viewDidLoad() {
         let products = UserManager.shared.getProductsFromCart()
         cartItems = products.map({ product in
-            return CartItem(id: product.id, title: product.title, price: Float(product.price), count: product.count)
+            return CartItem(
+                id: product.id,
+                title: product.title,
+                price: Float(product.price),
+                images: product.images,
+                count: product.count
+            )
         })
         updateUI()
     }

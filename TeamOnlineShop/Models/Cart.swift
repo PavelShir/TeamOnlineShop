@@ -7,25 +7,11 @@
 
 import Foundation
 
-struct Cart {
-    let items: [CartItem]
-    
-    static func allItems() -> [CartItem] {
-        [
-            .init(id: 1, title: "Air pods max by Apple", price: 1999, count: 1),
-            .init(id: 2, title: "Monitor LG 22' 4K 120fps", price: 299, count: 1),
-            .init(id: 3, title: "Erphones for monitor", price: 99, count: 2)
-        ]
-    }
-    
-    static let sample = Self(items: Cart.allItems())
-}
-
 struct CartItem: Equatable {
     let id: Int
     let title: String
     let price: Float
-//    let images: [String]
+    let images: [String]
     var count: Int
     var selected: Bool = false
 }
@@ -34,7 +20,7 @@ struct CartItemCell: Equatable {
     let id: Int
     let title: String
     let price: Float
-//    let images: [String]
+    let images: [String]
     var count: Int
     let selected: Bool
     
@@ -52,6 +38,7 @@ struct CartItemCell: Equatable {
         self.title = item.title
         self.price = item.price
         self.count = item.count
+        self.images = item.images
         self.selected = item.selected
         self.increaseCounter = increaseCounter
         self.decreaseCounter = decreaseCounter
