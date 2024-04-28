@@ -62,11 +62,10 @@ extension WishlistViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.reuseIdentifier, for: indexPath) as? ProductsViewCell else {
             fatalError("Unable to dequeue ProductsViewCell")
         }
-        // refactor to Product type
-//        let product = presenter.getProduct(indexPath.row)
-//        cell.configure(
-//            model: product,
-//           showLikeButton: true)
+        let product = presenter.getProduct(indexPath.row)
+        cell.configure(
+            model: product,
+           showLikeButton: true)
         cell.delegate = self
         return cell
     }
@@ -85,19 +84,19 @@ extension WishlistViewController: UICollectionViewDataSource {
 
 extension WishlistViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("element is tapped")
         presenter.goToProductDetail(indexPath.row)
     }
 }
 
 extension WishlistViewController: ProductsViewCellDelegate {
-    func didTapAddToCartButton(in cell: ProductsViewCell) {
-        print("Add to Cart button tapped")
+    func didTapAddToCartButton(productId id: Int) {
+        presenter.addProductToCart(id)
     }
-
-    func didTapWishButton(in cell: ProductsViewCell) {
-        print("Wish button tapped")
+    
+    func didTapWishButton(productId id: Int) {
+        presenter.deleteProductFromWishList(id)
     }
+    
 }
 
 //MARK: - WishlistPresenterViewProtocol

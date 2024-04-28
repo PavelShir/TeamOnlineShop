@@ -3,14 +3,16 @@ import AsyncImageView
 import PlatziFakeStore
 
 protocol ProductsViewCellDelegate: AnyObject {
-    func didTapAddToCartButton(in cell: ProductsViewCell)
-    func didTapWishButton(in cell: ProductsViewCell)
+    func didTapAddToCartButton(productId id: Int)
+    func didTapWishButton(productId id: Int )
 }
 
 final class ProductsViewCell: UICollectionViewCell {
     // MARK: - Properties
     weak var delegate: ProductsViewCellDelegate?
     static let reuseIdentifier = ProductsViewCell.description()
+    
+    private var productId: Int?
     
     // MARK: - UI
     private var imageView: AsyncImageView = {
@@ -44,7 +46,7 @@ final class ProductsViewCell: UICollectionViewCell {
         let button = UIButton(type: .system)
         button.layer.cornerRadius = 23
         button.setBackgroundImage(UIImage.Icons.wishlist, for: .normal)
-        button.tintColor = UIColor(named: Colors.greyPrimary)
+        button.tintColor = UIColor(named: Colors.greenPrimary)
         button.backgroundColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -94,6 +96,7 @@ final class ProductsViewCell: UICollectionViewCell {
         imageView.prepareForReuse()
         productNameLabel.text = nil
         priceLabel.text = nil
+        productId = nil
     }
     
     // MARK: - Global funcs
@@ -101,6 +104,8 @@ final class ProductsViewCell: UICollectionViewCell {
         productNameLabel.text = model.title
         priceLabel.text = "$\(model.price)"
         wishButton.isHidden = !showLikeButton
+        productId = model.id
+        
         if let firstImageUrl = model.images.first {
             imageView.setImage(from: firstImageUrl)
         } else {
@@ -119,11 +124,11 @@ final class ProductsViewCell: UICollectionViewCell {
     }
 
     @objc private func addToCartButtonTapped() {
-        delegate?.didTapAddToCartButton(in: self)
+        delegate?.didTapAddToCartButton(productId: productId!)
     }
 
     @objc private func wishButtonTapped() {
-        delegate?.didTapWishButton(in: self)
+        delegate?.didTapWishButton(productId: productId!)
     }
     
     private func setupConstraints(){

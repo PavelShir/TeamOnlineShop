@@ -56,6 +56,8 @@ final class DetailView: UIView {
         element.text = ""
         element.font = UIFont.TextFont.Screens.ProductDetail.title
         element.textColor = UIColor(named: Colors.blackLight)
+        element.numberOfLines = 0
+        element.lineBreakMode = .byWordWrapping
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -200,6 +202,7 @@ final class DetailView: UIView {
         NSLayoutConstraint.activate([
             productName.topAnchor.constraint(equalTo: productImage.bottomAnchor, constant: 10),
             productName.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            productName.trailingAnchor.constraint(equalTo: wishButton.leadingAnchor, constant: -20),
         ])
         
         NSLayoutConstraint.activate([

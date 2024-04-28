@@ -5,6 +5,7 @@ protocol MainPresenterImplementation: AnyObject {
     func fetchModel()
     func searchAndOpenFilteredResults(query: String)
     func goToProductDetail(_ index: Int)
+    func addProductToCart(by id: Int)
     func searchProductsByCategory(_ categoryId: Int)
     func filterByPriceRange(low: Double, high: Double)
     func filterByName()
@@ -131,15 +132,16 @@ extension MainPresenter: MainPresenterImplementation {
     }
     
     func goToProductDetail(_ index: Int) {
-        let product = productsArray[index]
-        let convertedProduct = Product(
-            id: product.id,
-            title: product.title,
-            price: product.price,
-            description: product.description,
-            images: product.images,
-            category: Category(id: product.category.id, name: product.category.name, image: product.category.image)
-        )
-        router.showProductDetail(data: convertedProduct)
+        router.showProductDetail(data: productsArray[index])
+    }
+    
+    func addProductToCart(by id: Int) {
+        guard let product = productsArray.first(where: { product in
+            product.id == id
+        }) else { return }
+        
+        UserManager.shared.addProductToCart(product: product) { error in
+            print("complete")
+        }
     }
 }

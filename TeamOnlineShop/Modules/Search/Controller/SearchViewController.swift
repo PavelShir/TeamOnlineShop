@@ -212,9 +212,10 @@ extension SearchViewController: SearchBarViewDelegate {
 }
 
 extension SearchViewController: ProductsViewCellDelegate {
-    func didTapWishButton(in cell: ProductsViewCell) {}
+    func didTapAddToCartButton(productId id: Int) {
+        presenter.addProductToCart(by: id)
+    }
     
-    func didTapAddToCartButton(in cell: ProductsViewCell) {
-        print("Add to Cart button tapped")
+    func didTapWishButton(productId id: Int) {
     }
 }

@@ -26,7 +26,7 @@ protocol DetailPresenterProtocol: AnyObject {
 
 final class DetailPresenter: DetailPresenterProtocol {
     
-    private weak var view: DetailPresenterViewProtocol?
+    weak var view: DetailPresenterViewProtocol?
     private var router: DetailRouterProtocol?
     var data: Product
     
@@ -53,7 +53,7 @@ final class DetailPresenter: DetailPresenterProtocol {
                 print("complete")
             }
         }
-        view?.updateProductWishState(isWished: !isWished)
+        view?.updateProductWishState(isWished: isWished)
     }
     
     func buyProductNow() {

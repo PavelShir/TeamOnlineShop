@@ -15,10 +15,11 @@ protocol WishlistPresenterViewProtocol: AnyObject {
 protocol WishlistPresenterProtocol: AnyObject {
     init(router: WishlistRouterProtocol)
     func getProductsCount() -> Int
+    func getProduct(_ index: Int) -> Product
     func goToProductDetail(_ index: Int)
     func goToCartVC()
-    func deleteProductFromWishList(_ index: Int)
-    func addProductToCart(_ index: Int)
+    func deleteProductFromWishList(_ id: Int)
+    func addProductToCart(_ id: Int)
     func getWishlistFromUser()
     func searchProducts(query: String)
 }
@@ -38,15 +39,26 @@ final class WishlistPresenter: WishlistPresenterProtocol {
         router?.goToCartVC()
     }
     
-    func deleteProductFromWishList(_ index: Int){
-//        UserManager.shared.deleteProductFromWishList(productId: <#T##Int#>, completion: <#T##((any Error)?) -> Void#>)
+    func deleteProductFromWishList(_ id: Int){
+        UserManager.shared.deleteProductFromWishList(productId: id){ error in
+            print("complete")
+        }
         getWishlistFromUser()
+        view?.reload()
     }
     
-    func addProductToCart(_ index: Int) {
-//        UserManager.shared.addProductToCart(product: data) { error in
-//            print("complete")
-//        }
+    func addProductToCart(_ id: Int) {
+        guard let product = products.first(where: { product in
+            product.id == id
+        }) else { return }
+        
+        UserManager.shared.addProductToCart(product: product) { error in
+            print("complete")
+        }
+    }
+    
+    func getProduct(_ index: Int) -> Product {
+        return products[index]
     }
     
     func goToProductDetail(_ index: Int) {
@@ -55,7 +67,7 @@ final class WishlistPresenter: WishlistPresenterProtocol {
     }
     
     func getWishlistFromUser() {
-        // products = get wishlist from user
+        products = UserManager.shared.getProductsFromWithList()
     }
     
     func getProductsCount() -> Int {

@@ -10,14 +10,16 @@ final class MainViewCollectionDataSource: NSObject {
     var filterDelegate: CustomFiltersButtonDelegate?
     // MARK: - Properties
     private let collectionView: UICollectionView
+    private let presenter: MainPresenterImplementation
     
     // MARK: - Init
     init(_ collectionView: UICollectionView,
-         presenter: MainPresenterImplementation?,
+         presenter: MainPresenterImplementation,
          delegate: CategoryHeaderDelegate?,
          filterDelegate: CustomFiltersButtonDelegate) {
         
         self.collectionView = collectionView
+        self.presenter = presenter
         self.delegate = delegate
         self.filterDelegate = filterDelegate
         super.init()
@@ -132,9 +134,10 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
 }
 
 extension MainViewCollectionDataSource: ProductsViewCellDelegate {
-    func didTapWishButton(in cell: ProductsViewCell) {}
+    func didTapAddToCartButton(productId id: Int) {
+        presenter.addProductToCart(by: id)
+    }
     
-    func didTapAddToCartButton(in cell: ProductsViewCell) {
-        print("Add to Cart button tapped")
+    func didTapWishButton(productId id: Int) {
     }
 }
