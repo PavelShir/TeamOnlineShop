@@ -11,6 +11,7 @@ import FirebaseAuth
 
 final class RegViewController: UIViewController {
     
+    var currentUser = User(id: "1", username: "", email: "", image: nil, type: UserType.user.rawValue, cart: [], wishList: [], location: "")
     var userType: UserType = .user
     let values = ["Клиент", "Менеджер"]
     
@@ -159,6 +160,14 @@ final class RegViewController: UIViewController {
         return pickerView
     }
 
+    func validateTextField(textField: UITextField, fieldName: String) -> Bool {
+        guard let text = textField.text, !text.isEmpty else {
+            showAlert(title: "Ошибка", message: "Поле \(fieldName) не заполнено")
+            return false
+        }
+        return true
+    }
+
     // MARK: - Кнопки
     
     @objc func loginButtonTapped() {
@@ -167,17 +176,26 @@ final class RegViewController: UIViewController {
     
     @objc func registerButtonTapped() {
         
+        guard validateTextField(textField: nameTextField, fieldName: "Имя"),
+              validateTextField(textField: emailTextField, fieldName: "Email"),
+              validateTextField(textField: passwordTextField, fieldName: "Пароль"),
+              validateTextField(textField: confPasswordTextField, fieldName: "Подтверждение пароля") else {
+            return
+        }
+        
         if let login = emailTextField.text, let password = passwordTextField.text {
             Auth.auth().createUser(withEmail: login, password: password) { authResult, error in
                 if let error = error {
                     print (error.localizedDescription)
                 } else {
+                    self.saveUserToFirestore(self.currentUser, .user)
                     let tabBarVC = TabBarController()
                     tabBarVC.modalPresentationStyle = .fullScreen
                     self.present(tabBarVC, animated: true)
                 }
             }
         }
+        
     }
     
     // MARK: - Констрейнты
@@ -270,9 +288,9 @@ extension RegViewController {
         let usersCollection = db.collection("users")
         
         let userData: [String: Any] = [
-            "name": user.username,
-            "login": user.email,
-            "user type": userType.rawValue,
+            "user id": Auth.auth().currentUser?.uid ?? "1",
+            "name": nameTextField.text ?? "Имя не указано",
+            "login": emailTextField.text ?? "Email не указан",
         ]
         
         do {

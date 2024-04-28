@@ -143,6 +143,10 @@ extension MainViewController: CategoryHeaderDelegate {
 }
 
 extension MainViewController: CustomFiltersButtonDelegate {
+    func filterByPrice() {
+        presenter.filterByPrice()
+    }
+    
     
     func filterByName() {
         presenter.filterByName()
