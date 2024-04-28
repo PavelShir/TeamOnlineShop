@@ -1,4 +1,5 @@
 import UIKit
+import Firebase
 
 protocol SearchBarViewDelegate: AnyObject {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
@@ -8,7 +9,7 @@ protocol SearchBarViewDelegate: AnyObject {
 final class SearchBarView: UIView {
     weak var delegate: SearchBarViewDelegate?
     var searchIcon: String = "magnifyingglass"
-
+    var searchHistory = [String]()
     // MARK: - UI Properties
     private lazy var searchBar: UISearchBar = {
         let search = UISearchBar()
@@ -31,42 +32,59 @@ final class SearchBarView: UIView {
         button.isEnabled = false
         return button
     }()
+    
+    private lazy var historyTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "HistoryCell")
+        return tableView
+    }()
 
-    // MARK: - Initializators
+    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setView()
         setupConstraints()
+        loadSearchHistory()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Layout Private Methods
+    // MARK: -  Private Methods
     private func setView() {
         addSubview(searchBar)
+        addSubview(historyTableView)
         searchBar.addSubview(searchButton)
         searchBar.backgroundImage = UIImage()
-        
-        
     }
+    
 
     private func setupConstraints() {
         searchBar.translatesAutoresizingMaskIntoConstraints = false
-           NSLayoutConstraint.activate([
-               searchBar.topAnchor.constraint(equalTo: self.topAnchor),
-               searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-               searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-               searchBar.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-           ])
+        NSLayoutConstraint.activate([
+            searchBar.topAnchor.constraint(equalTo: self.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            searchBar.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        ])
 
-           searchButton.translatesAutoresizingMaskIntoConstraints = false
+        searchButton.translatesAutoresizingMaskIntoConstraints = false
            NSLayoutConstraint.activate([
                searchButton.topAnchor.constraint(equalTo: searchBar.searchTextField.topAnchor, constant: 5),
                searchButton.leadingAnchor.constraint(equalTo: searchBar.searchTextField.leadingAnchor, constant: 5)
            ])
-       }
+
+        historyTableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            historyTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            historyTableView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            historyTableView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            historyTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        ])
+    }
 
     // MARK: - Private Methods
     private func searchAction(_ action: UIAction) {
@@ -78,7 +96,6 @@ final class SearchBarView: UIView {
         searchButton.isEnabled = value
     }
 }
-
 
 extension SearchBarView: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -127,5 +144,22 @@ extension SearchBarView {
 
             layoutIfNeeded()
         }
+    }
+}
+
+extension SearchBarView: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return searchHistory.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HistoryCell", for: indexPath)
+        cell.textLabel?.text = searchHistory[indexPath.row]
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        searchBar.text = searchHistory[indexPath.row]
+        searchBarSearchButtonClicked(searchBar)
     }
 }
