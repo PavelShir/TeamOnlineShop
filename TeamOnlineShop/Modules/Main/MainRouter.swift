@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PlatziFakeStore
 
 final class MainRouter {
     let navigationVC: UINavigationController
@@ -17,6 +18,20 @@ final class MainRouter {
     func prepareMainVC() {
         let mainVC = MainModuleBuilder.build(router: self)
         navigationVC.viewControllers = [mainVC]
+    }
+    
+    func showSearch(data: [PlatziFakeStore.Product], serachText: String) {
+       
+        let vc = SearchModuleBuilder.build(
+            router: self,
+            products: data,
+            searchText: serachText)
+        navigationVC.pushViewController(vc, animated: true)
+    }
+    
+    func showProductDetail(data: Product) {
+        let detailVC = DetailBuilder(navigationVC: navigationVC).buildDetailVC(data: data)
+        navigationVC.pushViewController(detailVC, animated: true)
     }
 }
 

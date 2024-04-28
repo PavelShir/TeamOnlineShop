@@ -1,6 +1,6 @@
 //
 //  TermsAndConditionsPresenter.swift
-//  NewsToDayApp
+//  TeamOnlineShop
 //
 //  Created by Maksim Stogniy on 16.04.2024.
 //

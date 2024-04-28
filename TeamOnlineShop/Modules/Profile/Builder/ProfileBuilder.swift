@@ -1,6 +1,6 @@
 //
 //  ProfileBuilder.swift
-//  NewsToDayApp
+//  TeamOnlineShop
 //
 //  Created by Maksim Stogniy on 16.04.2024.
 //
@@ -17,7 +17,6 @@ final class ProfileBuilder: ProfileBuilderProtocol {
     
     let navigationController = UINavigationController()
     
-
     func buildProfileView() -> UIViewController {
         let router = ProfileRouter(navigationVC: navigationController)
         let presenter = ProfilePresenter(

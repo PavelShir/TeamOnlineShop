@@ -124,9 +124,9 @@ extension UIFont {
             }
             
             enum ShopCartItem {
-                static let title = InterFont.Medium.size(of: 14)
+                static let title = InterFont.Medium.size(of: 12)
                 static let variant = InterFont.Regular.size(of: 12)
-                static let price = InterFont.Medium.size(of: 14)
+                static let price = InterFont.SemiBold.size(of: 14)
             }
             
             

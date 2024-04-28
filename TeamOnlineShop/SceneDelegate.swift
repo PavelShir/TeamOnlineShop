@@ -25,8 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             UserManager.shared.setUser(userObject: User(id: "1", username: "test", email: "test@m.ru", image: nil, type: UserType.user.rawValue, cart: [], wishList: [], location: ""))
             let tabBarController = TabBarController()
             window.rootViewController = tabBarController
-        }
-        
+        } 
         window.makeKeyAndVisible()
         self.window = window
     }

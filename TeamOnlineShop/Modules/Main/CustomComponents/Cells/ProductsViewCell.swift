@@ -1,26 +1,31 @@
 import UIKit
+import AsyncImageView
+import PlatziFakeStore
+
+protocol ProductsViewCellDelegate: AnyObject {
+    func didTapAddToCartButton(in cell: ProductsViewCell)
+    func didTapWishButton(in cell: ProductsViewCell)
+}
 
 final class ProductsViewCell: UICollectionViewCell {
-    
     // MARK: - Properties
+    weak var delegate: ProductsViewCellDelegate?
     static let reuseIdentifier = ProductsViewCell.description()
     
     // MARK: - UI
-    private let imageView: UIImageView = {
-        let element = UIImageView()
-        element.image = UIImage(named: "CellImage")
-        element.contentMode = .scaleAspectFill
-        element.clipsToBounds = true
-        element.tintColor = UIColor(named: Colors.blackLight)
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
+    private var imageView: AsyncImageView = {
+        let imageView = AsyncImageView(frame: .zero)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.tintColor = UIColor(named: Colors.blackLight)
+        return imageView
     }()
     
     private let productNameLabel: UILabel = {
         let element = UILabel()
-        element.text = "Monitor LG 22”inc 4K 120Fps"
         element.numberOfLines = 1
-        element.font = UIFont.TextFont.Screens.MainScreen.categoryTitle
+        element.font = UIFont.TextFont.Screens.ShopCartItem.title
         element.tintColor = UIColor(named: Colors.blackLight)
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
@@ -28,20 +33,29 @@ final class ProductsViewCell: UICollectionViewCell {
     
     private let priceLabel: UILabel = {
         let element = UILabel()
-        element.text = "$199.99"
-        element.font = UIFont.TextFont.Screens.ShopCartItem.title
+        element.font = UIFont.TextFont.Screens.ShopCartItem.price
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
     
-    private let addToCartButton: UIButton = {
-        let element = UIButton(type: .system)
-
-        element.setTitle("Add to cart", for: .normal)
-        element.titleLabel?.font = UIFont.TextFont.Screens.ShopCartItem.price
-        element.setTitleColor(.white, for: .normal)
-        element.backgroundColor = UIColor(named: Colors.greenPrimary)
-        element.layer.cornerRadius = 15
+    private let addToCartButton = CustomButton(label: "Add to cart", size: CustomButton.Size.normal, type: CustomButton.ButtonType.primary)
+    
+    private var wishButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.layer.cornerRadius = 23
+        button.setBackgroundImage(UIImage.Icons.wishlist, for: .normal)
+        button.tintColor = UIColor(named: Colors.greyPrimary)
+        button.backgroundColor = .clear
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private lazy var hStack: UIStackView = {
+        let element = UIStackView()
+        element.axis = .horizontal
+        element.distribution = .fill
+        element.alignment = .center
+        element.spacing = 15
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()
@@ -67,6 +81,7 @@ final class ProductsViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle
     override func layoutSubviews() {
         super.layoutSubviews()
         contentView.layer.cornerRadius = 15
@@ -76,20 +91,39 @@ final class ProductsViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        imageView.prepareForReuse()
+        productNameLabel.text = nil
+        priceLabel.text = nil
     }
     
     // MARK: - Global funcs
-    func configure(model: ProductModel) {
+    func configure(model: PlatziFakeStore.Product,  showLikeButton: Bool) {
         productNameLabel.text = model.title
-        priceLabel.text = model.price
+        priceLabel.text = "$\(model.price)"
+        wishButton.isHidden = !showLikeButton
+        if let firstImageUrl = model.images.first {
+            imageView.setImage(from: firstImageUrl)
+        } else {
+            imageView.image = UIImage(systemName: "photo")
+        }
     }
     
     // MARK: - Private funcs
     private func setupView(){
-        
+        hStack.addArrangedSubviews(wishButton, addToCartButton)
         contentView.addSubviews(imageView,vStack)
-        vStack.addArrangedSubviews(productNameLabel,priceLabel,addToCartButton)
+        vStack.addArrangedSubviews(productNameLabel,priceLabel,hStack)
         
+        addToCartButton.addTarget(self, action: #selector(addToCartButtonTapped), for: .touchUpInside)
+        wishButton.addTarget(self, action: #selector(wishButtonTapped), for: .touchUpInside)
+    }
+
+    @objc private func addToCartButtonTapped() {
+        delegate?.didTapAddToCartButton(in: self)
+    }
+
+    @objc private func wishButtonTapped() {
+        delegate?.didTapWishButton(in: self)
     }
     
     private func setupConstraints(){
@@ -116,14 +150,9 @@ final class ProductsViewCell: UICollectionViewCell {
                 constant: -13
             ),
             
-            addToCartButton.heightAnchor.constraint(equalToConstant: 31)
+            addToCartButton.heightAnchor.constraint(equalToConstant: 30),
+            wishButton.heightAnchor.constraint(equalToConstant: 25),
+            wishButton.widthAnchor.constraint(equalToConstant: 25)
         ])
     }
 }
-
-
-
-
-
-
-

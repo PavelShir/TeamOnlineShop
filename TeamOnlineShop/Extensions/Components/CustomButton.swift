@@ -53,9 +53,9 @@ final class CustomButton: UIButton {
                 self.backgroundColor = UIColor(named: Colors.greenPrimary)
                 self.setTitleColor(UIColor(named: Colors.whitePrimary), for: .normal)
             case .secondary:
-                self.backgroundColor = UIColor(named: Colors.greyPrimary)
+                self.backgroundColor = UIColor(named: Colors.greyLighter)
                 self.setTitleColor(UIColor(named: Colors.blackPrimary), for: .normal)
-                self.layer.borderColor = UIColor(named: Colors.greyDarker)?.cgColor
+                self.layer.borderColor = UIColor(named: Colors.greyLight)?.cgColor
                 self.layer.borderWidth = 1
         }
         

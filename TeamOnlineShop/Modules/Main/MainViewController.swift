@@ -1,20 +1,29 @@
+
 import UIKit
+import PlatziFakeStore
 
 protocol MainViewImplementation: AnyObject {
     func render(model: Model)
+    var collectionView: UICollectionView { get }
 }
 
 final class MainViewController: UIViewController {
     
     // MARK: - Properties
     private let presenter: MainPresenterImplementation
-    private let dataSource: MainViewCollectionDataSource
+    private var dataSource: MainViewCollectionDataSource!
+    private var categories = [PlatziFakeStore.Category]()
     var isExpanded = false
     
     init(presenter: MainPresenterImplementation) {
+        
         self.presenter = presenter
-        self.dataSource = .init(collectionView, presenter: presenter)
         super.init(nibName: nil, bundle: nil)
+        self.dataSource = .init(
+            collectionView,
+            presenter: presenter,
+            delegate: self,
+            filterDelegate: self)
     }
     
     @available(*, unavailable)
@@ -23,7 +32,7 @@ final class MainViewController: UIViewController {
     }
     
     // MARK: - UI
-    private let collectionView: UICollectionView = {
+    internal lazy var collectionView: UICollectionView = {
         let layout = CollectionViewCompLayout.createLayout(isExpanded: false)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor =  .white
@@ -33,24 +42,25 @@ final class MainViewController: UIViewController {
     
     // MARK: - Lifecycle
     override func loadView() {
-        
         super.loadView()
+        
         view.addSubview(collectionView)
         setupCollectionViewConstraints()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         collectionView.delegate = self
         view.backgroundColor = .white
         
         dataSource.updateContent([])
         presenter.fetchModel()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        tabBarController?.tabBar.isHidden = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -74,49 +84,73 @@ final class MainViewController: UIViewController {
 extension MainViewController: MainViewImplementation {
     
     func render(model: Model) {
+        
         dataSource.setRenderModel(
             products: model.productsArray,
             categories: model.productCategory
         )
-        collectionView.reloadData()
+        categories = model.productCategory
+        
+        
+        collectionView.performBatchUpdates({
+            collectionView.reloadSections(IndexSet(arrayLiteral: 0,1))
+        }, completion: nil)
+        
     }
 }
 
 
 extension MainViewController: UICollectionViewDelegate {
-    // TODO: Presenter переделать
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let categories = presenter.getCategoryData()
         
-            if indexPath.section == Section.categories.rawValue && indexPath.item == (isExpanded ? categories.count : 9) {
-                // Переключаем состояние isExpanded
-                isExpanded.toggle()
-                dataSource.isExpanded = isExpanded
-                
-                collectionView.setCollectionViewLayout(CollectionViewCompLayout.createLayout(isExpanded: isExpanded), animated: true)
-                
-                collectionView.performBatchUpdates({
-                    collectionView.reloadSections(IndexSet(integer: indexPath.section))
-                }, completion: nil)
-            }
+        if indexPath.section == Section.categories.rawValue && indexPath.item == (isExpanded ? categories.count : 4) {
+            
+            isExpanded.toggle()
+            dataSource.isExpanded = isExpanded
+            
+            collectionView.setCollectionViewLayout(CollectionViewCompLayout.createLayout(isExpanded: isExpanded), animated: true)
+            
+            collectionView.performBatchUpdates({
+                collectionView.reloadSections(IndexSet(integer: indexPath.section))
+            }, completion: nil)
+            
+            return
+        }
+        
+        if indexPath.section == Section.products.rawValue {
+            presenter.goToProductDetail(indexPath.row)
+        }
+        
+        if indexPath.section == Section.categories.rawValue {
+            let category = categories[indexPath.row]
+            presenter.searchProductsByCategory(category.id)
         }
     }
+}
 
+extension MainViewController: CategoryHeaderDelegate {
+    func searchBarTextDidChange(_ searchBar: UISearchBar, newText: String) {
+    }
     
-    // MARK: - Preview
-//    import SwiftUI
-//
-//    struct MainViewControllerPreview: PreviewProvider {
-//        static var previews: some View {
-//            MainViewControllerContainer().edgesIgnoringSafeArea(.all)
-//        }
-//
-//        struct MainViewControllerContainer: UIViewControllerRepresentable {
-//            func makeUIViewController(context: Context) -> MainViewController {
-//                MainViewController(presenter: MainPresenter(router: <#MainRouter#>ro))
-//            }
-//
-//            func updateUIViewController(_ uiViewController: MainViewController, context: Context) {
-//            }
-//        }
+    func searchBarSearchButtonClicked(with text: String) {
+        
+        presenter.searchAndOpenFilteredResults(query: text)
+    }
+}
+
+extension MainViewController: CustomFiltersButtonDelegate {
+    func filterByPrice() {
+        presenter.filterByPrice()
+    }
+    
+    
+    func filterByName() {
+        presenter.filterByName()
+    }
+    
+    func filterByPriceRange(low: Double, high: Double) {
+        presenter.filterByPriceRange(low: low, high: high)
+    }
+}
+
     
