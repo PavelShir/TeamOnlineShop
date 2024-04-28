@@ -62,6 +62,13 @@ final class CartPresenter: CartPresenterProtocol {
         }
         
         router.goToPaymentsVC(onContinue: { [weak self] in
+            self?.cartItems
+                .filter { $0.selected }
+                .forEach { item in
+                    UserManager.shared.deleteProductFromCart(productId: item.id) { error in
+                        print("complete")
+                    }
+                }
             self?.cartItems.removeAll(where: \.selected)
             self?.updateUI()
         })
