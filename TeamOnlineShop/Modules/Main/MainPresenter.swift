@@ -8,6 +8,7 @@ protocol MainPresenterImplementation: AnyObject {
     func searchProductsByCategory(_ categoryId: Int)
     func filterByPriceRange(low: Double, high: Double)
     func filterByName()
+    func filterByPrice()
 }
 
 final class MainPresenter {
@@ -15,7 +16,8 @@ final class MainPresenter {
     // MARK: - Properties
     weak var view: MainViewImplementation?
     let router: MainRouter
-    private var isSortingAscending = true
+    private var isSortingNamesAscending = true
+    private var isSortingPriceAscending = true
     private var categoriesArray = [PlatziFakeStore.Category]()
     private var productsArray = [PlatziFakeStore.Product]()
     
@@ -50,15 +52,14 @@ extension MainPresenter: MainPresenterImplementation {
     
     func filterByName() {
 
-        if isSortingAscending {
+        if isSortingNamesAscending {
             productsArray.sort { $0.title.lowercased() < $1.title.lowercased() }
         } else {
             productsArray.sort { $0.title.lowercased() > $1.title.lowercased() }
         }
 
-        isSortingAscending.toggle()
+        isSortingNamesAscending.toggle()
 
-        DispatchQueue.main.async {
             DispatchQueue.main.async {
                 
                 let model = Model(
@@ -70,8 +71,28 @@ extension MainPresenter: MainPresenterImplementation {
                 )
                 self.view?.render(model: model)
             }
-
+    }
+    
+    func filterByPrice() {
+        
+        if isSortingPriceAscending {
+            productsArray.sort { $0.price < $1.price }
+        } else {
+            productsArray.sort { $0.price > $1.price }
         }
+        isSortingPriceAscending.toggle()
+        
+        DispatchQueue.main.async {
+            let model = Model(
+                isExpanded: false,
+                productCategory: self.categoriesArray,
+                productsArray: self.productsArray,
+                query: "Search",
+                address: "Delivery address"
+            )
+            self.view?.render(model: model)
+        }
+        
     }
     // MARK: - Search methods
     func searchProductsByCategory(_ categoryId: Int) {

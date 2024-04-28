@@ -13,6 +13,7 @@ protocol SearchPresenterImplementation {
     func searchAndOpenFilteredResults(query: String)
     func filterByPriceRange(low: Double, high: Double)
     func filterByName()
+    func filterByPrice()
 }
 
 final class SearchPresenter {
@@ -22,6 +23,7 @@ final class SearchPresenter {
     let router: MainRouter
     private var query = " "
     var isSortingAscending = true
+    var isSortingPriceAscending = true
     private var productsArray = [PlatziFakeStore.Product]()
    
     // MARK: - Init
@@ -104,6 +106,25 @@ extension SearchPresenter: SearchPresenterImplementation {
                 query: self.query
             )
             self.view?.fetchModel(model: model)
+        }
+    }
+    
+    func filterByPrice() {
+            
+            if isSortingPriceAscending {
+                productsArray.sort { $0.price < $1.price }
+            } else {
+                productsArray.sort { $0.price > $1.price }
+            }
+            
+            isSortingPriceAscending.toggle()
+            
+            DispatchQueue.main.async {
+                let model = SearchModel(
+                    productsArray: self.productsArray,
+                    query: self.query
+                )
+                self.view?.fetchModel(model: model) 
         }
     }
 }

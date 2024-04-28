@@ -220,6 +220,11 @@ extension SearchViewController: ProductsViewCellDelegate {
 
 // MARK: - SearchViewController + CustomFiltersButtonDelegate
 extension SearchViewController: CustomFiltersButtonDelegate {
+   
+    func filterByPrice() {
+        presenter.filterByPrice()
+    }
+    
     
     func filterByName() {
         presenter.filterByName()
