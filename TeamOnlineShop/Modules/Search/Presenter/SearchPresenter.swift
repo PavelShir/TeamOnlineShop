@@ -47,7 +47,7 @@ extension SearchPresenter: SearchPresenterImplementation {
         }) else { return }
         
         UserManager.shared.addProductToCart(product: product) { error in
-            print("complete")
+            print("Error is occured during adding product to cart")
         }
         
         view?.updateCartLabelCount(count: UserManager.shared.getProductsFromCart().count)

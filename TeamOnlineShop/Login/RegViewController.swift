@@ -11,8 +11,7 @@ import FirebaseAuth
 
 final class RegViewController: UIViewController {
     
-    var currentUser = User(id: "1", username: "", email: "", image: nil, type: UserType.user.rawValue, cart: [], wishList: [], location: "")
-    var userType: UserType = .user
+    var userRole: UserRole = .user
     let values = ["Клиент", "Менеджер"]
     
     private var pickerView: UIPickerView!
@@ -183,16 +182,29 @@ final class RegViewController: UIViewController {
             return
         }
         
-        if let login = emailTextField.text, let password = passwordTextField.text {
-            Auth.auth().createUser(withEmail: login, password: password) { authResult, error in
+        if let email = emailTextField.text, let password = passwordTextField.text, let username = nameTextField.text {
+            let request = RegisterUserRequest(
+                username: username,
+                email: email,
+                password: password,
+                role: userRole.rawValue
+            )
+            
+            AuthManager.shared.registerUser(with: request) { registeredUser, error in
                 if let error = error {
-                    print (error.localizedDescription)
-                } else {
-                    self.saveUserToFirestore(self.currentUser, .user)
-                    let tabBarVC = TabBarController()
-                    tabBarVC.modalPresentationStyle = .fullScreen
-                    self.present(tabBarVC, animated: true)
+                    self.showAlert(title: "Registration error", message: error.localizedDescription)
+                    return
                 }
+                
+                guard let user = registeredUser else {
+                    self.showAlert(title: "Registration error", message: "Unexpected error")
+                    return
+                }
+                UserManager.shared.setUser(userObject: user)
+                
+                let tabBarVC = TabBarController()
+                tabBarVC.modalPresentationStyle = .fullScreen
+                self.view?.window?.rootViewController = tabBarVC
             }
         }
         
@@ -282,7 +294,7 @@ extension RegViewController {
 
 extension RegViewController {
     
-    func saveUserToFirestore(_ user: User, _ userType: UserType) {
+    func saveUserToFirestore(_ user: User, _ userType: UserRole) {
         
         let db = Firestore.firestore()
         let usersCollection = db.collection("users")
@@ -317,6 +329,6 @@ extension RegViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let selectedValue = values[row]
-        userType = UserType(rawValue: selectedValue) ?? .user
+        userRole = UserRole(rawValue: selectedValue) ?? .user
     }
 }

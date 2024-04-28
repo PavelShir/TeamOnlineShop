@@ -86,6 +86,7 @@ class OnboardingViewController: UIViewController {
     
     @objc func nextBtnTapped() {
         if currentPage == OnboardingModel.slides.count - 1 {
+            UserDefaults.standard.set(true, forKey: "isOnboardingCompleted")
             let loginVC = LoginViewController()
             let navigationController = UINavigationController(rootViewController: loginVC)
             navigationController.modalPresentationStyle = .fullScreen

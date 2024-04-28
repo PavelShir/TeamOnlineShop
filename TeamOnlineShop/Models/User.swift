@@ -7,15 +7,9 @@
 
 import Foundation
 
-enum UserType: String, Codable {
+enum UserRole: String, Codable {
     case user
     case manager
-}
-enum Location: String {
-    case America
-    case Europe
-    case Russia
-    case Other
 }
 
 struct User {
@@ -23,10 +17,10 @@ struct User {
     var username: String = ""
     var email: String = ""
     var image: String?
-    var type: String = UserType.user.rawValue
+    var role: String = UserRole.user.rawValue
     var cart: [Product] = []
     var wishList: [Product] = []
-    var location: String = Location.America.rawValue
+    var location: String = Address.usa.rawValue
     
 }
 
@@ -40,7 +34,7 @@ extension User: Codable {
         cart = try container.decode([Product].self, forKey: .cart)
         wishList = try container.decode([Product].self, forKey: .wishList)
         location = try container.decode(String.self, forKey: .location)
-        type = try container.decode(String.self, forKey: .type)
+        role = try container.decode(String.self, forKey: .role)
     }
 }
 

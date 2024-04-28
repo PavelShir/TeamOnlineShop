@@ -62,13 +62,13 @@ final class CartPresenter: CartPresenterProtocol {
         }
         
         router.goToPaymentsVC(onContinue: { [weak self] in
-            self?.cartItems
-                .filter { $0.selected }
-                .forEach { item in
-                    UserManager.shared.deleteProductFromCart(productId: item.id) { error in
-                        print("complete")
-                    }
-                }
+            UserManager.shared.deleteProductsFromCart(
+                productIds: self?.cartItems
+                    .filter { $0.selected }
+                    .map { $0.id } ?? []
+            ) { error in
+                print("Error is occured during deleting products from cart")
+            }
             self?.cartItems.removeAll(where: \.selected)
             self?.updateUI()
         })
@@ -127,7 +127,7 @@ private extension CartPresenter {
         guard let index = cartItems.firstIndex(where: { $0.id == id }) else { return }
         cartItems[index].count += 1
         UserManager.shared.changeeProductCountInCart(index: index, count: cartItems[index].count){ error in
-            print("complete")
+            print("Error is occured during increasing product count")
         }
         updateUI()
     }
@@ -137,7 +137,9 @@ private extension CartPresenter {
         if cartItems[index].count > .zero {
             cartItems[index].count -= 1
             UserManager.shared.changeeProductCountInCart(index: index, count: cartItems[index].count){ error in
-                print("complete")
+                if error != nil {
+                    print("Error is occured during decreasing product count")
+                }
             }
             updateUI()
         }
@@ -147,7 +149,7 @@ private extension CartPresenter {
         guard let index = cartItems.firstIndex(where: { $0.id == id }) else { return }
         cartItems.remove(at: index)
         UserManager.shared.deleteProductFromCart(productId: id){ error in
-            print("complete")
+            print("Error is occured during deleting product from cart")
         }
         updateUI()
     }

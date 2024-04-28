@@ -18,17 +18,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         
-        if Auth.auth().currentUser == nil {
-            let loginVC = LoginViewController()
-            window.rootViewController = loginVC
+        if  UserDefaults.standard.bool(forKey: "isOnboardingCompleted"){
+            checkAuthentication()
         } else {
-            UserManager.shared.setUser(userObject: User(id: "1", username: "test", email: "test@m.ru", image: nil, type: UserType.user.rawValue, cart: [], wishList: [], location: ""))
-            let tabBarController = TabBarController()
-            window.rootViewController = tabBarController
+            let vc = OnboardingViewController()
+            vc.modalPresentationStyle = .fullScreen
+            self.window?.rootViewController = vc
+            UserDefaults.standard.addObserver(self, forKeyPath: "theme", options: [.new], context: nil)
         }
         
         window.makeKeyAndVisible()
         self.window = window
+    }
+    
+    func checkAuthentication() {
+        if Auth.auth().currentUser == nil {
+            let loginVC = LoginViewController()
+            window?.rootViewController = loginVC
+        } else {
+            AuthManager.shared.fetchUser { [weak self] user, error in
+                guard let user = user else { return }
+                UserManager.shared.setUser(userObject: user)
+                
+                let tabBarController = TabBarController()
+                self?.window?.rootViewController = tabBarController
+                UserDefaults.standard.addObserver(self!, forKeyPath: "theme", options: [.new], context: nil)
+            }
+        }
     }
 }
 

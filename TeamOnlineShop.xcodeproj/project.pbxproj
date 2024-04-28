@@ -136,6 +136,10 @@
 		D9B96DD72BCDC8FA00F9C529 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B96DD42BCDC8FA00F9C529 /* Colors.swift */; };
 		D9B96DD82BCDC8FA00F9C529 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B96DD52BCDC8FA00F9C529 /* Fonts.swift */; };
 		D9B96DD92BCDC8FA00F9C529 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B96DD62BCDC8FA00F9C529 /* Images.swift */; };
+		D9C1AA462BDEEDC00029EC12 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C1AA442BDEEDC00029EC12 /* FirestoreManager.swift */; };
+		D9C1AA482BDEEDDE0029EC12 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C1AA472BDEEDDE0029EC12 /* AuthManager.swift */; };
+		D9C1AA4C2BDEEFA00029EC12 /* RegisterUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C1AA4A2BDEEFA00029EC12 /* RegisterUserRequest.swift */; };
+		D9C1AA4D2BDEEFA00029EC12 /* LoginUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C1AA4B2BDEEFA00029EC12 /* LoginUserRequest.swift */; };
 		D9F2230F2BDC19AF0018ACB8 /* WishlistPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F223052BDC19AF0018ACB8 /* WishlistPresenter.swift */; };
 		D9F223102BDC19AF0018ACB8 /* WishlistRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F223072BDC19AF0018ACB8 /* WishlistRouter.swift */; };
 		D9F223112BDC19AF0018ACB8 /* WishlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F223092BDC19AF0018ACB8 /* WishlistViewController.swift */; };
@@ -252,6 +256,10 @@
 		D9B96DD42BCDC8FA00F9C529 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		D9B96DD52BCDC8FA00F9C529 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		D9B96DD62BCDC8FA00F9C529 /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		D9C1AA442BDEEDC00029EC12 /* FirestoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		D9C1AA472BDEEDDE0029EC12 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		D9C1AA4A2BDEEFA00029EC12 /* RegisterUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterUserRequest.swift; sourceTree = "<group>"; };
+		D9C1AA4B2BDEEFA00029EC12 /* LoginUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginUserRequest.swift; sourceTree = "<group>"; };
 		D9F223052BDC19AF0018ACB8 /* WishlistPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishlistPresenter.swift; sourceTree = "<group>"; };
 		D9F223072BDC19AF0018ACB8 /* WishlistRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishlistRouter.swift; sourceTree = "<group>"; };
 		D9F223092BDC19AF0018ACB8 /* WishlistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishlistViewController.swift; sourceTree = "<group>"; };
@@ -632,6 +640,7 @@
 		D92F92CE2BD3EDF700EF7B59 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				D9C1AA422BDEED9F0029EC12 /* Auth */,
 				D92F92D42BD3EE4C00EF7B59 /* UserManager.swift */,
 				D92F92DA2BD3FDF300EF7B59 /* PriceConverter.swift */,
 			);
@@ -904,6 +913,25 @@
 			path = Modules;
 			sourceTree = "<group>";
 		};
+		D9C1AA422BDEED9F0029EC12 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				D9C1AA492BDEEF730029EC12 /* Request */,
+				D9C1AA472BDEEDDE0029EC12 /* AuthManager.swift */,
+				D9C1AA442BDEEDC00029EC12 /* FirestoreManager.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		D9C1AA492BDEEF730029EC12 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				D9C1AA4B2BDEEFA00029EC12 /* LoginUserRequest.swift */,
+				D9C1AA4A2BDEEFA00029EC12 /* RegisterUserRequest.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
 		D9F223042BDC18A80018ACB8 /* Wishlist */ = {
 			isa = PBXGroup;
 			children = (
@@ -1096,6 +1124,7 @@
 				D901B8F22BD487CC007B5579 /* ProductViewController.swift in Sources */,
 				D92F92D72BD3F0D700EF7B59 /* Category.swift in Sources */,
 				D9B96DD82BCDC8FA00F9C529 /* Fonts.swift in Sources */,
+				D9C1AA4C2BDEEFA00029EC12 /* RegisterUserRequest.swift in Sources */,
 				D9F2230F2BDC19AF0018ACB8 /* WishlistPresenter.swift in Sources */,
 				D91360AF2BCF2C2C00AB6F80 /* Separator.swift in Sources */,
 				D94DA3B12BCEE2B800746127 /* ProfileRouter.swift in Sources */,
@@ -1138,6 +1167,7 @@
 				D92F92F12BD408A200EF7B59 /* ManagerRouter.swift in Sources */,
 				31910D1B2BCDF9E400655CB3 /* OnboardingViewController.swift in Sources */,
 				D9A28A452BDAB31E007CA3C6 /* DetailBuilder.swift in Sources */,
+				D9C1AA482BDEEDDE0029EC12 /* AuthManager.swift in Sources */,
 				D598FEB62BD3A8E700E45E8C /* CartViewControllerImpl.swift in Sources */,
 				B65CEDD02BCEE05200EA373A /* ProductsHeader.swift in Sources */,
 				D92F92CD2BD3E90900EF7B59 /* TabBarController.swift in Sources */,
@@ -1152,6 +1182,7 @@
 				B64FD72A2BD282F900C05917 /* UIView.swift in Sources */,
 				D94DA3C02BCEE31300746127 /* TermsAndConditionsRouter.swift in Sources */,
 				B6C81FC22BD4FD2200AECDA6 /* CustomCompLayout.swift in Sources */,
+				D9C1AA4D2BDEEFA00029EC12 /* LoginUserRequest.swift in Sources */,
 				D94DA3AD2BCEE2B800746127 /* ProfilePresenter.swift in Sources */,
 				D92F92F42BD4207F00EF7B59 /* CustomButton.swift in Sources */,
 				D94DA3BD2BCEE31300746127 /* TermsAndConditionsBuilder.swift in Sources */,
@@ -1168,6 +1199,7 @@
 				D901B8E72BD4330E007B5579 /* CategoryRouter.swift in Sources */,
 				D9F223112BDC19AF0018ACB8 /* WishlistViewController.swift in Sources */,
 				D92F92F62BD42BFA00EF7B59 /* CategoryView.swift in Sources */,
+				D9C1AA462BDEEDC00029EC12 /* FirestoreManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

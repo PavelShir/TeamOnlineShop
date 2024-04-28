@@ -98,7 +98,8 @@ extension MainPresenter: MainPresenterImplementation {
     }
     // MARK: - Search methods
     func searchProductsByCategory(_ categoryId: Int) {
-        PlatziStore.shared.searchProduct( SearchOption.categoryId(categoryId)) { [weak self] result in
+        PlatziStore.shared.searchProduct(
+            SearchOption.categoryId(categoryId)) { [weak self] result in
             switch result {
             case .success(let products):
                 let categoryName = self?.getCategoryName(by: categoryId) ?? "Unknown Category"
@@ -187,7 +188,7 @@ extension MainPresenter: MainPresenterImplementation {
         }) else { return }
         
         UserManager.shared.addProductToCart(product: product) { error in
-            print("complete")
+            print("Error is occured during adding product to cart")
         }
     }
 }
