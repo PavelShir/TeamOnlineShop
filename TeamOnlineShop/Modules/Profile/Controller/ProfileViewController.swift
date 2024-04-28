@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 final class ProfileViewController: UIViewController {
     
@@ -66,6 +67,17 @@ final class ProfileViewController: UIViewController {
 //MARK: - ProfileViewDelegate
 extension ProfileViewController: ProfileViewDelegate {
     func signOutButtonTapped() {
+        
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            let vc = OnboardingViewController()
+            vc.modalPresentationStyle = .fullScreen
+            self.view.window?.rootViewController = vc
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
+        
         print("go to onboarding")
     }
     
