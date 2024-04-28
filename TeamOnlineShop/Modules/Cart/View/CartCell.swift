@@ -167,7 +167,7 @@ private extension CartCell {
     
     func updateCheckmark(_ isSelected: Bool) {
         checkButton.image = UIImage(systemName: isSelected ? "checkmark.square.fill" : "square")
-        checkButton.tintColor = isSelected ? .greenPrimary : .systemGray
+        checkButton.tintColor = isSelected ? .greenPrimary : .lightGray
     }
     
     func setupContentView() {

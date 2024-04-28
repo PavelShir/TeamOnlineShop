@@ -27,7 +27,7 @@ class PaymentsViewController: UIViewController {
     private lazy var checkImageView: UIImageView = {
         let element = UIImageView()
         element.image = UIImage(systemName: "checkmark.seal.fill")
-//        element.tintColor = .greenPrimary
+        element.tintColor = .greenPrimary
         element.translatesAutoresizingMaskIntoConstraints = false
         return element
     }()

@@ -35,8 +35,7 @@ final class CartRouter: CartRouterProtocol {
     }
     
     func goToPaymentsVC() {
-        // go to payments
+        let vc = PaymentsViewController()
+        navigationVC.present(vc, animated: true)
     }
-    
-    
 }

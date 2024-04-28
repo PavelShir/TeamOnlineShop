@@ -264,7 +264,6 @@
 				310D027E2BCC7B5600048312 /* LaunchScreen.storyboard */,
 				310D02812BCC7B5600048312 /* Info.plist */,
 				D92594092BCDB4B8001DAA35 /* Resources */,
-				D5F285182BD4017C00E43C69 /* PaymentsView */,
 			);
 			path = TeamOnlineShop;
 			sourceTree = "<group>";
@@ -849,6 +848,7 @@
 				D92F92CB2BD3E8F300EF7B59 /* TabBar */,
 				B65CEDBD2BCE769F00EA373A /* Main */,
 				D92F92DC2BD4037200EF7B59 /* Manager */,
+				D5F285182BD4017C00E43C69 /* PaymentsView */,
 				D94DA3BC2BCEE31300746127 /* TermsAndConditions */,
 				D94DA3A22BCEE04A00746127 /* Profile */,
 			);
