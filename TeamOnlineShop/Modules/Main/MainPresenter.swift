@@ -8,6 +8,7 @@ protocol MainPresenterImplementation: AnyObject {
     func searchProductsByCategory(_ categoryId: Int)
     func filterByPriceRange(low: Double, high: Double)
     func filterByName()
+    func filterByPrice()
 }
 
 final class MainPresenter {
@@ -15,7 +16,8 @@ final class MainPresenter {
     // MARK: - Properties
     weak var view: MainViewImplementation?
     let router: MainRouter
-    private var isSortingAscending = true
+    private var isSortingNamesAscending = true
+    private var isSortingPriceAscending = true
     private var categoriesArray = [PlatziFakeStore.Category]()
     private var productsArray = [PlatziFakeStore.Product]()
     
@@ -31,31 +33,68 @@ final class MainPresenter {
 // MARK: - MainPresenter + MainPresenterProtocol
 extension MainPresenter: MainPresenterImplementation {
     
+    // MARK: - Filter methods
     func filterByPriceRange(low: Double, high: Double) {
         
         productsArray = productsArray.filter { $0.price >= Int(low) && $0.price <= Int(high) }
         DispatchQueue.main.async {
-            self.view?.collectionView.reloadSections(IndexSet(arrayLiteral: 0,1))
+            
+            let model = Model(
+                isExpanded: false,
+                productCategory: self.categoriesArray,
+                productsArray: self.productsArray,
+                query: "Search",
+                address: "Delivery address"
+            )
+            self.view?.render(model: model)
         }
     }
     
     func filterByName() {
-        print("Before sorting: \(productsArray.map { $0.title })")
 
-        if isSortingAscending {
+        if isSortingNamesAscending {
             productsArray.sort { $0.title.lowercased() < $1.title.lowercased() }
         } else {
             productsArray.sort { $0.title.lowercased() > $1.title.lowercased() }
         }
 
-        print("After sorting: \(productsArray.map { $0.title })")
-        isSortingAscending.toggle()
+        isSortingNamesAscending.toggle()
 
-        DispatchQueue.main.async {
-            self.view?.collectionView.reloadData()
-        }
+            DispatchQueue.main.async {
+                
+                let model = Model(
+                    isExpanded: false,
+                    productCategory: self.categoriesArray,
+                    productsArray: self.productsArray,
+                    query: "Search",
+                    address: "Delivery address"
+                )
+                self.view?.render(model: model)
+            }
     }
     
+    func filterByPrice() {
+        
+        if isSortingPriceAscending {
+            productsArray.sort { $0.price < $1.price }
+        } else {
+            productsArray.sort { $0.price > $1.price }
+        }
+        isSortingPriceAscending.toggle()
+        
+        DispatchQueue.main.async {
+            let model = Model(
+                isExpanded: false,
+                productCategory: self.categoriesArray,
+                productsArray: self.productsArray,
+                query: "Search",
+                address: "Delivery address"
+            )
+            self.view?.render(model: model)
+        }
+        
+    }
+    // MARK: - Search methods
     func searchProductsByCategory(_ categoryId: Int) {
         PlatziStore.shared.searchProduct( SearchOption.categoryId(categoryId)) { [weak self] result in
             switch result {
@@ -92,6 +131,7 @@ extension MainPresenter: MainPresenterImplementation {
         }
     }
     
+    // MARK: - Fetch and init local model
     func fetchModel() {
         let dispatchGroup = DispatchGroup()
         
@@ -130,6 +170,7 @@ extension MainPresenter: MainPresenterImplementation {
         }
     }
     
+    // MARK: - Navigation methods
     func goToProductDetail(_ index: Int) {
         let product = productsArray[index]
         let convertedProduct = Product(

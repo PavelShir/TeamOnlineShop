@@ -39,9 +39,9 @@ final class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        filterButton.delegate = self
         setupViews()
         updateSearchResultsLabel(text: searchText)
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -207,14 +207,30 @@ extension SearchViewController: SearchBarViewDelegate {
         guard let searchText = searchBar.text, !searchText.isEmpty else { return }
         presenter.searchAndOpenFilteredResults(query: searchText)
     }
-    
-    
 }
 
+// MARK: - SearchViewController + ProductsViewCellDelegate
 extension SearchViewController: ProductsViewCellDelegate {
     func didTapWishButton(in cell: ProductsViewCell) {}
     
     func didTapAddToCartButton(in cell: ProductsViewCell) {
         print("Add to Cart button tapped")
+    }
+}
+
+// MARK: - SearchViewController + CustomFiltersButtonDelegate
+extension SearchViewController: CustomFiltersButtonDelegate {
+   
+    func filterByPrice() {
+        presenter.filterByPrice()
+    }
+    
+    
+    func filterByName() {
+        presenter.filterByName()
+    }
+    
+    func filterByPriceRange(low: Double, high: Double) {
+        presenter.filterByPriceRange(low: low, high: high)
     }
 }

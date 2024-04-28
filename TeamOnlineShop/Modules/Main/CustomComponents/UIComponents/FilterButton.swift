@@ -3,6 +3,7 @@ import UIKit
 protocol CustomFiltersButtonDelegate: AnyObject {
     func filterByName()
     func filterByPriceRange(low: Double, high: Double)
+    func filterByPrice()
 }
 
 class CustomFiltersButton: UIButton {
@@ -48,9 +49,13 @@ class CustomFiltersButton: UIButton {
                self?.delegate?.filterByName()
            }
         
+         let sortByPrice = UIAction(title: "Sort by Price") { [weak self] _ in
+               self?.delegate?.filterByPrice()
+           }
+        
         let priceSubMenu = createPriceSubMenu()
         
-        let menu = UIMenu(title: "", children: [sortByName, priceSubMenu])
+        let menu = UIMenu(title: "", children: [sortByName,sortByPrice, priceSubMenu])
         return menu
     }
     
@@ -65,7 +70,7 @@ class CustomFiltersButton: UIButton {
              self.delegate?.filterByPriceRange(low: 100, high: Double.infinity)
          }
 
-         let priceMenu = UIMenu(title: "Sort by Price", children: [lowPrice, midPrice, highPrice])
+         let priceMenu = UIMenu(title: "Price Range", children: [lowPrice, midPrice, highPrice])
          return priceMenu
      
     }
