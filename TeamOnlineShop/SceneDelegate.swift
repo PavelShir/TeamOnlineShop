@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let loginVC = LoginViewController()
             window.rootViewController = loginVC
         } else {
-            UserManager.shared.setUser(userObject: User(id: "1", username: "test", email: "test@m.ru", pass: "123", image: nil, type: UserType.user.rawValue, cart: [], wishList: [], location: ""))
+            UserManager.shared.setUser(userObject: User(id: "1", username: "test", email: "test@m.ru", image: nil, type: UserType.user.rawValue, cart: [], wishList: [], location: ""))
             let tabBarController = TabBarController()
             window.rootViewController = tabBarController
         }
