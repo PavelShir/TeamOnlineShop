@@ -12,7 +12,7 @@ import FirebaseAuth
 final class RegViewController: UIViewController {
     
     var userRole: UserRole = .user
-    let values = ["Клиент", "Менеджер"]
+    let values = [UserRole.user.rawValue, UserRole.manager.rawValue]
     
     private var pickerView: UIPickerView!
     
@@ -127,6 +127,7 @@ final class RegViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         title = "Sing up"
+        
         pickerView = createPickerView()
         
         setViewsHierarchie()
@@ -182,6 +183,28 @@ final class RegViewController: UIViewController {
             return
         }
         
+        if userRole == .manager {
+            let alert = UIAlertController(title: "Manager Access", message: "Enter the manager access code", preferredStyle: .alert)
+            alert.addTextField { (textField) in
+                textField.placeholder = "Access Code"
+                textField.isSecureTextEntry = true
+            }
+            let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned alert] _ in
+                let answer = alert.textFields![0]
+                if answer.text == "secret" {
+                    self.completeRegistration()
+                } else {
+                    self.showAlert(title: "Error", message: "Incorrect access code")
+                }
+            }
+            alert.addAction(submitAction)
+            present(alert, animated: true)
+        } else {
+            completeRegistration()
+        }
+    }
+    
+    func completeRegistration() {
         if let email = emailTextField.text, let password = passwordTextField.text, let username = nameTextField.text {
             let request = RegisterUserRequest(
                 username: username,

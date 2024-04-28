@@ -8,8 +8,8 @@
 import Foundation
 
 enum UserRole: String, Codable {
-    case user
-    case manager
+    case user = "Клиент"
+    case manager = "Менеджер"
 }
 
 struct User {
