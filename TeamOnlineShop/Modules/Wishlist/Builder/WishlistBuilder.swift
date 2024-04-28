@@ -24,6 +24,7 @@ final class WishlistBuilder: WishlistBuilderProtocol{
         )
         let vc = WishlistViewController(presenter: presenter)
         
+        presenter.view = vc
         navigationVC.viewControllers = [vc]
         return navigationVC
     }

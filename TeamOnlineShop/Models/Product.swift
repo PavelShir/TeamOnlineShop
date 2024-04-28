@@ -6,19 +6,19 @@
 //
 
 import Foundation
+import PlatziFakeStore
 
 struct ProductsResponse: Codable {
     var results: [Product]?
 }
 
 struct Product: Codable {
-    let id: Int?
+    let id: Int
     let title: String
     let price: Int
     let description: String
     let images: [String]
-    let category: Category?
-    let categoryId: Int?
+    let category: Category
     var count: Int
     
     private enum CodingKeys: String, CodingKey {
@@ -28,7 +28,6 @@ struct Product: Codable {
         case description
         case images
         case category
-        case categoryId
         case count
     }
     
@@ -39,26 +38,8 @@ struct Product: Codable {
         price = try container.decode(Int.self, forKey: .price)
         description = try container.decode(String.self, forKey: .description)
         images = try container.decode([String].self, forKey: .images)
-        category = try container.decodeIfPresent(Category.self, forKey: .category)
-        categoryId = try container.decodeIfPresent(Int.self, forKey: .categoryId)
+        category = try container.decode(Category.self, forKey: .category)
         count = try container.decodeIfPresent(Int.self, forKey: .count) ?? 0
-    }
-    
-    init(
-        title: String,
-        price: Int,
-        description: String,
-        images: [String],
-        categoryId: Int
-    ) {
-        self.id = nil
-        self.title = title
-        self.price = price
-        self.description = description
-        self.images = images
-        self.categoryId = categoryId
-        self.count = 0
-        self.category = nil
     }
         
     init(
@@ -67,8 +48,7 @@ struct Product: Codable {
         price: Int,
         description: String,
         images: [String],
-        category: Category,
-        categoryId: Int
+        category: Category
     ) {
         self.id = id
         self.title = title
@@ -76,7 +56,16 @@ struct Product: Codable {
         self.description = description
         self.images = images
         self.category = category
-        self.categoryId = categoryId
+        self.count = 0
+    }
+    
+    init(fromDTO product: PlatziFakeStore.Product) {
+        self.id = product.id
+        self.title = product.title
+        self.price = product.price
+        self.description = product.description
+        self.images = product.images
+        self.category = Category(fromDTO: product.category)
         self.count = 0
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 
 protocol CartBuilderProtocol: AnyObject {
     
-    func buildCartVC(router: CartRouterProtocol, data: Cart) -> UIViewController
+    func buildCartVC(router: CartRouterProtocol) -> UIViewController
 
 }
 
@@ -25,10 +25,9 @@ final class CartBuilder: CartBuilderProtocol {
         CartRouter(navigationVC: navigationVC, builder: self)
     }
     
-    func buildCartVC(router: CartRouterProtocol, data: Cart) -> UIViewController {
+    func buildCartVC(router: CartRouterProtocol) -> UIViewController {
         let presenter = CartPresenter(
-            router: router,
-            data: data
+            router: router
         )
         let vc = CartViewControllerImpl(
             presenter: presenter,

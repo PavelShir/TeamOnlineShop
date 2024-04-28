@@ -1,5 +1,4 @@
 {
-  "originHash" : "1da8206253cd01650843e898a2162bc1148f812746397fe7e643b2c27c18a715",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -103,7 +102,7 @@
     {
       "identity" : "platzifakestore",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ShapovalovIlya/PlatziFakeStore.git",
+      "location" : "https://github.com/ShapovalovIlya/PlatziFakeStore",
       "state" : {
         "branch" : "main",
         "revision" : "9c2dea58c7634f59c1079e348410ac4d781c48f6"
@@ -137,5 +136,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }

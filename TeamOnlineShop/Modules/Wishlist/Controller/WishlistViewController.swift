@@ -8,7 +8,7 @@
 import UIKit
 
 protocol WishlistVCDelegate{
-    func updateWishButtonState(isWished: Bool)
+    func updateCartButtonLabel(with count: Int)
 }
 
 final class WishlistViewController: UIViewController {
@@ -40,7 +40,7 @@ final class WishlistViewController: UIViewController {
         self.navigationItem.setHidesBackButton(true, animated: false)
         navigationController?.navigationBar.isHidden = true
         tabBarController?.tabBar.isHidden = false
-        presenter.getWishlistFromUser()
+        presenter.viewDidLoad()
         reload()
     }
     
@@ -62,11 +62,10 @@ extension WishlistViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsViewCell.reuseIdentifier, for: indexPath) as? ProductsViewCell else {
             fatalError("Unable to dequeue ProductsViewCell")
         }
-        // refactor to Product type
-//        let product = presenter.getProduct(indexPath.row)
-//        cell.configure(
-//            model: product,
-//           showLikeButton: true)
+        let product = presenter.getProduct(indexPath.row)
+        cell.configure(
+            model: product,
+           showLikeButton: true)
         cell.delegate = self
         return cell
     }
@@ -85,19 +84,19 @@ extension WishlistViewController: UICollectionViewDataSource {
 
 extension WishlistViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("element is tapped")
         presenter.goToProductDetail(indexPath.row)
     }
 }
 
 extension WishlistViewController: ProductsViewCellDelegate {
-    func didTapAddToCartButton(in cell: ProductsViewCell) {
-        print("Add to Cart button tapped")
+    func didTapAddToCartButton(productId id: Int) {
+        presenter.addProductToCart(id)
     }
-
-    func didTapWishButton(in cell: ProductsViewCell) {
-        print("Wish button tapped")
+    
+    func didTapWishButton(productId id: Int) {
+        presenter.deleteProductFromWishList(id)
     }
+    
 }
 
 //MARK: - WishlistPresenterViewProtocol
@@ -106,6 +105,10 @@ extension WishlistViewController: WishlistPresenterViewProtocol {
     func reload() {
         customView.reloadCollection()
     }
+    
+    func updateCartButtonLabel(with count: Int) {
+        customView.updateCartButtonLabel(with: count)
+    }
 }
 
 //MARK: - UISearchBarDelegate
@@ -113,7 +116,16 @@ extension WishlistViewController: UISearchBarDelegate{
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchText = searchBar.text, !searchText.isEmpty else { return }
         presenter.searchProducts(query: searchText)
-        searchBar.resignFirstResponder()
+        DispatchQueue.main.async {
+            searchBar.resignFirstResponder()
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            presenter.getWishlistFromUser()
+            reload()
+        }
     }
 }
 

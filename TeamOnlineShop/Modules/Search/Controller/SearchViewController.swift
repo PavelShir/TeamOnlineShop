@@ -17,11 +17,11 @@ final class SearchViewController: UIViewController {
     // MARK: - properties
     private let presenter: SearchPresenterImplementation
     private var searchText: String
-    var productArray = [PlatziFakeStore.Product]()
+    var productArray = [Product]()
     
     // MARK: - Init
     init(presenter: SearchPresenterImplementation,
-         productArray: [PlatziFakeStore.Product],
+         productArray: [Product],
          searchText: String) {
         
         self.presenter = presenter
@@ -214,10 +214,11 @@ extension SearchViewController: SearchBarViewDelegate {
 
 // MARK: - SearchViewController + ProductsViewCellDelegate
 extension SearchViewController: ProductsViewCellDelegate {
-    func didTapWishButton(in cell: ProductsViewCell) {}
+    func didTapAddToCartButton(productId id: Int) {
+        presenter.addProductToCart(by: id)
+    }
     
-    func didTapAddToCartButton(in cell: ProductsViewCell) {
-        print("Add to Cart button tapped")
+    func didTapWishButton(productId id: Int) {
     }
 }
 

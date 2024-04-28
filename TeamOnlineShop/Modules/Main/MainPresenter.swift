@@ -5,10 +5,12 @@ protocol MainPresenterImplementation: AnyObject {
     func fetchModel()
     func searchAndOpenFilteredResults(query: String)
     func goToProductDetail(_ index: Int)
+    func addProductToCart(by id: Int)
     func searchProductsByCategory(_ categoryId: Int)
     func filterByPriceRange(low: Double, high: Double)
     func filterByName()
     func filterByPrice()
+    func goToCartVC()
 }
 
 final class MainPresenter {
@@ -18,8 +20,8 @@ final class MainPresenter {
     let router: MainRouter
     private var isSortingNamesAscending = true
     private var isSortingPriceAscending = true
-    private var categoriesArray = [PlatziFakeStore.Category]()
-    private var productsArray = [PlatziFakeStore.Product]()
+    private var categoriesArray = [Category]()
+    private var productsArray = [Product]()
     
     init(router: MainRouter) {
         self.router = router
@@ -101,7 +103,7 @@ extension MainPresenter: MainPresenterImplementation {
             case .success(let products):
                 let categoryName = self?.getCategoryName(by: categoryId) ?? "Unknown Category"
                 DispatchQueue.main.async {
-                    self?.router.showSearch(data: products,
+                    self?.router.showSearch(data: products.map { Product(fromDTO: $0) },
                                             serachText: categoryName)
                 }
             case .failure(let error):
@@ -121,7 +123,7 @@ extension MainPresenter: MainPresenterImplementation {
             switch result {
             case .success(let products):
                 DispatchQueue.main.async {
-                    self?.router.showSearch(data: products, serachText: query)
+                    self?.router.showSearch(data: products.map { Product(fromDTO: $0) }, serachText: query)
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -140,7 +142,7 @@ extension MainPresenter: MainPresenterImplementation {
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let categories):
-                self?.categoriesArray = categories
+                self?.categoriesArray = categories.map { Category(fromDTO: $0) }
             case .failure(let error):
                 print("Error fetching categories: \(error)")
             }
@@ -151,7 +153,7 @@ extension MainPresenter: MainPresenterImplementation {
             defer { dispatchGroup.leave() }
             switch result {
             case .success(let products):
-                self?.productsArray = products
+                self?.productsArray = products.map { Product(fromDTO: $0) }
             case .failure(let error):
                 print("Error fetching products: \(error)")
             }
@@ -171,17 +173,21 @@ extension MainPresenter: MainPresenterImplementation {
     }
     
     // MARK: - Navigation methods
+    func goToCartVC() {
+        router.goToCartVC()
+    }
+    
     func goToProductDetail(_ index: Int) {
-        let product = productsArray[index]
-        let convertedProduct = Product(
-            id: product.id,
-            title: product.title,
-            price: product.price,
-            description: product.description,
-            images: product.images,
-            category: Category(id: product.category.id, name: product.category.name, image: product.category.image),
-            categoryId: product.category.id
-        )
-        router.showProductDetail(data: convertedProduct)
+        router.showProductDetail(data: productsArray[index])
+    }
+    
+    func addProductToCart(by id: Int) {
+        guard let product = productsArray.first(where: { product in
+            product.id == id
+        }) else { return }
+        
+        UserManager.shared.addProductToCart(product: product) { error in
+            print("complete")
+        }
     }
 }

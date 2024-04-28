@@ -10,7 +10,7 @@ import UIKit
 
 protocol DetailPresenterViewProtocol: AnyObject {
     func updateProductWishState(isWished: Bool)
-    
+    func updateCartButtonLabel(with count: Int)
 }
 
 protocol DetailPresenterProtocol: AnyObject {
@@ -19,14 +19,14 @@ protocol DetailPresenterProtocol: AnyObject {
     func dismissDetailVC()
     func goToCartVC()
     func updateWishList(_ isWished: Bool)
-    func setProductWishState()
+    func viewDidLoad()
     func addProductToCart()
     func buyProductNow()
 }
 
 final class DetailPresenter: DetailPresenterProtocol {
     
-    private weak var view: DetailPresenterViewProtocol?
+    weak var view: DetailPresenterViewProtocol?
     private var router: DetailRouterProtocol?
     var data: Product
     
@@ -49,27 +49,30 @@ final class DetailPresenter: DetailPresenterProtocol {
                 print("complete")
             }
         } else {
-            UserManager.shared.deleteProductFromWishList(productId: data.id!) { error in
+            UserManager.shared.deleteProductFromWishList(productId: data.id) { error in
                 print("complete")
             }
         }
-        view?.updateProductWishState(isWished: !isWished)
+        view?.updateProductWishState(isWished: isWished)
     }
     
     func buyProductNow() {
-        print("go to payment screen with this product")
+        router?.goToPaymentsVC()
     }
     
     func addProductToCart() {
         UserManager.shared.addProductToCart(product: data) { error in
             print("complete")
         }
+        view?.updateCartButtonLabel(with: UserManager.shared.getProductsFromCart().count)
     }
     
-    func setProductWishState() {
+    func viewDidLoad() {
         let savedProduts: [Product] = UserManager.shared.getProductsFromWithList()
         let savedProductsIds = savedProduts.map { $0.id }
         
         view?.updateProductWishState(isWished: savedProductsIds.contains(data.id))
+        
+        view?.updateCartButtonLabel(with: UserManager.shared.getProductsFromCart().count)
     }
 }

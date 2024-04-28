@@ -12,7 +12,7 @@ final class MainViewController: UIViewController {
     // MARK: - Properties
     private let presenter: MainPresenterImplementation
     private var dataSource: MainViewCollectionDataSource!
-    private var categories = [PlatziFakeStore.Category]()
+    private var categories = [Category]()
     var isExpanded = false
     
     init(presenter: MainPresenterImplementation) {
@@ -129,6 +129,10 @@ extension MainViewController: UICollectionViewDelegate {
 }
 
 extension MainViewController: CategoryHeaderDelegate {
+    func tappedCartButton() {
+        presenter.goToCartVC()
+    }
+    
     func searchBarTextDidChange(_ searchBar: UISearchBar, newText: String) {
     }
     

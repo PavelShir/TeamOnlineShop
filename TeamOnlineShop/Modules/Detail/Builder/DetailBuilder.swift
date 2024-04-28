@@ -28,6 +28,7 @@ class DetailBuilder: DetailBuilderProtocol{
         )
         
         let vc = DetailViewController(presenter: presenter)
+        presenter.view = vc
         return vc
     }
 }

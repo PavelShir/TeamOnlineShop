@@ -10,6 +10,7 @@ import PlatziFakeStore
 
 protocol SearchPresenterImplementation {
     func goToProductDetail(_ index: Int)
+    func addProductToCart(by id: Int)
     func searchAndOpenFilteredResults(query: String)
     func filterByPriceRange(low: Double, high: Double)
     func filterByName()
@@ -24,11 +25,11 @@ final class SearchPresenter {
     private var query = " "
     var isSortingAscending = true
     var isSortingPriceAscending = true
-    private var productsArray = [PlatziFakeStore.Product]()
+    private var productsArray = [Product]()
    
     // MARK: - Init
     init(router: MainRouter,
-         productsArray: [PlatziFakeStore.Product]) {
+         productsArray: [Product]) {
         self.router = router
         self.productsArray = productsArray
     }
@@ -37,17 +38,17 @@ final class SearchPresenter {
 extension SearchPresenter: SearchPresenterImplementation {
     
     func goToProductDetail(_ index: Int) {
-        let product = productsArray[index]
-        let convertedProduct = Product(
-            id: product.id,
-            title: product.title,
-            price: product.price,
-            description: product.description,
-            images: product.images,
-            category: Category(id: product.category.id, name: product.category.name, image: product.category.image),
-            categoryId: product.category.id
-        )
-        router.showProductDetail(data: convertedProduct)
+        router.showProductDetail(data: productsArray[index])
+    }
+    
+    func addProductToCart(by id: Int) {
+        guard let product = productsArray.first(where: { product in
+            product.id == id
+        }) else { return }
+        
+        UserManager.shared.addProductToCart(product: product) { error in
+            print("complete")
+        }
     }
     
     func searchAndOpenFilteredResults(query: String) {
@@ -64,7 +65,7 @@ extension SearchPresenter: SearchPresenterImplementation {
                 self.query = query
                 DispatchQueue.main.async {
                     let model = SearchModel(
-                        productsArray: products,
+                        productsArray: products.map { Product(fromDTO: $0) },
                         query: query
                     )
                     self.view?.fetchModel(model: model)

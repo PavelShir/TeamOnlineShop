@@ -77,6 +77,7 @@ extension CartViewControllerImpl: CartViewController {
         cartView.amountLabel.text = viewModel.totalPrice
         cartView.emptyCartLabel.isHidden = !viewModel.items.isEmpty
         cartView.deliveryAddressSelector.selectedItem = Address.usa
+        cartView.cartButton.setItemCount(viewModel.items.count)
     }
     
 }

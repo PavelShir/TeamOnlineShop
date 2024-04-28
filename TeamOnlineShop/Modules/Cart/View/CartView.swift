@@ -14,6 +14,7 @@ protocol CartView: UIView {
     var payButton: CustomButton { get }
     var amountLabel: UILabel { get }
     var emptyCartLabel: UILabel { get }
+    var cartButton: CustomCartButton { get }
     var deliveryAddressSelector: AddressSelector { get }
 }
 
@@ -66,15 +67,7 @@ final class CartViewImpl: UIView, CartView {
     //MARK: - Private properties
     private let title: UILabel = LabelFactory.makeScreenTitle()
     
-    private var cartButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.layer.cornerRadius = 12
-        button.setBackgroundImage(UIImage.Icons.cart, for: .normal)
-        button.tintColor = UIColor(named: Colors.blackLight)
-        button.backgroundColor = .clear
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    var cartButton: CustomCartButton = CustomCartButton()
     
     //MARK: - UI
     
@@ -177,6 +170,7 @@ final class CartViewImpl: UIView, CartView {
 //MARK: - Setup Constraints
 
     private func setupConstraints() {
+        cartButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
 
             title.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -189,8 +183,8 @@ final class CartViewImpl: UIView, CartView {
             
             cartButton.topAnchor.constraint(equalTo: title.topAnchor),
             cartButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-            cartButton.widthAnchor.constraint(equalToConstant: 20),
-            cartButton.heightAnchor.constraint(equalToConstant: 20),
+            cartButton.widthAnchor.constraint(equalToConstant: 25),
+            cartButton.heightAnchor.constraint(equalToConstant: 25),
                 
             line.heightAnchor.constraint(equalToConstant: 1),
             line.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 20),
