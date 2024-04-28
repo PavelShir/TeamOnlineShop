@@ -17,19 +17,21 @@ protocol SearchPresenterImplementation {
 
 final class SearchPresenter {
     
+    // MARK: - Properies
     weak var view: SearchViewImplementation?
     let router: MainRouter
     private var query = " "
     var isSortingAscending = true
     private var productsArray = [PlatziFakeStore.Product]()
-    
+   
+    // MARK: - Init
     init(router: MainRouter,
          productsArray: [PlatziFakeStore.Product]) {
         self.router = router
         self.productsArray = productsArray
     }
 }
-
+// MARK: - SearchPresenter + SearchPresenterImplementation
 extension SearchPresenter: SearchPresenterImplementation {
     
     func goToProductDetail(_ index: Int) {
