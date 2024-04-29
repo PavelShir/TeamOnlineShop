@@ -11,9 +11,8 @@ import UIKit
 protocol ProfileRouterProtocol: AnyObject {
     
     init(navigationVC: UINavigationController)
+    func pushUserRoleVC()
     func pushTermsAndConditionsVC()
-    func pushAuthVC()
-    
 }
 
 final class ProfileRouter: ProfileRouterProtocol {
@@ -30,7 +29,10 @@ final class ProfileRouter: ProfileRouterProtocol {
         navigationVC.pushViewController(termsAndConditionsVC!, animated: true)
     }
     
-    func pushAuthVC() {
+    func pushUserRoleVC() {
+        guard let navigationVC = navigationVC else { return }
+        let userRoleVC = UserRoleBuilder(navigationVC: navigationVC).buildUserRoleVC()
+        navigationVC.pushViewController(userRoleVC!, animated: true)
     }
     
 }

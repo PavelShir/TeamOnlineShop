@@ -98,6 +98,7 @@ final class FirestoreManager {
                     let email = snapshotData[CollectionPath.email] as? String ?? ""
                     let image = snapshotData[CollectionPath.image] as? String ?? ""
                     let location = snapshotData[CollectionPath.location] as? String ?? ""
+                    let role = snapshotData[CollectionPath.role] as? String ?? ""
                     
                     let cartData = snapshotData[CollectionPath.cart] as? [[String: Any]] ?? []
                     let wishListData = snapshotData[CollectionPath.wishList] as? [[String: Any]] ?? []
@@ -110,6 +111,7 @@ final class FirestoreManager {
                         username: username,
                         email: email,
                         image: image,
+                        role: role,
                         cart: cart,
                         wishList: wishList,
                         location: location
