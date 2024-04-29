@@ -28,14 +28,6 @@ final class TabBarController: UITabBarController {
         let profileVC = ProfileBuilder().buildProfileView()
         profileVC.tabBarItem = UITabBarItem(title: "Account", image: UIImage.Icons.user ?? UIImage(), selectedImage: nil)
         
-//        if UserManager.shared.getUserRole() == UserRole.user {
-//            viewControllers = [navigationController, wishlistVC, profileVC]
-//            return
-//        }
-//        
-//        let managerVC = ManagerBuilder().buildManagerView()
-//        managerVC.tabBarItem = UITabBarItem(title: "Manager", image: UIImage.Icons.manager ?? UIImage(), selectedImage: nil)
-        
         viewControllers = [navigationController, wishlistVC, profileVC]
         
     }
