@@ -28,6 +28,7 @@ final class ProductViewController: UIViewController {
         
         setupCustomView()
         presenter.loadCategories()
+        presenter.loadProducts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,8 +54,8 @@ final class ProductViewController: UIViewController {
 }
 
 extension ProductViewController: ProductViewDelegate {
-    func saveTapped(product: PlatziFakeStore.NewProduct) {
-        presenter.saveChanges(newProduct: product)
+    func saveTapped(product: PlatziFakeStore.NewProduct, id: Int?) {
+        presenter.saveChanges(newProduct: product, id: id)
     }
     
     func tappedBackButton() {
@@ -63,8 +64,24 @@ extension ProductViewController: ProductViewDelegate {
 }
 
 extension ProductViewController: ProductPresenterViewProtocol {
+    func setProductsForTable(_ products: [Product]) {
+        customView.products = products
+    }
+    
+    func setProductsForSelector(_ products: [Product]) {
+        customView.setProducts(products)
+    }
+    
     func setCategories(_ categories: [Category]) {
         customView.setCategories(categories)
+    }
+    
+    func setProduct(_ product: Product) {
+        customView.setProduct(product)
+    }
+    
+    func setProducts(_ products: [Product]) {
+        customView.products = products
     }
     
     func showAlert(title: String, message: String) {

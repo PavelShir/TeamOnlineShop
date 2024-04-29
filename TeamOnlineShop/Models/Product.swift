@@ -12,7 +12,7 @@ struct ProductsResponse: Codable {
     var results: [Product]?
 }
 
-struct Product: Codable {
+struct Product: Codable, Equatable {
     let id: Int
     let title: String
     let price: Int
@@ -68,4 +68,8 @@ struct Product: Codable {
         self.category = Category(fromDTO: product.category)
         self.count = 0
     }
+}
+
+extension Product: PickerViewRepresentable {
+    var pickerViewTitle: String { return title }
 }

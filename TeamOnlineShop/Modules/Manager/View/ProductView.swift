@@ -9,7 +9,7 @@ import UIKit
 import PlatziFakeStore
 
 protocol ProductViewDelegate: AnyObject {
-    func saveTapped(product: PlatziFakeStore.NewProduct)
+    func saveTapped(product: PlatziFakeStore.NewProduct, id: Int?)
     func tappedBackButton()
 }
 
@@ -17,6 +17,7 @@ final class ProductView:  UIView {
     weak var delegate: ProductViewDelegate?
     
     private var product: Product?
+    private var productId: Int?
     
     // Replace it with real categories
     private var categories: [Category] = .init()
@@ -41,15 +42,26 @@ final class ProductView:  UIView {
     
     private let separator = Separator()
     
+    private let vStack: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.spacing = 10
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     private let fieldsStack: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
-        stackView.spacing = 20
+        stackView.spacing = 10
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    private var productsSelector: LabeledDropdownView = LabeledDropdownView(labelText: "Products", options: [Product]())
     
     private let searchBar = CustomSearchBarView()
     
@@ -85,9 +97,14 @@ final class ProductView:  UIView {
     
     func setViews() {
         setUpViews()
+        productsSelector.delegate = self
         self.backgroundColor = UIColor(named: Colors.whitePrimary)
         [
-            searchBar,
+            separator,
+            productsSelector,
+        ].forEach { vStack.addArrangedSubview($0) }
+        [
+//            searchBar,
             textFieldTitle,
             textFieldPrice,
             textFieldCategory,
@@ -98,7 +115,8 @@ final class ProductView:  UIView {
         [
             title,
             backButton,
-            separator,
+            vStack,
+//            separator,
             fieldsStack,
             productsTableView,
             actionButton
@@ -110,7 +128,8 @@ final class ProductView:  UIView {
         
         NSLayoutConstraint.activate([
             title.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 28),
-            title.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            title.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            title.heightAnchor.constraint(equalToConstant: 20)
         ])
         NSLayoutConstraint.activate([
             backButton.topAnchor.constraint(equalTo: title.topAnchor),
@@ -119,14 +138,17 @@ final class ProductView:  UIView {
             backButton.heightAnchor.constraint(equalToConstant: 20)
         ])
         NSLayoutConstraint.activate([
+            vStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            vStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            vStack.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 30),
+        ])
+        NSLayoutConstraint.activate([
             separator.heightAnchor.constraint(equalToConstant: 1),
-            separator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            separator.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            separator.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 30),
+            searchBar.heightAnchor.constraint(equalToConstant: 40),
         ])
         
         NSLayoutConstraint.activate([
-            fieldsStack.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 10),
+            fieldsStack.topAnchor.constraint(equalTo: vStack.bottomAnchor, constant: 10),
             fieldsStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             fieldsStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
         ])
@@ -160,7 +182,7 @@ final class ProductView:  UIView {
     }
     
     @objc private func actionTapped(){
-        delegate?.saveTapped(product: makeProduct())
+        delegate?.saveTapped(product: makeProduct(), id: productId)
     }
     
     func setTitle(_ title: String) {
@@ -174,24 +196,27 @@ final class ProductView:  UIView {
     
     func setProduct(_ value: Product) {
         product = value
-        textFieldTitle.text = product?.title
-        textFieldPrice.text = String(describing: product?.price)
-        textFieldCategory.selectedItem = product?.category
-        textFieldDescription.text = product?.description
-        textFieldImage.text = product?.images.joined(separator: "\n") ?? ""
+        textFieldTitle.text = value.title
+        textFieldPrice.text = String(describing: value.price)
+        textFieldCategory.selectedItem = value.category
+        textFieldDescription.text = value.description
+        textFieldImage.text = value.images.joined(separator: "\n")
+    }
+    func setProducts(_ values: [Product]) {
+        productsSelector.items = values
     }
     
     func configure(by action: ManagerActions.Product) {
         switch action {
             case .add:
                 actionButton.setTitle("Add", for: .normal)
-                searchBar.isHidden = true
+            productsSelector.isHidden = true
             case .update:
                 actionButton.setTitle("Save changes", for: .normal)
-                searchBar.isHidden = false
+            productsSelector.isHidden = false
             case .delete:
                 actionButton.setTitle("Delete", for: .normal)
-                searchBar.isHidden = false
+            productsSelector.isHidden = true
                 textFieldTitle.isHidden = true
                 textFieldPrice.isHidden = true
                 textFieldCategory.isHidden = true
@@ -232,6 +257,14 @@ extension ProductView: UITableViewDataSource {
 
 extension ProductView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        product = products[indexPath.row]
+        productId = products[indexPath.row].id
+        setProduct(products[indexPath.row])
+    }
+}
+
+extension ProductView: LabeledDropdownViewDelegate {
+    func didSelectItem<T>(_ item: T) where T : PickerViewRepresentable {
+        setProduct(item as! Product)
+        productId = product?.id
     }
 }
