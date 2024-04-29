@@ -12,6 +12,7 @@ final class TabBarController: UITabBarController {
         super.viewDidLoad()
         tabBar.tintColor = UIColor(named: Colors.greenPrimary)
         setupControllers()
+        updateManagerTabBarItemState()
     }
     
     private func setupControllers() {
@@ -27,16 +28,31 @@ final class TabBarController: UITabBarController {
         let profileVC = ProfileBuilder().buildProfileView()
         profileVC.tabBarItem = UITabBarItem(title: "Account", image: UIImage.Icons.user ?? UIImage(), selectedImage: nil)
         
-        if UserManager.shared.getUserRole() == UserRole.user {
-            viewControllers = [navigationController, wishlistVC, profileVC]
-            return
-        }
+//        if UserManager.shared.getUserRole() == UserRole.user {
+//            viewControllers = [navigationController, wishlistVC, profileVC]
+//            return
+//        }
+//        
+//        let managerVC = ManagerBuilder().buildManagerView()
+//        managerVC.tabBarItem = UITabBarItem(title: "Manager", image: UIImage.Icons.manager ?? UIImage(), selectedImage: nil)
         
-        let managerVC = ManagerBuilder().buildManagerView()
-        managerVC.tabBarItem = UITabBarItem(title: "Manager", image: UIImage.Icons.manager ?? UIImage(), selectedImage: nil)
-        
-        viewControllers = [navigationController, wishlistVC, managerVC, profileVC]
+        viewControllers = [navigationController, wishlistVC, profileVC]
         
     }
     
+    func updateManagerTabBarItemState() {
+        let managerIndex = viewControllers?.firstIndex { $0.tabBarItem.title == "Manager" }
+
+        if UserManager.shared.getUserRole() == .manager {
+            if managerIndex == nil {
+                let managerVC = ManagerBuilder().buildManagerView()
+                managerVC.tabBarItem = UITabBarItem(title: "Manager", image: UIImage.Icons.manager ?? UIImage(), selectedImage: nil)
+                viewControllers?.insert(managerVC, at: 2)
+            }
+        } else {
+            if let index = managerIndex {
+                viewControllers?.remove(at: index)
+            }
+        }
+    }
 }

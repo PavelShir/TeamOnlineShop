@@ -38,6 +38,9 @@ final class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
         tabBarController?.tabBar.isHidden = false
+        if let tabBar = tabBarController as? TabBarController {
+            tabBar.updateManagerTabBarItemState()
+        }
     }
     
     private func setupCustomView() {
@@ -66,6 +69,10 @@ final class ProfileViewController: UIViewController {
 
 //MARK: - ProfileViewDelegate
 extension ProfileViewController: ProfileViewDelegate {
+    func roleButtonTapped() {
+        self.presenter.goToUserRoleVC()
+    }
+    
     func signOutButtonTapped() {
         AuthManager.shared.signOut { error in
             if let error = error {

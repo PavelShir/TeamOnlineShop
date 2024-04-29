@@ -141,6 +141,12 @@
 		D9C1AA4D2BDEEFA00029EC12 /* LoginUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C1AA4B2BDEEFA00029EC12 /* LoginUserRequest.swift */; };
 		D9C1AA4F2BDF06380029EC12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D9C1AA4E2BDF06380029EC12 /* GoogleService-Info.plist */; };
 		D9C1AA512BDF0D160029EC12 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C1AA502BDF0D160029EC12 /* ImageCollectionViewCell.swift */; };
+		D9C1AA5D2BDF96D80029EC12 /* UserRoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C1AA532BDF96D80029EC12 /* UserRoleView.swift */; };
+		D9C1AA5E2BDF96D80029EC12 /* UserRoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C1AA552BDF96D80029EC12 /* UserRoleViewController.swift */; };
+		D9C1AA5F2BDF96D80029EC12 /* UserRoleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C1AA572BDF96D80029EC12 /* UserRoleBuilder.swift */; };
+		D9C1AA602BDF96D80029EC12 /* UserRolePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C1AA592BDF96D80029EC12 /* UserRolePresenter.swift */; };
+		D9C1AA612BDF96D80029EC12 /* UserRoleRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C1AA5B2BDF96D80029EC12 /* UserRoleRouter.swift */; };
+		D9C1AA632BDF9D2D0029EC12 /* RoleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9C1AA622BDF9D2D0029EC12 /* RoleCollectionViewCell.swift */; };
 		D9F2230F2BDC19AF0018ACB8 /* WishlistPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F223052BDC19AF0018ACB8 /* WishlistPresenter.swift */; };
 		D9F223102BDC19AF0018ACB8 /* WishlistRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F223072BDC19AF0018ACB8 /* WishlistRouter.swift */; };
 		D9F223112BDC19AF0018ACB8 /* WishlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F223092BDC19AF0018ACB8 /* WishlistViewController.swift */; };
@@ -262,6 +268,12 @@
 		D9C1AA4B2BDEEFA00029EC12 /* LoginUserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginUserRequest.swift; sourceTree = "<group>"; };
 		D9C1AA4E2BDF06380029EC12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D9C1AA502BDF0D160029EC12 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		D9C1AA532BDF96D80029EC12 /* UserRoleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRoleView.swift; sourceTree = "<group>"; };
+		D9C1AA552BDF96D80029EC12 /* UserRoleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRoleViewController.swift; sourceTree = "<group>"; };
+		D9C1AA572BDF96D80029EC12 /* UserRoleBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRoleBuilder.swift; sourceTree = "<group>"; };
+		D9C1AA592BDF96D80029EC12 /* UserRolePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRolePresenter.swift; sourceTree = "<group>"; };
+		D9C1AA5B2BDF96D80029EC12 /* UserRoleRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRoleRouter.swift; sourceTree = "<group>"; };
+		D9C1AA622BDF9D2D0029EC12 /* RoleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleCollectionViewCell.swift; sourceTree = "<group>"; };
 		D9F223052BDC19AF0018ACB8 /* WishlistPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishlistPresenter.swift; sourceTree = "<group>"; };
 		D9F223072BDC19AF0018ACB8 /* WishlistRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishlistRouter.swift; sourceTree = "<group>"; };
 		D9F223092BDC19AF0018ACB8 /* WishlistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishlistViewController.swift; sourceTree = "<group>"; };
@@ -902,6 +914,7 @@
 		D9B96DDA2BCEE01000F9C529 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				D9C1AA522BDF96B60029EC12 /* UserRole */,
 				D9F223042BDC18A80018ACB8 /* Wishlist */,
 				D53F18BA2BDC1D0E000D9E03 /* Cart */,
 				D9A28A372BDAB22C007CA3C6 /* Detail */,
@@ -933,6 +946,59 @@
 				D9C1AA4A2BDEEFA00029EC12 /* RegisterUserRequest.swift */,
 			);
 			path = Request;
+			sourceTree = "<group>";
+		};
+		D9C1AA522BDF96B60029EC12 /* UserRole */ = {
+			isa = PBXGroup;
+			children = (
+				D9C1AA582BDF96D80029EC12 /* Builder */,
+				D9C1AA562BDF96D80029EC12 /* Controller */,
+				D9C1AA5A2BDF96D80029EC12 /* Presenter */,
+				D9C1AA5C2BDF96D80029EC12 /* Router */,
+				D9C1AA542BDF96D80029EC12 /* View */,
+			);
+			path = UserRole;
+			sourceTree = "<group>";
+		};
+		D9C1AA542BDF96D80029EC12 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D9C1AA532BDF96D80029EC12 /* UserRoleView.swift */,
+				D9C1AA622BDF9D2D0029EC12 /* RoleCollectionViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D9C1AA562BDF96D80029EC12 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D9C1AA552BDF96D80029EC12 /* UserRoleViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		D9C1AA582BDF96D80029EC12 /* Builder */ = {
+			isa = PBXGroup;
+			children = (
+				D9C1AA572BDF96D80029EC12 /* UserRoleBuilder.swift */,
+			);
+			path = Builder;
+			sourceTree = "<group>";
+		};
+		D9C1AA5A2BDF96D80029EC12 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				D9C1AA592BDF96D80029EC12 /* UserRolePresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		D9C1AA5C2BDF96D80029EC12 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				D9C1AA5B2BDF96D80029EC12 /* UserRoleRouter.swift */,
+			);
+			path = Router;
 			sourceTree = "<group>";
 		};
 		D9F223042BDC18A80018ACB8 /* Wishlist */ = {
@@ -1102,6 +1168,7 @@
 				B6C81FC82BD5364F00AECDA6 /* AllCategoriesCell.swift in Sources */,
 				B67022C92BD0575400CE1AC1 /* SearchBarView.swift in Sources */,
 				D95FD8792BDE69E200E65E17 /* AddressSelector.swift in Sources */,
+				D9C1AA632BDF9D2D0029EC12 /* RoleCollectionViewCell.swift in Sources */,
 				310D02782BCC7B5500048312 /* ViewController.swift in Sources */,
 				B6C81FCA2BD540DE00AECDA6 /* MainRouter.swift in Sources */,
 				D94DA3B02BCEE2B800746127 /* ProfileView.swift in Sources */,
@@ -1112,6 +1179,7 @@
 				D9F223122BDC19AF0018ACB8 /* WishlistView.swift in Sources */,
 				D901B8EE2BD4825B007B5579 /* UIImage.swift in Sources */,
 				D901B8E32BD432E4007B5579 /* CategoryBuilder.swift in Sources */,
+				D9C1AA5D2BDF96D80029EC12 /* UserRoleView.swift in Sources */,
 				D9F223102BDC19AF0018ACB8 /* WishlistRouter.swift in Sources */,
 				D5BC26382BD3AE4500D6D415 /* Cart.swift in Sources */,
 				D901B8EE2BD4825B007B5579 /* UIImage.swift in Sources */,
@@ -1123,6 +1191,7 @@
 				31910D192BCDF98500655CB3 /* OnboardingCell.swift in Sources */,
 				D94DA3AE2BCEE2B800746127 /* ProfileBuilder.swift in Sources */,
 				D53F18C72BDC1E5A000D9E03 /* CartRouter.swift in Sources */,
+				D9C1AA5E2BDF96D80029EC12 /* UserRoleViewController.swift in Sources */,
 				86903E5F2BDD677F0044055D /* CartCollectionDataSource.swift in Sources */,
 				D901B8F22BD487CC007B5579 /* ProductViewController.swift in Sources */,
 				D92F92D72BD3F0D700EF7B59 /* Category.swift in Sources */,
@@ -1133,6 +1202,7 @@
 				D94DA3B12BCEE2B800746127 /* ProfileRouter.swift in Sources */,
 				D9972AEA2BCF2D71000F613D /* PhotoSelectionMenuView.swift in Sources */,
 				B64FD72E2BD2AEF800C05917 /* CategoryModel.swift in Sources */,
+				D9C1AA5F2BDF96D80029EC12 /* UserRoleBuilder.swift in Sources */,
 				D901B8E92BD45E07007B5579 /* LabeledInput.swift in Sources */,
 				D901B8EC2BD480CE007B5579 /* CustomSearchBar.swift in Sources */,
 				D53F18C52BDC1E39000D9E03 /* CartPresenter.swift in Sources */,
@@ -1175,6 +1245,7 @@
 				D598FEB62BD3A8E700E45E8C /* CartViewControllerImpl.swift in Sources */,
 				B65CEDD02BCEE05200EA373A /* ProductsHeader.swift in Sources */,
 				D92F92CD2BD3E90900EF7B59 /* TabBarController.swift in Sources */,
+				D9C1AA612BDF96D80029EC12 /* UserRoleRouter.swift in Sources */,
 				D53F18C32BDC1E16000D9E03 /* CartBuilder.swift in Sources */,
 				B6C81FC42BD4FD6700AECDA6 /* MainViewDataSource.swift in Sources */,
 				D901B8E52BD432F7007B5579 /* CategoryPresenter.swift in Sources */,
@@ -1193,6 +1264,7 @@
 				D901B8E12BD432D7007B5579 /* CategoryViewController.swift in Sources */,
 				310D02762BCC7B5500048312 /* SceneDelegate.swift in Sources */,
 				B6BF13722BD829A00002CE45 /* CollectionHeaderView.swift in Sources */,
+				D9C1AA602BDF96D80029EC12 /* UserRolePresenter.swift in Sources */,
 				B64FD72C2BD29F2000C05917 /* UIStackView.swift in Sources */,
 				D9A28A442BDAB31E007CA3C6 /* PaddingLabel.swift in Sources */,
 				D92F92D52BD3EE4C00EF7B59 /* UserManager.swift in Sources */,

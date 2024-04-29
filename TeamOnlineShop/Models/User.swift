@@ -7,9 +7,9 @@
 
 import Foundation
 
-enum UserRole: String, Codable {
-    case user = "Клиент"
-    case manager = "Менеджер"
+enum UserRole: String, Codable, CaseIterable {
+    case user = "Client"
+    case manager = "Manager"
 }
 
 struct User {

@@ -45,8 +45,8 @@ final class UserManager {
         }
     }
     
-    func changeUserType(type: UserRole, completion: @escaping (Error?) -> Void) {
-        user?.role = type.rawValue
+    func changeUserRole(role: UserRole, completion: @escaping (Error?) -> Void) {
+        user?.role = role.rawValue
         DispatchQueue.main.async {
             FirestoreManager.shared.setCollection(
                 with: self.user!

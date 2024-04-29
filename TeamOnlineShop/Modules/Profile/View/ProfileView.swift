@@ -8,6 +8,7 @@
 import UIKit
 
 protocol ProfileViewDelegate: AnyObject {
+    func roleButtonTapped()
     func signOutButtonTapped()
     func termsAndConditionsButtonTapped()
     func changeProfileImage()
@@ -83,6 +84,13 @@ final class ProfileView: UIView {
         return imageView
     }()
     
+    private let roleButton = ProfileButtonWithRightIcon(
+        label: "Type of account",
+        icon: UIImage.Icons.chevronRight ?? UIImage(),
+        backgroundColor: Colors.greyLighter,
+        contenColor: Colors.greyDarker
+    )
+    
     private let termsAndConditionsButton = ProfileButtonWithRightIcon(
         label: "Terms & Conditions",
         icon: UIImage.Icons.chevronRight ?? UIImage(),
@@ -121,6 +129,7 @@ final class ProfileView: UIView {
             profilePasswordEyeIcon,
             profileImage,
             profileImageEditIcon,
+            roleButton,
             termsAndConditionsButton,
             signOutButton
         ].forEach{ addSubview($0) }
@@ -176,6 +185,13 @@ final class ProfileView: UIView {
         ])
 
         NSLayoutConstraint.activate([
+            roleButton.bottomAnchor.constraint(equalTo: termsAndConditionsButton.topAnchor, constant: -20),
+            roleButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            roleButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            roleButton.heightAnchor.constraint(equalToConstant: 56)
+        ])
+
+        NSLayoutConstraint.activate([
             termsAndConditionsButton.bottomAnchor.constraint(equalTo: signOutButton.topAnchor, constant: -20),
             termsAndConditionsButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             termsAndConditionsButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
@@ -201,6 +217,7 @@ final class ProfileView: UIView {
         
         profilePassword.text = "***********"
         
+        roleButton.addTarget(nil, action: #selector(roleButtonTapped), for: .touchUpInside)
         termsAndConditionsButton.addTarget(nil, action: #selector(termsAndConditionsButtonTapped), for: .touchUpInside)
         signOutButton.addTarget(nil, action: #selector(signOutButtonTapped), for: .touchUpInside)
     }
@@ -235,6 +252,10 @@ final class ProfileView: UIView {
         
         profileImage.image = image
         
+    }
+    
+    @objc private func roleButtonTapped(){
+        delegate?.roleButtonTapped()
     }
     
     @objc private func signOutButtonTapped(){
