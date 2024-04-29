@@ -1,4 +1,4 @@
-#TeamOnlineShop
+# TeamOnlineShop
 
 Hi there!\
 this is our new App for practice in API, working with Firebase, UserDefolts, SPM, delegating, authorisation, CollectionViews and some other features. 
@@ -13,8 +13,10 @@ ______________
 <img src="https://img.shields.io/badge/Swift-5.7-orange" alt="Swift Version 5.7" /></a>
 <a href="https://developer.apple.com/ios/">
 <img src="https://img.shields.io/badge/iOS-15.0%2B-success" alt="iOS Version 15.0"/></a>
-<img src="https://img.shields.io/badge/MVC-ff69b4" alt="MVC" /></a>
-<img src="https://img.shields.io/badge/No storyboard-purple" alt="MVC" /></a>
+<img src="https://img.shields.io/badge/MVP-ff69b4" alt="MVP" /></a>
+<img src="https://img.shields.io/badge/UserDefolts-purple" alt="UserDefolts" /></a>
+<img src="https://img.shields.io/badge/SPM-success" alt="SPM"/></a>
+<img src="https://img.shields.io/badge/Firebase-orange" alt="Firebase" /></a>
 </p>
 ______________
 
