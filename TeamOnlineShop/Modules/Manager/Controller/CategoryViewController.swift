@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PlatziFakeStore
 
 final class CategoryViewController: UIViewController {
     private let presenter: CategoryPresenterProtocol
@@ -26,6 +27,7 @@ final class CategoryViewController: UIViewController {
         super.viewDidLoad()
         
         setupCustomView()
+        presenter.loadCategories()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,8 +52,8 @@ final class CategoryViewController: UIViewController {
 }
 
 extension CategoryViewController: CategoryViewDelegate {
-    func saveTapped(category: Category) {
-        presenter.saveChanges(category: category)
+    func saveTapped(category: PlatziFakeStore.NewCategory, id: Int?) {
+        presenter.saveChanges(newCategory: category, id: id)
     }
     
     func tappedBackButton() {
@@ -61,6 +63,20 @@ extension CategoryViewController: CategoryViewDelegate {
 
 extension CategoryViewController: CategoryPresenterViewProtocol {
     
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
+    
+    func setCategoriesForTable(_ categories: [Category]) {
+        customView.categories = categories
+    }
+    
+    func setCategoriesForSelector(_ categories: [Category]) {
+        customView.setCategories(categories)
+    }
 }
 
 extension CategoryViewController: UISearchBarDelegate {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PlatziFakeStore
 
 final class ProductViewController: UIViewController {
     private let presenter: ProductPresenterProtocol
@@ -26,6 +27,8 @@ final class ProductViewController: UIViewController {
         super.viewDidLoad()
         
         setupCustomView()
+        presenter.loadCategories()
+        presenter.loadProducts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,8 +54,8 @@ final class ProductViewController: UIViewController {
 }
 
 extension ProductViewController: ProductViewDelegate {
-    func saveTapped(product: Product) {
-        presenter.saveChanges(product: product)
+    func saveTapped(product: PlatziFakeStore.NewProduct, id: Int?) {
+        presenter.saveChanges(newProduct: product, id: id)
     }
     
     func tappedBackButton() {
@@ -61,7 +64,32 @@ extension ProductViewController: ProductViewDelegate {
 }
 
 extension ProductViewController: ProductPresenterViewProtocol {
+    func setProductsForTable(_ products: [Product]) {
+        customView.products = products
+    }
     
+    func setProductsForSelector(_ products: [Product]) {
+        customView.setProducts(products)
+    }
+    
+    func setCategories(_ categories: [Category]) {
+        customView.setCategories(categories)
+    }
+    
+    func setProduct(_ product: Product) {
+        customView.setProduct(product)
+    }
+    
+    func setProducts(_ products: [Product]) {
+        customView.products = products
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
 }
 
 extension ProductViewController: UISearchBarDelegate {

@@ -24,6 +24,7 @@ final class CategoryBuilder: CategoryBuilderProtocol {
         let router = CategoryRouter(navigationVC: navigationVC)
         let presenter = CategoryPresenter(router: router, action: action)
         let vc = CategoryViewController(presenter: presenter, label: label)
+        presenter.view = vc
         return vc
     }
 }

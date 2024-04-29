@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import PlatziFakeStore
 
 protocol CategoryViewDelegate: AnyObject {
-    func saveTapped(category: Category)
+    func saveTapped(category: PlatziFakeStore.NewCategory, id: Int?)
     func tappedBackButton()
 }
 
@@ -16,7 +17,7 @@ final class CategoryView:  UIView {
     weak var delegate: CategoryViewDelegate?
     
     private var category: Category?
-    
+    private var categoryId: Int?
     var categories: [Category] = [] {
         didSet {
             categoriesTableView.reloadData()
@@ -36,6 +37,7 @@ final class CategoryView:  UIView {
     }()
     
     private let separator = Separator()
+    private var categorySelector: LabeledDropdownView = LabeledDropdownView(labelText: "Categories", options: [Category]())
     
     private let fieldsStack: UIStackView = {
         let stackView = UIStackView()
@@ -76,9 +78,10 @@ final class CategoryView:  UIView {
     
     func setViews() {
         setUpViews()
+        categorySelector.delegate = self
         self.backgroundColor = UIColor(named: Colors.whitePrimary)
         [
-            searchBar,
+            categorySelector,
             textFieldTitle,
             textFieldImage
         ].forEach { fieldsStack.addArrangedSubview($0) }
@@ -149,7 +152,7 @@ final class CategoryView:  UIView {
     }
     
     @objc private func actionTapped(){
-        delegate?.saveTapped(category: makeCategory())
+        delegate?.saveTapped(category: makeCategory(), id: categoryId)
     }
     
     func setTitle(_ title: String) {
@@ -161,34 +164,34 @@ final class CategoryView:  UIView {
         textFieldTitle.text = category?.name
         textFieldImage.text = category?.image ?? ""
     }
+    func setCategories(_ values: [Category]) {
+        categorySelector.items = values
+    }
     
     func configure(by action: ManagerActions.Category) {
         switch action {
             case .add:
                 actionButton.setTitle("Add", for: .normal)
-                searchBar.isHidden = true
+            categorySelector.isHidden = true
                 categoriesTableView.isHidden = true
             case .update:
                 actionButton.setTitle("Save changes", for: .normal)
-                searchBar.isHidden = false
+            categorySelector.isHidden = false
                 categoriesTableView.isHidden = true
             case .delete:
                 actionButton.setTitle("Delete", for: .normal)
-                searchBar.isHidden = false
+            categorySelector.isHidden = true
                 textFieldTitle.isHidden = true
                 textFieldImage.isHidden = true
                 categoriesTableView.isHidden = false
             }
     }
     
-    func makeCategory() -> Category {
+    func makeCategory() -> PlatziFakeStore.NewCategory {
         let title = textFieldTitle.text ?? ""
         let imageUrl = textFieldImage.text ?? ""
-//        if let categorySafe = category, let id = categorySafe.id  {
-//            return Category(id: id, name: title, image: imageUrl)
-//        }
         
-        return Category(id: 1, name: title, image: imageUrl)
+        return PlatziFakeStore.NewCategory(name: title, image: imageUrl)
     }
     
     func setSearchBarDelegate(vc: CategoryViewController) {
@@ -212,6 +215,14 @@ extension CategoryView: UITableViewDataSource {
 
 extension CategoryView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        category = categories[indexPath.row]
+        setCategory(categories[indexPath.row])
+        categoryId = categories[indexPath.row].id
+    }
+}
+
+extension CategoryView: LabeledDropdownViewDelegate {
+    func didSelectItem<T>(_ item: T) where T : PickerViewRepresentable {
+        setCategory(item as! Category)
+        categoryId = category?.id
     }
 }

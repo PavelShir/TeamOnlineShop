@@ -11,7 +11,13 @@ protocol PickerViewRepresentable {
     var pickerViewTitle: String { get }
 }
 
+protocol LabeledDropdownViewDelegate: AnyObject {
+    func didSelectItem<T: PickerViewRepresentable>(_ item: T)
+}
+
 class LabeledDropdownView<T: PickerViewRepresentable>: UIView where T: Equatable {
+    
+    weak var delegate: LabeledDropdownViewDelegate?
     
     private let label: UILabel = {
         let label = UILabel()
@@ -91,9 +97,18 @@ class LabeledDropdownView<T: PickerViewRepresentable>: UIView where T: Equatable
     
     private func setupLabel(text: String) {
         label.text = text
+//        selectionButton.setTitle("Select \(text)", for: .normal)
+        var currentConfig = selectionButton.configuration
+        let attributedTitle = AttributedString("Select \(text)", attributes: AttributeContainer([
+            .font: UIFont.TextFont.Screens.ManagerScreen.propertyValue,
+            .foregroundColor: UIColor(named: Colors.blackPrimary) ?? .black
+        ]))
+        currentConfig?.attributedTitle = attributedTitle
+        selectionButton.configuration = currentConfig
     }
     
     private func layoutUI() {
+        self.translatesAutoresizingMaskIntoConstraints = false
         [label, selectionButton].forEach { hStack.addArrangedSubview($0) }
         addSubview(hStack)
         NSLayoutConstraint.activate([
@@ -115,6 +130,7 @@ class LabeledDropdownView<T: PickerViewRepresentable>: UIView where T: Equatable
             UIAction(title: item.pickerViewTitle, state: (item == selectedItem ? .on : .off)) { [weak self] action in
                 self?.selectedItem = item
                 self?.updateButtonTitle()
+                self?.delegate?.didSelectItem(item)
             }
         }
         selectionButton.menu = UIMenu(title: "", children: actions)
