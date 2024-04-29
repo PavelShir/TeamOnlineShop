@@ -67,7 +67,7 @@ class CustomFiltersButton: UIButton {
              self.delegate?.filterByPriceRange(low: 50, high: 100)
          }
          let highPrice = UIAction(title: "Over $100") { _ in
-             self.delegate?.filterByPriceRange(low: 100, high: Double.infinity)
+             self.delegate?.filterByPriceRange(low: 100, high: 999999)
          }
 
          let priceMenu = UIMenu(title: "Price Range", children: [lowPrice, midPrice, highPrice])
