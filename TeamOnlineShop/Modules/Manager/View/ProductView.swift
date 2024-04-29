@@ -205,11 +205,11 @@ final class ProductView:  UIView {
     }
     
     func makeProduct() -> Product {
-        let title = textFieldTitle.text ?? ""
-        let price = textFieldPrice.text ?? ""
-        let category = textFieldCategory.selectedItem
-        let description = textFieldDescription.text ?? ""
-        let imagesUrl = textFieldImage.text ?? ""
+        _ = textFieldTitle.text ?? ""
+        _ = textFieldPrice.text ?? ""
+        _ = textFieldCategory.selectedItem
+        _ = textFieldDescription.text ?? ""
+        _ = textFieldImage.text ?? ""
 //        if let productSafe = product, let id = productSafe.id, let categorySafe = category {
 //            return Product(id: id, title: title, price: Int(price) ?? 0, description: description, images: [imagesUrl], category: categorySafe, categoryId: 0)
 //        }
