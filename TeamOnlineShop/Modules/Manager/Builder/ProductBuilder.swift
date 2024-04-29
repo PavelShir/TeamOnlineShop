@@ -24,6 +24,7 @@ final class ProductBuilder: ProductBuilderProtocol {
         let router = ProductRouter(navigationVC: navigationVC)
         let presenter = ProductPresenter(router: router, action: action)
         let vc = ProductViewController(presenter: presenter, label: label)
+        presenter.view = vc
         return vc
     }
 }

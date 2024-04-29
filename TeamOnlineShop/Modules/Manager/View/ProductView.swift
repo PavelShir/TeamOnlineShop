@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import PlatziFakeStore
 
 protocol ProductViewDelegate: AnyObject {
-    func saveTapped(product: Product)
+    func saveTapped(product: PlatziFakeStore.NewProduct)
     func tappedBackButton()
 }
 
@@ -18,12 +19,7 @@ final class ProductView:  UIView {
     private var product: Product?
     
     // Replace it with real categories
-    private var categories: [Category] = [
-        Category(id: 1, name: "cat 1", image: ""),
-        Category(id: 2, name: "cat 2", image: ""),
-        Category(id: 3, name: "cat 3", image: "")
-    ]
-    
+    private var categories: [Category] = .init()
     
     var products: [Product] = [] {
         didSet {
@@ -172,7 +168,8 @@ final class ProductView:  UIView {
     }
     
     func setCategories(_ value: [Category]) {
-        self.categories = value
+        categories = value
+        textFieldCategory.items = value
     }
     
     func setProduct(_ value: Product) {
@@ -181,7 +178,7 @@ final class ProductView:  UIView {
         textFieldPrice.text = String(describing: product?.price)
         textFieldCategory.selectedItem = product?.category
         textFieldDescription.text = product?.description
-        textFieldImage.text = product?.images.joined(separator: ",\n") ?? ""
+        textFieldImage.text = product?.images.joined(separator: "\n") ?? ""
     }
     
     func configure(by action: ManagerActions.Product) {
@@ -204,18 +201,14 @@ final class ProductView:  UIView {
             }
     }
     
-    func makeProduct() -> Product {
-        _ = textFieldTitle.text ?? ""
-        _ = textFieldPrice.text ?? ""
-        _ = textFieldCategory.selectedItem
-        _ = textFieldDescription.text ?? ""
-        _ = textFieldImage.text ?? ""
-//        if let productSafe = product, let id = productSafe.id, let categorySafe = category {
-//            return Product(id: id, title: title, price: Int(price) ?? 0, description: description, images: [imagesUrl], category: categorySafe, categoryId: 0)
-//        }
-//        
-//        return Product(title: title, price: Int(price) ?? 0, description: description, images: [imagesUrl], categoryId: category?.id ?? 0)
-        return Product(id: 1, title: "", price: 1, description: "", images: [""], category: Category(id: 1, name: "", image: ""))
+    func makeProduct() -> PlatziFakeStore.NewProduct {
+        let title = textFieldTitle.text ?? ""
+        let price = textFieldPrice.text ?? ""
+        let category = textFieldCategory.selectedItem! as Category
+        let description = textFieldDescription.text ?? ""
+        let images = textFieldImage.text ?? ""
+
+        return PlatziFakeStore.NewProduct(title: title, price: Int(price) ?? 0, description: description, categoryId: category.id, images: images.components(separatedBy: "\n"))
     }
     
     func setSearchBarDelegate(vc: ProductViewController) {

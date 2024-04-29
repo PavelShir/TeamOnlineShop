@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PlatziFakeStore
 
 final class CategoryViewController: UIViewController {
     private let presenter: CategoryPresenterProtocol
@@ -50,8 +51,8 @@ final class CategoryViewController: UIViewController {
 }
 
 extension CategoryViewController: CategoryViewDelegate {
-    func saveTapped(category: Category) {
-        presenter.saveChanges(category: category)
+    func saveTapped(category: PlatziFakeStore.NewCategory) {
+        presenter.saveChanges(newCategory: category)
     }
     
     func tappedBackButton() {
@@ -61,6 +62,12 @@ extension CategoryViewController: CategoryViewDelegate {
 
 extension CategoryViewController: CategoryPresenterViewProtocol {
     
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
 }
 
 extension CategoryViewController: UISearchBarDelegate {

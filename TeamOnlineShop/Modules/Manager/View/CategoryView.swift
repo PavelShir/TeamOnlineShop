@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import PlatziFakeStore
 
 protocol CategoryViewDelegate: AnyObject {
-    func saveTapped(category: Category)
+    func saveTapped(category: PlatziFakeStore.NewCategory)
     func tappedBackButton()
 }
 
@@ -181,14 +182,11 @@ final class CategoryView:  UIView {
             }
     }
     
-    func makeCategory() -> Category {
+    func makeCategory() -> PlatziFakeStore.NewCategory {
         let title = textFieldTitle.text ?? ""
         let imageUrl = textFieldImage.text ?? ""
-//        if let categorySafe = category, let id = categorySafe.id  {
-//            return Category(id: id, name: title, image: imageUrl)
-//        }
         
-        return Category(id: 1, name: title, image: imageUrl)
+        return PlatziFakeStore.NewCategory(name: title, image: imageUrl)
     }
     
     func setSearchBarDelegate(vc: CategoryViewController) {

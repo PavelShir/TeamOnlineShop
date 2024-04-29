@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PlatziFakeStore
 
 final class ProductViewController: UIViewController {
     private let presenter: ProductPresenterProtocol
@@ -26,6 +27,7 @@ final class ProductViewController: UIViewController {
         super.viewDidLoad()
         
         setupCustomView()
+        presenter.loadCategories()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,8 +53,8 @@ final class ProductViewController: UIViewController {
 }
 
 extension ProductViewController: ProductViewDelegate {
-    func saveTapped(product: Product) {
-        presenter.saveChanges(product: product)
+    func saveTapped(product: PlatziFakeStore.NewProduct) {
+        presenter.saveChanges(newProduct: product)
     }
     
     func tappedBackButton() {
@@ -61,7 +63,16 @@ extension ProductViewController: ProductViewDelegate {
 }
 
 extension ProductViewController: ProductPresenterViewProtocol {
+    func setCategories(_ categories: [Category]) {
+        customView.setCategories(categories)
+    }
     
+    func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
 }
 
 extension ProductViewController: UISearchBarDelegate {

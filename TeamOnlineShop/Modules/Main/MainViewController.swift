@@ -52,15 +52,15 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         collectionView.delegate = self
         view.backgroundColor = .white
-        
-        dataSource.updateContent([])
-        presenter.fetchModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         tabBarController?.tabBar.isHidden = false
+        
+        dataSource.updateContent([])
+        presenter.fetchModel()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
