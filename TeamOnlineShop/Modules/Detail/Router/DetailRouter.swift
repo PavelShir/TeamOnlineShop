@@ -1,5 +1,5 @@
 //
-//  DetailPresenter.swift
+//  DetailPresenterImpl.swift
 //  TeamOnlineShop
 //
 //  Created by  Maksim Stogniy on 25.04.2024.

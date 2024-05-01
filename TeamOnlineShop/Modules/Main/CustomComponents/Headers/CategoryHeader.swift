@@ -1,14 +1,15 @@
 import UIKit
 
-protocol CategoryHeaderDelegate {
+protocol CategoryHeaderDelegate: AnyObject {
     func searchBarTextDidChange(_ searchBar: UISearchBar, newText: String)
     func searchBarSearchButtonClicked(with text: String)
     func tappedCartButton()
+    func getItemsCount() -> Int
 }
 
 final class CategoryHeader: UICollectionReusableView, UISearchBarDelegate, SearchBarViewDelegate {
     
-    var delegate: CategoryHeaderDelegate?
+    weak var delegate: CategoryHeaderDelegate?
     
     //MARK: Properties
     static let reuseIdentifier = CategoryHeader.description()
@@ -45,6 +46,17 @@ final class CategoryHeader: UICollectionReusableView, UISearchBarDelegate, Searc
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+    }
+    
+    func configure() {
+        delegate
+            .map { $0.getItemsCount() }
+            .map(cartButton.setItemCount)
     }
     
     // MARK: - Funcs

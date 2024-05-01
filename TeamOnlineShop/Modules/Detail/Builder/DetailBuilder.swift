@@ -22,7 +22,7 @@ class DetailBuilder: DetailBuilderProtocol{
     
     func buildDetailVC(data: Product) -> UIViewController {
         let router = DetailRouter(navigationVC: navigationVC)
-        let presenter = DetailPresenter(
+        let presenter = DetailPresenterImpl(
             router: router,
             data: data
         )

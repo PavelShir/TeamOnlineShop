@@ -1,5 +1,5 @@
 //
-//  DetailPresenter.swift
+//  DetailPresenterImpl.swift
 //  TeamOnlineShop
 //
 //  Created by Maksim Stogniy on 25.04.2024.
@@ -13,7 +13,7 @@ protocol DetailPresenterViewProtocol: AnyObject {
     func updateCartButtonLabel(with count: Int)
 }
 
-protocol DetailPresenterProtocol: AnyObject {
+protocol DetailPresenter: AnyObject {
     init(router: DetailRouterProtocol,data: Product)
     var data: Product { get }
     func dismissDetailVC()
@@ -24,13 +24,16 @@ protocol DetailPresenterProtocol: AnyObject {
     func buyProductNow()
 }
 
-final class DetailPresenter: DetailPresenterProtocol {
+final class DetailPresenterImpl: DetailPresenter {
     
     weak var view: DetailPresenterViewProtocol?
     private var router: DetailRouterProtocol?
     var data: Product
     
-    required init(router: DetailRouterProtocol, data: Product) {
+    required init(
+        router: DetailRouterProtocol,
+        data: Product
+    ) {
         self.data = data
         self.router = router
     }
@@ -43,21 +46,20 @@ final class DetailPresenter: DetailPresenterProtocol {
         router?.goToCartVC()
     }
     
-    func updateWishList(_ isWished: Bool){
+    func updateWishList(_ isWished: Bool) {
+        defer { view?.updateProductWishState(isWished: isWished) }
+        
         if isWished {
             UserManager.shared.addProductToWithList(product: data) { error in
-                if error != nil {
-                    print("Error is occured during adding product to wishlist")
-                }
+                guard let error else { return }
+                print("Error is occured during adding product to wishlist")
             }
-        } else {
-            UserManager.shared.deleteProductFromWishList(productId: data.id) { error in
-                if error != nil {
-                    print("Error is occured during deleting product from wishlist")
-                }
-            }
+            return
         }
-        view?.updateProductWishState(isWished: isWished)
+        UserManager.shared.deleteProductFromWishList(productId: data.id) { error in
+            guard let error else { return }
+            print("Error is occured during deleting product from wishlist")
+        }
     }
     
     func buyProductNow() {

@@ -14,11 +14,11 @@ protocol DetailVCDelegate{
 
 final class DetailViewController: UIViewController {
 
-    private let presenter: DetailPresenterProtocol
+    private let presenter: DetailPresenter
     var detailView: DetailVCDelegate?
     private let customView = DetailView()
     
-    init(presenter: DetailPresenterProtocol) {
+    init(presenter: DetailPresenter) {
         self.presenter = presenter
         
         super.init(nibName: nil, bundle: nil)

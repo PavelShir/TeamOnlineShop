@@ -128,6 +128,7 @@ extension MainViewCollectionDataSource: UICollectionViewDataSource {
         
         if let categoryHeader = header as? CategoryHeader {
                 categoryHeader.delegate = delegate
+                categoryHeader.configure()
             }
         return header
     }

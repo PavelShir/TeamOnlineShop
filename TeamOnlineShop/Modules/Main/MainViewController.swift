@@ -129,6 +129,10 @@ extension MainViewController: UICollectionViewDelegate {
 }
 
 extension MainViewController: CategoryHeaderDelegate {
+    func getItemsCount() -> Int {
+        1
+    }
+    
     func tappedCartButton() {
         presenter.goToCartVC()
     }

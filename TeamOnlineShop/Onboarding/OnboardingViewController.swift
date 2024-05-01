@@ -91,7 +91,8 @@ class OnboardingViewController: UIViewController {
             let navigationController = UINavigationController(rootViewController: loginVC)
             navigationController.modalPresentationStyle = .fullScreen
             navigationController.modalTransitionStyle = .flipHorizontal
-            present(navigationController, animated: true, completion: nil)
+            self.view.window?.rootViewController = navigationController
+//            present(navigationController, animated: true, completion: nil)
         } else {
             currentPage += 1
             let indexPath = IndexPath(item: currentPage, section: 0)

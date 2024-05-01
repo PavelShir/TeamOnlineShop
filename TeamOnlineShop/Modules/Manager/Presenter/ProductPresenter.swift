@@ -47,56 +47,56 @@ final class ProductPresenter: ProductPresenterProtocol {
     }
     
     func saveChanges(newProduct: PlatziFakeStore.NewProduct, id: Int?) {
-        
+        performChanges(newProduct: newProduct, id: id) { [weak self] action in
+            DispatchQueue.main.async {
+                switch action {
+                case .add(.success(let product)):
+                    self?.view?.showAlert(title: "Success", message: "Succesfully add new product")
+                    
+                case .update(.success(let product)):
+                    self?.view?.showAlert(title: "Success", message: "Succesfully update product")
+                    
+                case .delete(.success(let deleted)):
+                    self?.view?.showAlert(title: "Success", message: "Succesfully remove product")
+                    
+                    let pros = self?.products.filter{ $0.id != id }
+                    self?.view?.setProducts(pros ?? [])
+                    
+                default:
+                    self?.view?.showAlert(title: "Error", message: "Error during adding product")
+                }
+            }
+        }
+    }
+    
+    enum ProductAction {
+        case add(Result<PlatziFakeStore.Product, StoreError>)
+        case update(Result<PlatziFakeStore.Product, StoreError>)
+        case delete(Result<Bool, StoreError>)
+    }
+    
+    private func performChanges(
+        newProduct: PlatziFakeStore.NewProduct,
+        id: Int?,
+        completion: @escaping (ProductAction) -> Void
+    ) {
         switch self.action {
         case .add:
-            PlatziStore.shared.create(product: newProduct) { [weak self] result in
-                switch result {
-                case .success(_):
-                    DispatchQueue.main.async {
-                        self?.view?.showAlert(title: "Success", message: "Succesfully add new product")
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self?.view?.showAlert(title: "Error", message: "Error during adding product: \(error)")
-                    }
-                }
+            PlatziStore.shared.create(product: newProduct) { result in
+                completion(.add(result))
             }
-            return
+            
         case .update:
-            if let productId = id {
-                PlatziStore.shared.updateProduct(withId: productId, new: newProduct) { [weak self] result in
-                    switch result {
-                    case .success(_):
-                        DispatchQueue.main.async {
-                            self?.view?.showAlert(title: "Success", message: "Succesfully update product")
-                        }
-                    case .failure(let error):
-                        DispatchQueue.main.async {
-                            self?.view?.showAlert(title: "Error", message: "Error during updating product: \(error)")
-                        }
-                    }
-                }
+            guard let id else { return }
+            PlatziStore.shared.updateProduct(withId: id, new: newProduct) { result in
+                completion(.update(result))
             }
-            return
+            
         case .delete:
-            if let productId = id {
-                PlatziStore.shared.deleteProduct(withId: productId){ [weak self] result in
-                    switch result {
-                    case .success(_):
-                        DispatchQueue.main.async {
-                            self?.view?.showAlert(title: "Success", message: "Succesfully remove product")
-                            let pros = self?.products.filter{ $0.id != productId }
-                            self?.view?.setProducts(pros ?? [])
-                        }
-                    case .failure(let error):
-                        DispatchQueue.main.async {
-                            self?.view?.showAlert(title: "Error", message: "Error during removing product: \(error)")
-                        }
-                    }
-                }
+            guard let id else { return }
+            PlatziStore.shared.deleteProduct(withId: id){ result in
+                completion(.delete(result))
             }
-            return
         }
     }
     
@@ -143,7 +143,7 @@ final class ProductPresenter: ProductPresenterProtocol {
     }
     
     func searchProducts(query: String) {
-        PlatziStore.shared.searchProduct(SearchOption.title(query)) { [weak self] result in
+        PlatziStore.shared.searchProduct(.title(query)) { [weak self] result in
             switch result {
             case .success(let products):
                 DispatchQueue.main.async {

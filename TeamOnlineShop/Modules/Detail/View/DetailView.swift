@@ -74,6 +74,14 @@ final class DetailView: UIView {
         return element
     }()
     
+    static func makeLabel(_ font: UIFont, color: UIColor = .blackLight) -> UILabel {
+        let element = UILabel()
+        element.font = UIFont.TextFont.Screens.ProductDetail.price
+        element.textColor = UIColor(named: Colors.blackLight)
+        element.translatesAutoresizingMaskIntoConstraints = false
+        return element
+    }
+    
     private var descriptionText: UITextView = {
         let textView = UITextView()
         textView.backgroundColor = .clear

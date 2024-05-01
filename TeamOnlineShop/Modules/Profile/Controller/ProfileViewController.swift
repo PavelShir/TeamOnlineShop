@@ -8,13 +8,10 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
-    
-    var presenter: ProfilePresenterProtocol
+    private let presenter: ProfilePresenterProtocol
     private let customView = ProfileView()
-    
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     private let photoSelectionMenuView =  PhotoSelectionMenuView()
-    
     private let imagePicker = UIImagePickerController()
     
     init(presenter: ProfilePresenterProtocol) {
@@ -38,33 +35,13 @@ final class ProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
         tabBarController?.tabBar.isHidden = false
-        if let tabBar = tabBarController as? TabBarController {
-            tabBar.updateManagerTabBarItemState()
-        }
+        (tabBarController as? TabBarController)?.updateManagerTabBarItemState()
+//        if let tabBar = tabBarController as? TabBarController {
+//            tabBar.updateManagerTabBarItemState()
+//        }
     }
     
-    private func setupCustomView() {
-        view.addSubview(customView)
-        NSLayoutConstraint.activate([
-            customView.topAnchor.constraint(equalTo: view.topAnchor),
-            customView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            customView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            customView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        customView.delegate = self
-        customView.configView(with: UserManager.shared.getUserProfileData())
-    }
-    
-    private func setupPhotoSelectionMenu() {
-        photoSelectionMenuView.delegate = self
-        photoSelectionMenuView.center = view.center
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapOutsideMenu))
-                view.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc private func handleTapOutsideMenu() {
-        hidePhotoSelectionMenu()
-    }
+   
 }
 
 //MARK: - ProfileViewDelegate
@@ -81,7 +58,7 @@ extension ProfileViewController: ProfileViewDelegate {
             }
             
             let vc = OnboardingViewController()
-            vc.modalPresentationStyle = .fullScreen
+//            vc.modalPresentationStyle = .fullScreen
             self.view.window?.rootViewController = vc
         }
     }
@@ -152,6 +129,33 @@ extension ProfileViewController: PhotoSelectionMenuDelegate {
     
     func deleteButtonTapped() {
         customView.updateProfileImage()
+        hidePhotoSelectionMenu()
+    }
+}
+
+private extension ProfileViewController {
+    
+    //MARK: - Private methods
+    func setupCustomView() {
+        view.addSubview(customView)
+        NSLayoutConstraint.activate([
+            customView.topAnchor.constraint(equalTo: view.topAnchor),
+            customView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            customView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            customView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        customView.delegate = self
+        customView.configView(with: UserManager.shared.getUserProfileData())
+    }
+    
+    func setupPhotoSelectionMenu() {
+        photoSelectionMenuView.delegate = self
+        photoSelectionMenuView.center = view.center
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapOutsideMenu))
+                view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func handleTapOutsideMenu() {
         hidePhotoSelectionMenu()
     }
 }

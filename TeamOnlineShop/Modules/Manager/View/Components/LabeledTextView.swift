@@ -92,6 +92,13 @@ class LabeledTextView: UIView {
     
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(textViewDidChange(_:)), name: UITextView.textDidChangeNotification, object: textView)
+        
+//        NotificationCenter.default.addObserver(
+//            forName: UITextView.textDidChangeNotification,
+//            object: textView,
+//            queue: .main,
+//            using: textViewDidChange(_:)
+//        )
     }
     
     @objc private func textViewDidChange(_ notification: Notification) {
@@ -140,15 +147,11 @@ class LabeledTextView: UIView {
             label.trailingAnchor.constraint(equalTo: labelContainerView.trailingAnchor),
             label.bottomAnchor.constraint(equalTo: labelContainerView.bottomAnchor),
             labelContainerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-        ])
         
-        NSLayoutConstraint.activate([
             textView.heightAnchor.constraint(equalToConstant: textView.font!.lineHeight * 6),
             textView.topAnchor.constraint(equalTo: topAnchor),
             textView.trailingAnchor.constraint(equalTo: trailingAnchor),
-        ])
         
-        NSLayoutConstraint.activate([
             hStack.topAnchor.constraint(equalTo: topAnchor),
             hStack.leadingAnchor.constraint(equalTo: leadingAnchor),
             hStack.trailingAnchor.constraint(equalTo: trailingAnchor),
